@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Checkout | JantarMantarKart</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<header>
+
+    <nav class="navbar">
+
+        <div class="logo">
+            Jantar<span>Mantar</span>Kart
+        </div>
+
+        <div class="nav-links">
+
+            <a href="index.html">
+                Home
+            </a>
+
+            <a href="products.html">
+                Products
+            </a>
+
+            <a href="wishlist.html">
+                Wishlist ♡
+            </a>
+
+            <a href="cart.html">
+                Cart 🛒
+            </a>
+
+        </div>
+
+    </nav>
+
+</header>
+
+
+<section class="products-header">
+
+    <p class="small-title">
+        SECURE CHECKOUT
+    </p>
+
+    <h1>
+        Checkout
+    </h1>
+
+    <p>
+        Complete your order.
+    </p>
+
+</section>
+
+
+<main class="checkout-container">
+
+    <div class="checkout-card">
+
+        <h2>
+            Welcome, <span id="customer-name"></span> 👋
+        </h2>
+
+        <p>
+            You are successfully signed in.
+        </p>
+
+        <div class="checkout-success">
+
+            <div>
+                🔒
+            </div>
+
+            <strong>
+                Authentication successful
+            </strong>
+
+            <span>
+                You can continue with your order.
+            </span>
+
+        </div>
+
+        <button
+            class="checkout-button"
+            onclick="placeOrder()"
+        >
+            Place Order
+        </button>
+
+    </div>
+
+</main>
+
+
+<footer>
+
+    <h2>
+        JantarMantarKart
+    </h2>
+
+    <p>
+        Your modern destination for everyday shopping.
+    </p>
+
+    <p class="copyright">
+        © 2026 JantarMantarKart. All rights reserved.
+    </p>
+
+</footer>
+
+
+<script>
+
+const currentUser =
+    JSON.parse(
+        localStorage.getItem(
+            "jantarMantarKartCurrentUser"
+        )
+    );
+
+
+if (!currentUser) {
+
+    window.location.href =
+        "signin.html";
+
+}
+
+
+document.getElementById(
+    "customer-name"
+).textContent =
+    currentUser.name;
+
+
+function placeOrder() {
+
+    alert(
+        "Order placed successfully! 🎉"
+    );
+
+}
+
+</script>
+
+
+</body>
+
+</html>

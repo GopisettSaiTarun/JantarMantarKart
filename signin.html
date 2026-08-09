@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Sign In | JantarMantarKart</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+
+<header>
+
+    <nav class="navbar">
+
+        <div class="logo">
+            Jantar<span>Mantar</span>Kart
+        </div>
+
+        <div class="nav-links">
+
+            <a href="index.html">
+                Home
+            </a>
+
+            <a href="products.html">
+                Products
+            </a>
+
+            <a href="cart.html">
+                Cart 🛒
+            </a>
+
+        </div>
+
+    </nav>
+
+</header>
+
+
+<main class="auth-container">
+
+    <div class="auth-card">
+
+        <p class="small-title">
+            WELCOME BACK
+        </p>
+
+        <h1>
+            Sign In
+        </h1>
+
+        <p class="auth-subtitle">
+            Sign in to continue to checkout.
+        </p>
+
+
+        <form id="signin-form">
+
+            <label>
+                Email
+            </label>
+
+            <input
+                type="email"
+                id="signin-email"
+                placeholder="Enter your email"
+                required
+            >
+
+
+            <label>
+                Password
+            </label>
+
+            <input
+                type="password"
+                id="signin-password"
+                placeholder="Enter your password"
+                required
+            >
+
+
+            <button
+                type="submit"
+                class="auth-button"
+            >
+                Sign In
+            </button>
+
+        </form>
+
+
+        <p
+            id="signin-message"
+            class="auth-message"
+        ></p>
+
+
+        <p class="auth-footer">
+
+            Don't have an account?
+
+            <a href="signup.html">
+                Create Account
+            </a>
+
+        </p>
+
+    </div>
+
+</main>
+
+
+<script src="auth.js"></script>
+
+<script>
+
+const signinForm =
+    document.getElementById("signin-form");
+
+
+signinForm.addEventListener(
+    "submit",
+    function(event) {
+
+        event.preventDefault();
+
+
+        const email =
+            document.getElementById(
+                "signin-email"
+            ).value.trim().toLowerCase();
+
+
+        const password =
+            document.getElementById(
+                "signin-password"
+            ).value;
+
+
+        const message =
+            document.getElementById(
+                "signin-message"
+            );
+
+
+        const users = getUsers();
+
+
+        const user =
+            users.find(
+                user =>
+                    user.email === email &&
+                    user.password === password
+            );
+
+
+        if (!user) {
+
+            message.textContent =
+                "Invalid email or password.";
+
+            message.className =
+                "auth-message error";
+
+            return;
+
+        }
+
+
+        localStorage.setItem(
+
+            "jantarMantarKartCurrentUser",
+
+            JSON.stringify({
+
+                id: user.id,
+
+                name: user.name,
+
+                email: user.email
+
+            })
+
+        );
+
+
+        message.textContent =
+            "Sign in successful!";
+
+        message.className =
+            "auth-message success";
+
+
+        setTimeout(function() {
+
+            window.location.href =
+                "cart.html";
+
+        }, 700);
+
+    }
+
+);
+
+</script>
+
+
+</body>
+
+</html>

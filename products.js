@@ -1,3 +1,93 @@
+// =========================================
+// CART COUNT
+// =========================================
+
+function updateCartCount() {
+
+    const cartCount =
+        document.getElementById("cart-count");
+
+    if (!cartCount) {
+        return;
+    }
+
+    const cart = JSON.parse(
+        localStorage.getItem("jantarMantarKartCart")
+    ) || [];
+
+    const totalItems = cart.reduce(
+        function(total, item) {
+            return total + item.quantity;
+        },
+        0
+    );
+
+    cartCount.textContent = totalItems;
+}
+
+
+updateCartCount();
+// =========================
+// WISHLIST
+// =========================
+
+function toggleWishlist(productId) {
+
+    let wishlist = JSON.parse(
+        localStorage.getItem("jantarMantarKartWishlist")
+    ) || [];
+
+    const product = products.find(
+        item => item.id === productId
+    );
+
+    if (!product) {
+        return;
+    }
+
+    const existingProduct = wishlist.find(
+        item => item.id === productId
+    );
+
+    if (existingProduct) {
+
+        wishlist = wishlist.filter(
+            item => item.id !== productId
+        );
+
+        alert(`${product.name} removed from wishlist!`);
+
+    } else {
+
+        wishlist.push(product);
+
+        alert(`${product.name} saved to wishlist!`);
+
+    }
+
+    localStorage.setItem(
+        "jantarMantarKartWishlist",
+        JSON.stringify(wishlist)
+    );
+    function updateWishlistCount() {
+
+    const wishlistCount =
+        document.getElementById("wishlist-count");
+
+    if (!wishlistCount) {
+        return;
+    }
+
+    const wishlist = JSON.parse(
+        localStorage.getItem("jantarMantarKartWishlist")
+    ) || [];
+
+    wishlistCount.textContent = wishlist.length;
+}
+
+    // Update wishlist number
+    updateWishlistCount();
+}
 const products = [
 
     {
@@ -75,7 +165,18 @@ function displayProducts() {
         productCard.className = "product-card";
 
         productCard.innerHTML = `
-
+        <a
+    class="details-button"
+    href="product.html?id=${product.id}"
+>
+    View Details →
+</a>
+<button
+    class="wishlist-button"
+    onclick="toggleWishlist(${product.id})"
+>
+    ♡ Save
+</button>
             <div class="product-image">
 
                 <img
@@ -127,6 +228,7 @@ function displayProducts() {
         productsGrid.appendChild(productCard);
 
     });
+    
 
 }
 

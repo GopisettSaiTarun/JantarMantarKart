@@ -8,19 +8,14 @@
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0">
 
-    <title>Shopping Cart | JantarMantarKart</title>
+    <title>Wishlist | JantarMantarKart</title>
 
     <link rel="stylesheet" href="style.css">
 
 </head>
 
-
 <body>
 
-
-<!-- =========================
-     NAVIGATION
-========================= -->
 
 <header>
 
@@ -37,16 +32,14 @@
                 Home
             </a>
 
-
             <a href="products.html">
                 Products
             </a>
 
-
             <a href="wishlist.html">
                 Wishlist ♡
+                <span id="wishlist-count">0</span>
             </a>
-
 
             <a href="cart.html">
                 Cart 🛒
@@ -60,58 +53,36 @@
 </header>
 
 
-
-<!-- =========================
-     CART HEADER
-========================= -->
-
-<section class="cart-header">
+<section class="products-header">
 
     <p class="small-title">
-        JANTARMANTARKART
+        YOUR COLLECTION
     </p>
 
-
     <h1>
-        Your Shopping Cart
+        Saved Products
     </h1>
+
+    <p>
+        Products you've saved for later.
+    </p>
 
 </section>
 
 
+<main class="products-container">
 
-<!-- =========================
-     CART
-========================= -->
+    <div
+        id="wishlist-items"
+        class="products-grid"
+    >
 
-<main class="cart-container">
-
-
-    <!-- Products will appear here -->
-
-    <div id="cart-items">
-
-        <!-- JavaScript inserts cart products here -->
+        <!-- Wishlist products appear here -->
 
     </div>
-
-
-    <!-- Order summary will appear here -->
-
-    <div id="cart-summary">
-
-        <!-- JavaScript inserts order summary here -->
-
-    </div>
-
 
 </main>
 
-
-
-<!-- =========================
-     FOOTER
-========================= -->
 
 <footer>
 
@@ -119,27 +90,20 @@
         JantarMantarKart
     </h2>
 
-
     <p>
         Your modern destination for everyday shopping.
     </p>
 
-
     <p class="copyright">
-        © 2026 JantarMantarKart.
-        All rights reserved.
+        © 2026 JantarMantarKart. All rights reserved.
     </p>
 
 </footer>
 
 
+<script src="products.js"></script>
 
-<!-- =========================
-     JAVASCRIPT
-========================= -->
-
-<script src="cart.js"></script>
-
+<script src="wishlist.js"></script>
 
 </body>
 
