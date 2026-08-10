@@ -4,16 +4,23 @@
 
 
 // Get registered users
+
 function getUsers() {
 
-    return JSON.parse(
-        localStorage.getItem("jantarMantarKartUsers")
-    ) || [];
+    const users =
+        localStorage.getItem(
+            "jantarMantarKartUsers"
+        );
+
+    return users
+        ? JSON.parse(users)
+        : [];
 
 }
 
 
-// Save users
+// Save registered users
+
 function saveUsers(users) {
 
     localStorage.setItem(
@@ -25,16 +32,23 @@ function saveUsers(users) {
 
 
 // Get current logged-in user
+
 function getCurrentUser() {
 
-    return JSON.parse(
-        localStorage.getItem("jantarMantarKartCurrentUser")
-    );
+    const user =
+        localStorage.getItem(
+            "jantarMantarKartCurrentUser"
+        );
+
+    return user
+        ? JSON.parse(user)
+        : null;
 
 }
 
 
-// Check whether user is logged in
+// Check login
+
 function isLoggedIn() {
 
     return getCurrentUser() !== null;
@@ -42,13 +56,15 @@ function isLoggedIn() {
 }
 
 
-// Sign out
+// Logout
+
 function logout() {
 
     localStorage.removeItem(
         "jantarMantarKartCurrentUser"
     );
 
-    window.location.href = "index.html";
+    window.location.href =
+        "signin.html";
 
 }

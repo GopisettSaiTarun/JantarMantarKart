@@ -16,222 +16,212 @@
 
 <body>
 
+    <main class="auth-container">
 
-<header>
+        <div class="auth-card">
 
-    <nav class="navbar">
+            <div class="logo">
+                Jantar<span>Mantar</span>Kart
+            </div>
 
-        <div class="logo">
-            Jantar<span>Mantar</span>Kart
-        </div>
+            <p class="small-title">
+                JANTARMANTARKART
+            </p>
 
-        <div class="nav-links">
-
-            <a href="index.html">
-                Home
-            </a>
-
-            <a href="products.html">
-                Products
-            </a>
-
-            <a href="cart.html">
-                Cart 🛒
-            </a>
-
-        </div>
-
-    </nav>
-
-</header>
-
-
-<main class="auth-container">
-
-    <div class="auth-card">
-
-        <p class="small-title">
-            JANTARMANTARKART
-        </p>
-
-        <h1>
-            Create Account
-        </h1>
-
-        <p class="auth-subtitle">
-            Create your account to continue shopping.
-        </p>
-
-
-        <form id="signup-form">
-
-            <label>
-                Full Name
-            </label>
-
-            <input
-                type="text"
-                id="signup-name"
-                placeholder="Enter your name"
-                required
-            >
-
-
-            <label>
-                Email
-            </label>
-
-            <input
-                type="email"
-                id="signup-email"
-                placeholder="Enter your email"
-                required
-            >
-
-
-            <label>
-                Password
-            </label>
-
-            <input
-                type="password"
-                id="signup-password"
-                placeholder="Create a password"
-                required
-            >
-
-
-            <button
-                type="submit"
-                class="auth-button"
-            >
+            <h1>
                 Create Account
-            </button>
+            </h1>
 
-        </form>
-
-
-        <p
-            id="signup-message"
-            class="auth-message"
-        ></p>
+            <p class="auth-subtitle">
+                Create your account to continue shopping.
+            </p>
 
 
-        <p class="auth-footer">
+            <form id="signup-form">
 
-            Already have an account?
+                <label for="signup-name">
+                    Full Name
+                </label>
 
-            <a href="signin.html">
-                Sign In
-            </a>
-
-        </p>
-
-    </div>
-
-</main>
-
-
-<script src="auth.js"></script>
-
-<script>
-
-const signupForm =
-    document.getElementById("signup-form");
+                <input
+                    type="text"
+                    id="signup-name"
+                    placeholder="Enter your name"
+                    required
+                >
 
 
-signupForm.addEventListener(
-    "submit",
-    function(event) {
+                <label for="signup-email">
+                    Email
+                </label>
 
-        event.preventDefault();
-
-
-        const name =
-            document.getElementById(
-                "signup-name"
-            ).value.trim();
-
-
-        const email =
-            document.getElementById(
-                "signup-email"
-            ).value.trim().toLowerCase();
+                <input
+                    type="email"
+                    id="signup-email"
+                    placeholder="Enter your email"
+                    required
+                >
 
 
-        const password =
-            document.getElementById(
-                "signup-password"
-            ).value;
+                <label for="signup-password">
+                    Password
+                </label>
+
+                <input
+                    type="password"
+                    id="signup-password"
+                    placeholder="Create a password"
+                    minlength="6"
+                    required
+                >
 
 
-        const message =
-            document.getElementById(
-                "signup-message"
-            );
+                <button
+                    type="submit"
+                    class="auth-button"
+                >
+                    Create Account
+                </button>
+
+            </form>
 
 
-        const users = getUsers();
+            <p
+                id="signup-message"
+                class="auth-message"
+            ></p>
 
 
-        const existingUser =
-            users.find(
-                user => user.email === email
-            );
+            <p class="auth-footer">
+
+                Already have an account?
+
+                <a href="signin.html">
+                    Sign In
+                </a>
+
+            </p>
+
+        </div>
+
+    </main>
 
 
-        if (existingUser) {
+    <!-- Authentication JavaScript -->
 
-            message.textContent =
-                "An account with this email already exists.";
-
-            message.className =
-                "auth-message error";
-
-            return;
-
-        }
+    <script src="auth.js"></script>
 
 
-        const newUser = {
+    <!-- Signup JavaScript -->
 
-            id: Date.now(),
+    <script>
 
-            name: name,
-
-            email: email,
-
-            password: password
-
-        };
+        const signupForm =
+            document.getElementById("signup-form");
 
 
-        users.push(newUser);
+        const signupMessage =
+            document.getElementById("signup-message");
 
 
-        saveUsers(users);
+        signupForm.addEventListener(
+            "submit",
+            function(event) {
+
+                event.preventDefault();
 
 
-        message.textContent =
-            "Account created successfully!";
+                const name =
+                    document.getElementById(
+                        "signup-name"
+                    ).value.trim();
 
-        message.className =
-            "auth-message success";
+
+                const email =
+                    document.getElementById(
+                        "signup-email"
+                    ).value.trim().toLowerCase();
 
 
-        setTimeout(function() {
+                const password =
+                    document.getElementById(
+                        "signup-password"
+                    ).value;
 
-            window.location.href =
-                "signin.html";
 
-        }, 1000);
+                // Get existing users
 
-    }
+                const users = getUsers();
 
-);
 
-</script>
+                // Check existing email
 
+                const existingUser =
+                    users.find(function(user) {
+
+                        return user.email === email;
+
+                    });
+
+
+                if (existingUser) {
+
+                    signupMessage.textContent =
+                        "An account with this email already exists.";
+
+                    signupMessage.style.color =
+                        "red";
+
+                    return;
+
+                }
+
+
+                // Create user
+
+                const newUser = {
+
+                    name: name,
+
+                    email: email,
+
+                    password: password
+
+                };
+
+
+                // Add user to array
+
+                users.push(newUser);
+
+
+                // Save users to LocalStorage
+
+                saveUsers(users);
+
+
+                // Success message
+
+                signupMessage.textContent =
+                    "Account created successfully!";
+
+                signupMessage.style.color =
+                    "green";
+
+
+                // Redirect to Sign In
+
+                setTimeout(function() {
+
+                    window.location.href =
+                        "signin.html";
+
+                }, 1000);
+
+            }
+        );
+
+    </script>
 
 </body>
 

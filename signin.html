@@ -16,204 +16,177 @@
 
 <body>
 
+    <main class="auth-container">
 
-<header>
+        <div class="auth-card">
 
-    <nav class="navbar">
+            <div class="logo">
+                Jantar<span>Mantar</span>Kart
+            </div>
 
-        <div class="logo">
-            Jantar<span>Mantar</span>Kart
-        </div>
+            <p class="small-title">
+                WELCOME BACK
+            </p>
 
-        <div class="nav-links">
-
-            <a href="index.html">
-                Home
-            </a>
-
-            <a href="products.html">
-                Products
-            </a>
-
-            <a href="cart.html">
-                Cart 🛒
-            </a>
-
-        </div>
-
-    </nav>
-
-</header>
-
-
-<main class="auth-container">
-
-    <div class="auth-card">
-
-        <p class="small-title">
-            WELCOME BACK
-        </p>
-
-        <h1>
-            Sign In
-        </h1>
-
-        <p class="auth-subtitle">
-            Sign in to continue to checkout.
-        </p>
-
-
-        <form id="signin-form">
-
-            <label>
-                Email
-            </label>
-
-            <input
-                type="email"
-                id="signin-email"
-                placeholder="Enter your email"
-                required
-            >
-
-
-            <label>
-                Password
-            </label>
-
-            <input
-                type="password"
-                id="signin-password"
-                placeholder="Enter your password"
-                required
-            >
-
-
-            <button
-                type="submit"
-                class="auth-button"
-            >
+            <h1>
                 Sign In
-            </button>
+            </h1>
 
-        </form>
-
-
-        <p
-            id="signin-message"
-            class="auth-message"
-        ></p>
+            <p class="auth-subtitle">
+                Sign in to continue to checkout.
+            </p>
 
 
-        <p class="auth-footer">
+            <form id="signin-form">
 
-            Don't have an account?
+                <label for="signin-email">
+                    Email
+                </label>
 
-            <a href="signup.html">
-                Create Account
-            </a>
-
-        </p>
-
-    </div>
-
-</main>
-
-
-<script src="auth.js"></script>
-
-<script>
-
-const signinForm =
-    document.getElementById("signin-form");
+                <input
+                    type="email"
+                    id="signin-email"
+                    placeholder="Enter your email"
+                    required
+                >
 
 
-signinForm.addEventListener(
-    "submit",
-    function(event) {
+                <label for="signin-password">
+                    Password
+                </label>
 
-        event.preventDefault();
-
-
-        const email =
-            document.getElementById(
-                "signin-email"
-            ).value.trim().toLowerCase();
-
-
-        const password =
-            document.getElementById(
-                "signin-password"
-            ).value;
+                <input
+                    type="password"
+                    id="signin-password"
+                    placeholder="Enter your password"
+                    required
+                >
 
 
-        const message =
-            document.getElementById(
-                "signin-message"
-            );
+                <button
+                    type="submit"
+                    class="auth-button"
+                >
+                    Sign In
+                </button>
+
+            </form>
 
 
-        const users = getUsers();
+            <p
+                id="signin-message"
+                class="auth-message"
+            ></p>
 
 
-        const user =
-            users.find(
-                user =>
-                    user.email === email &&
-                    user.password === password
-            );
+            <p class="auth-footer">
+
+                <a href="forgot-password.html">
+                    Forgot Password?
+                </a>
+
+            </p>
 
 
-        if (!user) {
+            <p class="auth-footer">
 
-            message.textContent =
-                "Invalid email or password.";
+                Don't have an account?
 
-            message.className =
-                "auth-message error";
+                <a href="signup.html">
+                    Create Account
+                </a>
 
-            return;
+            </p>
 
-        }
+        </div>
+
+    </main>
 
 
-        localStorage.setItem(
+    <script src="auth.js"></script>
 
-            "jantarMantarKartCurrentUser",
 
-            JSON.stringify({
+    <script>
 
-                id: user.id,
+        const signinForm =
+            document.getElementById("signin-form");
 
-                name: user.name,
+        const signinMessage =
+            document.getElementById("signin-message");
 
-                email: user.email
 
-            })
+        signinForm.addEventListener(
+            "submit",
+            function(event) {
 
+                event.preventDefault();
+
+
+                const email =
+                    document.getElementById(
+                        "signin-email"
+                    ).value.trim().toLowerCase();
+
+
+                const password =
+                    document.getElementById(
+                        "signin-password"
+                    ).value;
+
+
+                const users = getUsers();
+
+
+                const user =
+                    users.find(function(user) {
+
+                        return (
+                            user.email === email &&
+                            user.password === password
+                        );
+
+                    });
+
+
+                if (!user) {
+
+                    signinMessage.textContent =
+                        "Invalid email or password.";
+
+                    signinMessage.style.color =
+                        "red";
+
+                    return;
+
+                }
+
+
+                // Save current user
+
+                localStorage.setItem(
+                    "jantarMantarKartCurrentUser",
+                    JSON.stringify(user)
+                );
+
+
+                signinMessage.textContent =
+                    "Sign in successful!";
+
+                signinMessage.style.color =
+                    "green";
+
+
+                setTimeout(function() {
+
+                    window.location.href =
+                        "index.html";
+
+                }, 800);
+
+            }
         );
 
-
-        message.textContent =
-            "Sign in successful!";
-
-        message.className =
-            "auth-message success";
-
-
-        setTimeout(function() {
-
-            window.location.href =
-                "cart.html";
-
-        }, 700);
-
-    }
-
-);
-
-</script>
-
+    </script>
 
 </body>
 

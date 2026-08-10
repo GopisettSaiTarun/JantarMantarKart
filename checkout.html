@@ -10,153 +10,778 @@
 
     <title>Checkout | JantarMantarKart</title>
 
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="checkout.css">
 
 </head>
 
 <body>
 
-<header>
+<!-- =========================================
+     TOP BAR
+========================================= -->
 
-    <nav class="navbar">
+<header class="checkout-header">
 
-        <div class="logo">
-            Jantar<span>Mantar</span>Kart
-        </div>
+    <div class="checkout-nav">
 
-        <div class="nav-links">
+        <a href="index.html" class="checkout-logo">
 
-            <a href="index.html">
-                Home
-            </a>
+            <span>Jantar</span><b>Mantar</b><span>Kart</span>
 
-            <a href="products.html">
-                Products
-            </a>
+        </a>
 
-            <a href="wishlist.html">
-                Wishlist ♡
-            </a>
+        <div class="secure-checkout">
 
-            <a href="cart.html">
-                Cart 🛒
-            </a>
+            <span class="secure-icon">✓</span>
+
+            <span>Secure Checkout</span>
 
         </div>
 
-    </nav>
+        <a href="cart.html" class="back-cart-top">
+
+            ← Back to Cart
+
+        </a>
+
+    </div>
 
 </header>
 
 
-<section class="products-header">
+<!-- =========================================
+     PROGRESS
+========================================= -->
 
-    <p class="small-title">
-        SECURE CHECKOUT
-    </p>
+<section class="progress-section">
 
-    <h1>
-        Checkout
-    </h1>
+    <div class="progress-container">
 
-    <p>
-        Complete your order.
-    </p>
+        <div class="progress-step active">
+
+            <span>01</span>
+
+            <div>
+
+                <strong>Details</strong>
+
+                <small>Customer information</small>
+
+            </div>
+
+        </div>
+
+
+        <div class="progress-line"></div>
+
+
+        <div class="progress-step">
+
+            <span>02</span>
+
+            <div>
+
+                <strong>Delivery</strong>
+
+                <small>Shipping address</small>
+
+            </div>
+
+        </div>
+
+
+        <div class="progress-line"></div>
+
+
+        <div class="progress-step">
+
+            <span>03</span>
+
+            <div>
+
+                <strong>Payment</strong>
+
+                <small>Choose payment</small>
+
+            </div>
+
+        </div>
+
+
+        <div class="progress-line"></div>
+
+
+        <div class="progress-step">
+
+            <span>04</span>
+
+            <div>
+
+                <strong>Complete</strong>
+
+                <small>Place your order</small>
+
+            </div>
+
+        </div>
+
+    </div>
 
 </section>
 
 
-<main class="checkout-container">
+<!-- =========================================
+     MAIN
+========================================= -->
 
-    <div class="checkout-card">
+<main class="checkout-wrapper">
 
-        <h2>
-            Welcome, <span id="customer-name"></span> 👋
-        </h2>
 
-        <p>
-            You are successfully signed in.
-        </p>
+    <!-- =====================================
+         LEFT SIDE
+    ====================================== -->
 
-        <div class="checkout-success">
+    <section class="checkout-main">
 
-            <div>
-                🔒
+
+        <!-- CUSTOMER -->
+
+        <div class="checkout-card">
+
+            <div class="card-heading">
+
+                <div class="heading-number">
+                    01
+                </div>
+
+                <div>
+
+                    <p>
+                        CUSTOMER
+                    </p>
+
+                    <h1>
+                        Who are we delivering to?
+                    </h1>
+
+                    <span>
+                        Tell us where we can reach you.
+                    </span>
+
+                </div>
+
             </div>
 
-            <strong>
-                Authentication successful
-            </strong>
+
+            <div class="form-grid">
+
+
+                <div class="field full">
+
+                    <label for="full-name">
+                        Full Name
+                    </label>
+
+                    <input
+                        id="full-name"
+                        type="text"
+                        placeholder="Your full name"
+                        autocomplete="name"
+                    >
+
+                </div>
+
+
+                <div class="field">
+
+                    <label for="email">
+                        Email Address
+                    </label>
+
+                    <input
+                        id="email"
+                        type="email"
+                        placeholder="you@example.com"
+                        autocomplete="email"
+                    >
+
+                </div>
+
+
+                <div class="field">
+
+                    <label for="phone">
+                        Phone Number
+                    </label>
+
+                    <input
+                        id="phone"
+                        type="tel"
+                        placeholder="+1 234 567 890"
+                        autocomplete="tel"
+                    >
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- DELIVERY -->
+
+        <div class="checkout-card">
+
+            <div class="card-heading">
+
+                <div class="heading-number">
+                    02
+                </div>
+
+                <div>
+
+                    <p>
+                        DELIVERY
+                    </p>
+
+                    <h1>
+                        Where should it go?
+                    </h1>
+
+                    <span>
+                        Your order will be delivered here.
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="form-grid">
+
+
+                <div class="field full">
+
+                    <label for="address">
+                        Street Address
+                    </label>
+
+                    <textarea
+                        id="address"
+                        rows="3"
+                        placeholder="House number, street, apartment..."
+                        autocomplete="street-address"
+                    ></textarea>
+
+                </div>
+
+
+                <div class="field">
+
+                    <label for="city">
+                        City
+                    </label>
+
+                    <input
+                        id="city"
+                        type="text"
+                        placeholder="Your city"
+                        autocomplete="address-level2"
+                    >
+
+                </div>
+
+
+                <div class="field">
+
+                    <label for="state">
+                        State
+                    </label>
+
+                    <input
+                        id="state"
+                        type="text"
+                        placeholder="State"
+                        autocomplete="address-level1"
+                    >
+
+                </div>
+
+
+                <div class="field">
+
+                    <label for="zip">
+                        ZIP / Postal Code
+                    </label>
+
+                    <input
+                        id="zip"
+                        type="text"
+                        placeholder="Postal code"
+                        autocomplete="postal-code"
+                    >
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- PAYMENT -->
+
+        <div class="checkout-card">
+
+            <div class="card-heading">
+
+                <div class="heading-number">
+                    03
+                </div>
+
+                <div>
+
+                    <p>
+                        PAYMENT
+                    </p>
+
+                    <h1>
+                        How would you like to pay?
+                    </h1>
+
+                    <span>
+                        Choose your preferred payment method.
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="payment-grid">
+
+
+                <label class="payment-method selected">
+
+                    <input
+                        type="radio"
+                        name="payment"
+                        value="card"
+                        checked
+                    >
+
+                    <div class="payment-icon">
+                        ◈
+                    </div>
+
+                    <div class="payment-text">
+
+                        <strong>
+                            Card
+                        </strong>
+
+                        <span>
+                            Credit / Debit Card
+                        </span>
+
+                    </div>
+
+                    <div class="payment-check">
+                        ✓
+                    </div>
+
+                </label>
+
+
+                <label class="payment-method">
+
+                    <input
+                        type="radio"
+                        name="payment"
+                        value="upi"
+                    >
+
+                    <div class="payment-icon">
+                        U
+                    </div>
+
+                    <div class="payment-text">
+
+                        <strong>
+                            UPI
+                        </strong>
+
+                        <span>
+                            Fast digital payment
+                        </span>
+
+                    </div>
+
+                    <div class="payment-check">
+                        ✓
+                    </div>
+
+                </label>
+
+
+                <label class="payment-method">
+
+                    <input
+                        type="radio"
+                        name="payment"
+                        value="cod"
+                    >
+
+                    <div class="payment-icon">
+                        $
+                    </div>
+
+                    <div class="payment-text">
+
+                        <strong>
+                            Cash
+                        </strong>
+
+                        <span>
+                            Cash on delivery
+                        </span>
+
+                    </div>
+
+                    <div class="payment-check">
+                        ✓
+                    </div>
+
+                </label>
+
+            </div>
+
+
+            <!-- CARD FORM -->
+
+            <div id="card-payment"
+                 class="payment-form">
+
+                <div class="form-grid">
+
+                    <div class="field full">
+
+                        <label for="card-number">
+                            Card Number
+                        </label>
+
+                        <input
+                            id="card-number"
+                            type="text"
+                            maxlength="19"
+                            placeholder="1234 5678 9012 3456"
+                        >
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label for="card-name">
+                            Name on Card
+                        </label>
+
+                        <input
+                            id="card-name"
+                            type="text"
+                            placeholder="Cardholder name"
+                        >
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label for="expiry">
+                            Expiry
+                        </label>
+
+                        <input
+                            id="expiry"
+                            type="text"
+                            maxlength="5"
+                            placeholder="MM/YY"
+                        >
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label for="cvv">
+                            CVV
+                        </label>
+
+                        <input
+                            id="cvv"
+                            type="password"
+                            maxlength="4"
+                            placeholder="•••"
+                        >
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- UPI FORM -->
+
+            <div id="upi-payment"
+                 class="payment-form hidden">
+
+                <div class="field">
+
+                    <label for="upi-id">
+                        UPI ID
+                    </label>
+
+                    <input
+                        id="upi-id"
+                        type="text"
+                        placeholder="example@upi"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <!-- COD -->
+
+            <div id="cod-payment"
+                 class="cod-message hidden">
+
+                <span>
+                    ✓
+                </span>
+
+                <div>
+
+                    <strong>
+                        Cash on Delivery selected
+                    </strong>
+
+                    <p>
+                        Pay when your JantarMantarKart
+                        order arrives at your doorstep.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+    </section>
+
+
+
+    <!-- =====================================
+         RIGHT ORDER PANEL
+    ====================================== -->
+
+    <aside class="order-panel">
+
+
+        <div class="order-panel-top">
+
+            <p>
+                YOUR ORDER
+            </p>
+
+            <h2>
+                Almost yours.
+            </h2>
 
             <span>
-                You can continue with your order.
+                Review everything before placing
+                your order.
             </span>
 
         </div>
 
+
+        <!-- PRODUCTS -->
+
+        <div id="checkout-items"
+             class="order-products">
+
+        </div>
+
+
+        <!-- PRICE -->
+
+        <div class="price-breakdown">
+
+
+            <div>
+
+                <span>
+                    Subtotal
+                </span>
+
+                <strong id="checkout-subtotal">
+                    $0.00
+                </strong>
+
+            </div>
+
+
+            <div>
+
+                <span>
+                    Shipping
+                </span>
+
+                <strong id="checkout-shipping">
+                    $0.00
+                </strong>
+
+            </div>
+
+
+        </div>
+
+
+        <div class="free-shipping-note">
+
+            <span>✦</span>
+
+            Free shipping on orders above $100
+
+        </div>
+
+
+        <!-- TOTAL -->
+
+        <div class="grand-total">
+
+            <div>
+
+                <span>
+                    TOTAL
+                </span>
+
+                <small>
+                    USD
+                </small>
+
+            </div>
+
+            <strong id="checkout-total">
+                $0.00
+            </strong>
+
+        </div>
+
+
+        <!-- SECURITY -->
+
+        <div class="security-box">
+
+            <span>
+                ✓
+            </span>
+
+            <div>
+
+                <strong>
+                    Secure & protected
+                </strong>
+
+                <p>
+                    Your checkout information is
+                    handled securely.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- PLACE ORDER -->
+
         <button
-            class="checkout-button"
+            id="place-order-button"
+            class="place-order-button"
             onclick="placeOrder()"
         >
-            Place Order
+
+            <span>
+                Place My Order
+            </span>
+
+            <b>
+                →
+            </b>
+
         </button>
 
-    </div>
+
+        <p class="terms">
+
+            By placing your order, you agree to our
+            terms and shopping policies.
+
+        </p>
+
+
+        <a href="cart.html"
+           class="return-cart">
+
+            ← Return to cart
+
+        </a>
+
+    </aside>
 
 </main>
 
 
-<footer>
+<!-- =========================================
+     FOOTER
+========================================= -->
 
-    <h2>
-        JantarMantarKart
-    </h2>
+<footer class="checkout-footer">
 
-    <p>
-        Your modern destination for everyday shopping.
-    </p>
+    <div>
 
-    <p class="copyright">
-        © 2026 JantarMantarKart. All rights reserved.
-    </p>
+        <strong>
+            Jantar<span>Mantar</span>Kart
+        </strong>
+
+        <p>
+            Curated everyday essentials.
+        </p>
+
+    </div>
+
+
+    <div>
+
+        <span>
+            © 2026 JantarMantarKart
+        </span>
+
+        <span>
+            Secure Checkout
+        </span>
+
+    </div>
 
 </footer>
 
 
-<script>
-
-const currentUser =
-    JSON.parse(
-        localStorage.getItem(
-            "jantarMantarKartCurrentUser"
-        )
-    );
-
-
-if (!currentUser) {
-
-    window.location.href =
-        "signin.html";
-
-}
-
-
-document.getElementById(
-    "customer-name"
-).textContent =
-    currentUser.name;
-
-
-function placeOrder() {
-
-    alert(
-        "Order placed successfully! 🎉"
-    );
-
-}
-
-</script>
-
+<script src="checkout.js"></script>
 
 </body>
 

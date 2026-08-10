@@ -1,109 +1,751 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JantarMantarKart | Modern Shopping</title>
 
-    <link rel="stylesheet" href="style.css">
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>JantarMantarKart | Curated Everyday</title>
+
+    <link rel="stylesheet" href="./style.css">
+
 </head>
 
 <body>
 
-    <!-- Navigation -->
-    <header>
-        <nav class="navbar">
 
-            <div class="logo">
-                Jantar<span>Mantar</span>Kart
-            </div>
+<!-- =========================================
+     NAVIGATION
+========================================= -->
 
-            <div class="nav-links">
-                <a href="index.html">Home</a>
-                <a href="products.html">Products</a>
-                <a href="cart.html">
-                    Cart 🛒
-                    <span id="cart-count">0</span>
-                </a>
-            </div>
+<header class="site-header">
 
-        </nav>
-    </header>
+    <nav class="navbar">
+
+        <a href="index.html" class="brand">
+
+            <span class="brand-main">
+                Jantar
+            </span>
+
+            <span class="brand-accent">
+                Mantar
+            </span>
+
+            <span class="brand-main">
+                Kart
+            </span>
+
+        </a>
 
 
-    <!-- Hero Section -->
-    <section class="hero">
+        <div class="nav-links">
 
-        <div class="hero-content">
+            <a href="index.html" class="active">
+                Home
+            </a>
 
-            <p class="small-title">WELCOME TO JANTARMANTARKART</p>
+            <a href="products.html">
+                Products
+            </a>
 
-            <h1>
-                Shop Smart.<br>
-                Live Better.
-            </h1>
+            <a href="wishlist.html">
+                Wishlist
+                <span class="nav-count"
+                      id="wishlist-count">
+                    0
+                </span>
+            </a>
 
-            <p>
-                Discover carefully selected products designed
-                for your everyday lifestyle.
-            </p>
+            <a href="cart.html">
+                Cart
+                <span class="nav-count"
+                      id="cart-count">
+                    0
+                </span>
+            </a>
 
-            <a href="products.html" class="hero-button">
-                Explore Products →
+            <a href="#"
+               onclick="logout(); return false;">
+                Logout
             </a>
 
         </div>
 
-    </section>
+    </nav>
+
+</header>
 
 
-    <!-- Features -->
-    <section class="features">
 
-        <div class="feature">
-            <div>🚚</div>
-            <h3>Fast Delivery</h3>
-            <p>Quick and reliable delivery.</p>
+<!-- =========================================
+     ANNOUNCEMENT
+========================================= -->
+
+<div class="announcement">
+
+    <div class="announcement-track">
+
+        <span>
+            ✦ FREE SHIPPING ABOVE $100
+        </span>
+
+        <span>
+            ✦ CURATED EVERYDAY ESSENTIALS
+        </span>
+
+        <span>
+            ✦ SECURE CHECKOUT
+        </span>
+
+        <span>
+            ✦ EASY RETURNS
+        </span>
+
+        <span>
+            ✦ FREE SHIPPING ABOVE $100
+        </span>
+
+        <span>
+            ✦ CURATED EVERYDAY ESSENTIALS
+        </span>
+
+    </div>
+
+</div>
+
+
+
+<!-- =========================================
+     HERO
+========================================= -->
+
+<main>
+
+<section class="hero-section">
+
+    <div class="hero-grid">
+
+
+        <!-- LEFT -->
+
+        <div class="hero-copy">
+
+            <div class="eyebrow">
+
+                <span class="eyebrow-dot"></span>
+
+                THE EVERYDAY EDIT
+
+            </div>
+
+
+            <h1>
+
+                Things worth
+                <span>having.</span>
+
+            </h1>
+
+
+            <p class="hero-text">
+
+                A carefully curated collection of
+                everyday products designed to make
+                modern life a little better.
+
+            </p>
+
+
+            <div class="hero-actions">
+
+                <a href="products.html"
+                   class="primary-button">
+
+                    Explore Collection
+                    <span>↗</span>
+
+                </a>
+
+
+                <a href="wishlist.html"
+                   class="secondary-button">
+
+                    Your Wishlist
+                    <span>♡</span>
+
+                </a>
+
+            </div>
+
+
+            <div class="hero-note">
+
+                <span>●</span>
+
+                New drops added regularly
+
+            </div>
+
         </div>
 
-        <div class="feature">
-            <div>🔒</div>
-            <h3>Secure Shopping</h3>
-            <p>Your shopping experience stays protected.</p>
+
+
+        <!-- RIGHT -->
+
+        <div class="hero-art">
+
+
+            <div class="art-glow"></div>
+
+
+            <div class="floating-card card-top">
+
+                <span class="mini-icon">
+                    ✦
+                </span>
+
+                <div>
+
+                    <strong>
+                        Curated
+                    </strong>
+
+                    <small>
+                        Not crowded
+                    </small>
+
+                </div>
+
+            </div>
+
+
+            <div class="main-art-card">
+
+                <div class="art-number">
+                    01
+                </div>
+
+                <div class="art-circle">
+
+                    <div class="circle-inner">
+
+                        JMK
+
+                    </div>
+
+                </div>
+
+
+                <div class="art-label">
+
+                    <span>
+                        JANTARMANTARKART
+                    </span>
+
+                    <strong>
+                        EVERYDAY.
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="floating-card card-bottom">
+
+                <span class="mini-icon">
+                    ✓
+                </span>
+
+                <div>
+
+                    <strong>
+                        Secure
+                    </strong>
+
+                    <small>
+                        Shopping
+                    </small>
+
+                </div>
+
+            </div>
+
+
         </div>
 
-        <div class="feature">
-            <div>⭐</div>
-            <h3>Quality Products</h3>
-            <p>Products selected with care.</p>
+    </div>
+
+</section>
+
+
+
+<!-- =========================================
+     STATS
+========================================= -->
+
+<section class="stats-section">
+
+    <div class="stat">
+
+        <strong>
+            100%
+        </strong>
+
+        <span>
+            Curated
+        </span>
+
+    </div>
+
+
+    <div class="stat">
+
+        <strong>
+            24/7
+        </strong>
+
+        <span>
+            Shopping
+        </span>
+
+    </div>
+
+
+    <div class="stat">
+
+        <strong>
+            $0
+        </strong>
+
+        <span>
+            Hidden Fees
+        </span>
+
+    </div>
+
+
+    <div class="stat">
+
+        <strong>
+            ∞
+        </strong>
+
+        <span>
+            Possibilities
+        </span>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================================
+     CATEGORY SECTION
+========================================= -->
+
+<section class="category-section">
+
+    <div class="section-heading">
+
+        <div>
+
+            <p class="section-label">
+                EXPLORE
+            </p>
+
+            <h2>
+                Shop by mood.
+            </h2>
+
         </div>
 
-        <div class="feature">
-            <div>↩️</div>
-            <h3>Easy Returns</h3>
-            <p>Simple and customer-friendly returns.</p>
-        </div>
 
-    </section>
+        <a href="products.html"
+           class="text-link">
+
+            View all products →
+
+        </a>
+
+    </div>
 
 
-    <!-- Footer -->
-    <footer>
+    <div class="category-grid">
 
-        <h2>JantarMantarKart</h2>
 
-        <p>
-            Your modern destination for everyday shopping.
+        <a href="products.html"
+           class="category-card category-large">
+
+            <div class="category-number">
+                01
+            </div>
+
+            <div class="category-content">
+
+                <span>
+                    TECH & GADGETS
+                </span>
+
+                <h3>
+                    Smart<br>
+                    Living.
+                </h3>
+
+                <p>
+                    Devices that fit your
+                    everyday rhythm.
+                </p>
+
+            </div>
+
+            <div class="category-arrow">
+                ↗
+            </div>
+
+        </a>
+
+
+
+        <a href="products.html"
+           class="category-card category-orange">
+
+            <div class="category-number">
+                02
+            </div>
+
+            <div class="category-content">
+
+                <span>
+                    LIFESTYLE
+                </span>
+
+                <h3>
+                    Live<br>
+                    Better.
+                </h3>
+
+            </div>
+
+            <div class="category-arrow">
+                ↗
+            </div>
+
+        </a>
+
+
+
+        <a href="products.html"
+           class="category-card category-light">
+
+            <div class="category-number">
+                03
+            </div>
+
+            <div class="category-content">
+
+                <span>
+                    ESSENTIALS
+                </span>
+
+                <h3>
+                    Simple<br>
+                    Things.
+                </h3>
+
+            </div>
+
+            <div class="category-arrow">
+                ↗
+            </div>
+
+        </a>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================================
+     WHY SECTION
+========================================= -->
+
+<section class="why-section">
+
+    <div class="why-intro">
+
+        <p class="section-label">
+            WHY JMK?
         </p>
 
-        <p class="copyright">
-            © 2026 JantarMantarKart. All rights reserved.
-        </p>
+        <h2>
+            Less scrolling.<br>
+            Better choices.
+        </h2>
 
-    </footer>
+    </div>
 
 
-    <script src="script.js"></script>
+    <div class="why-list">
+
+
+        <div class="why-item">
+
+            <span>
+                01
+            </span>
+
+            <div>
+
+                <h3>
+                    Carefully Selected
+                </h3>
+
+                <p>
+                    We focus on useful products
+                    instead of endless choices.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="why-item">
+
+            <span>
+                02
+            </span>
+
+            <div>
+
+                <h3>
+                    Straightforward Pricing
+                </h3>
+
+                <p>
+                    What you see is what you pay.
+                    No unnecessary surprises.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="why-item">
+
+            <span>
+                03
+            </span>
+
+            <div>
+
+                <h3>
+                    Designed for Everyone
+                </h3>
+
+                <p>
+                    A clean shopping experience
+                    across desktop and mobile.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- =========================================
+     CTA
+========================================= -->
+
+<section class="final-cta">
+
+    <div class="cta-symbol">
+        +
+    </div>
+
+    <p class="section-label">
+        READY?
+    </p>
+
+    <h2>
+        Your next favorite<br>
+        thing is waiting.
+    </h2>
+
+    <a href="products.html"
+       class="primary-button">
+
+        Start Shopping
+        <span>↗</span>
+
+    </a>
+
+</section>
+
+</main>
+
+
+
+<!-- =========================================
+     FOOTER
+========================================= -->
+
+<footer>
+
+    <div class="footer-top">
+
+        <div>
+
+            <a href="index.html"
+               class="footer-logo">
+
+                Jantar<span>Mantar</span>Kart
+
+            </a>
+
+            <p>
+                Curated everyday essentials
+                for modern living.
+            </p>
+
+        </div>
+
+
+        <div class="footer-links">
+
+            <a href="index.html">
+                Home
+            </a>
+
+            <a href="products.html">
+                Products
+            </a>
+
+            <a href="wishlist.html">
+                Wishlist
+            </a>
+
+            <a href="cart.html">
+                Cart
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <div class="footer-bottom">
+
+        <span>
+            © 2026 JantarMantarKart
+        </span>
+
+        <span>
+            Built for better shopping.
+        </span>
+
+    </div>
+
+</footer>
+
+
+
+<!-- =========================================
+     AUTH
+========================================= -->
+
+<script src="./auth.js"></script>
+
+
+<!-- =========================================
+     COUNTERS
+========================================= -->
+
+<script>
+
+function updateHomeCounters() {
+
+
+    /* CART */
+
+    const cart =
+        JSON.parse(
+            localStorage.getItem(
+                "jantarMantarKartCart"
+            )
+        ) || [];
+
+
+    let cartTotal = 0;
+
+
+    cart.forEach(function(item) {
+
+        cartTotal +=
+            Number(item.quantity || 0);
+
+    });
+
+
+    const cartCount =
+        document.getElementById(
+            "cart-count"
+        );
+
+
+    if (cartCount) {
+
+        cartCount.textContent =
+            cartTotal;
+
+    }
+
+
+
+    /* WISHLIST */
+
+    const wishlist =
+        JSON.parse(
+            localStorage.getItem(
+                "jantarMantarKartWishlist"
+            )
+        ) || [];
+
+
+    const wishlistCount =
+        document.getElementById(
+            "wishlist-count"
+        );
+
+
+    if (wishlistCount) {
+
+        wishlistCount.textContent =
+            wishlist.length;
+
+    }
+
+}
+
+
+updateHomeCounters();
+
+</script>
+
 
 </body>
+
 </html>

@@ -2,15 +2,9 @@
 // JANTARMANTARKART CART
 // =========================================
 
-
-// Get cart from LocalStorage
-
 let cart = JSON.parse(
     localStorage.getItem("jantarMantarKartCart")
 ) || [];
-
-
-// Get HTML elements
 
 const cartItemsContainer =
     document.getElementById("cart-items");
@@ -28,24 +22,18 @@ function updateCartCount() {
     const cartCount =
         document.getElementById("cart-count");
 
-
     if (!cartCount) {
         return;
     }
 
-
     const totalItems = cart.reduce(
         function(total, item) {
-
-            return total + item.quantity;
-
+            return total + Number(item.quantity || 0);
         },
         0
     );
 
-
-    cartCount.textContent =
-        totalItems;
+    cartCount.textContent = totalItems;
 }
 
 
@@ -59,9 +47,6 @@ function displayCart() {
         return;
     }
 
-
-    // Empty cart
-
     if (cart.length === 0) {
 
         cartItemsContainer.innerHTML = `
@@ -72,17 +57,14 @@ function displayCart() {
                     🛒
                 </div>
 
-
                 <h2>
                     Your cart is empty
                 </h2>
-
 
                 <p>
                     Looks like you haven't added
                     anything yet.
                 </p>
-
 
                 <a
                     href="products.html"
@@ -95,36 +77,24 @@ function displayCart() {
 
         `;
 
-
         if (cartSummary) {
-
             cartSummary.innerHTML = "";
-
         }
 
-
         updateCartCount();
-
         return;
     }
 
 
-    // Clear existing products
-
     cartItemsContainer.innerHTML = "";
 
-
-    // Display every cart item
 
     cart.forEach(function(item) {
 
         const cartItem =
             document.createElement("div");
 
-
-        cartItem.className =
-            "cart-item";
-
+        cartItem.className = "cart-item";
 
         cartItem.innerHTML = `
 
@@ -133,25 +103,21 @@ function displayCart() {
                 alt="${item.name}"
             >
 
-
             <div class="cart-item-info">
 
                 <p class="product-category">
                     Product
                 </p>
 
-
                 <h2>
                     ${item.name}
                 </h2>
 
-
                 <p>
-                    $${item.price.toFixed(2)}
+                    $${Number(item.price).toFixed(2)}
                 </p>
 
             </div>
-
 
             <div class="cart-quantity">
 
@@ -161,11 +127,9 @@ function displayCart() {
                     −
                 </button>
 
-
                 <span>
                     ${item.quantity}
                 </span>
-
 
                 <button
                     onclick="changeCartQuantity(${item.id}, 1)"
@@ -175,17 +139,16 @@ function displayCart() {
 
             </div>
 
-
             <div class="cart-item-total">
 
                 <strong>
                     $${(
-                        item.price * item.quantity
+                        Number(item.price) *
+                        Number(item.quantity)
                     ).toFixed(2)}
                 </strong>
 
             </div>
-
 
             <button
                 class="remove-button"
@@ -196,16 +159,13 @@ function displayCart() {
 
         `;
 
-
         cartItemsContainer.appendChild(cartItem);
 
     });
 
 
     calculateTotal();
-
     updateCartCount();
-
 }
 
 
@@ -213,23 +173,17 @@ function displayCart() {
 // CHANGE QUANTITY
 // =========================================
 
-function changeCartQuantity(
-    productId,
-    amount
-) {
+function changeCartQuantity(productId, amount) {
 
     const item = cart.find(
         item => item.id === productId
     );
 
-
     if (!item) {
         return;
     }
 
-
     item.quantity += amount;
-
 
     if (item.quantity <= 0) {
 
@@ -239,16 +193,13 @@ function changeCartQuantity(
 
     }
 
-
     saveCart();
-
     displayCart();
-
 }
 
 
 // =========================================
-// REMOVE FROM CART
+// REMOVE PRODUCT
 // =========================================
 
 function removeFromCart(productId) {
@@ -257,11 +208,8 @@ function removeFromCart(productId) {
         item => item.id !== productId
     );
 
-
     saveCart();
-
     displayCart();
-
 }
 
 
@@ -275,12 +223,14 @@ function calculateTotal() {
         return;
     }
 
-
     const subtotal = cart.reduce(
         function(total, item) {
 
             return total +
-                (item.price * item.quantity);
+                (
+                    Number(item.price) *
+                    Number(item.quantity)
+                );
 
         },
         0
@@ -303,13 +253,11 @@ function calculateTotal() {
                 Order Summary
             </h2>
 
-
             <div class="summary-row">
 
                 <span>
                     Subtotal
                 </span>
-
 
                 <strong>
                     $${subtotal.toFixed(2)}
@@ -317,29 +265,23 @@ function calculateTotal() {
 
             </div>
 
-
             <div class="summary-row">
 
                 <span>
                     Shipping
                 </span>
 
-
                 <strong>
-
                     ${
                         shipping === 0
                         ? "FREE"
                         : "$" + shipping.toFixed(2)
                     }
-
                 </strong>
 
             </div>
 
-
             <hr>
-
 
             <div class="summary-total">
 
@@ -347,13 +289,11 @@ function calculateTotal() {
                     Total
                 </span>
 
-
                 <strong>
                     $${total.toFixed(2)}
                 </strong>
 
             </div>
-
 
             <button
                 class="checkout-button"
@@ -361,7 +301,6 @@ function calculateTotal() {
             >
                 Proceed to Checkout →
             </button>
-
 
             <a
                 href="products.html"
@@ -373,7 +312,6 @@ function calculateTotal() {
         </div>
 
     `;
-
 }
 
 
@@ -397,6 +335,16 @@ function saveCart() {
 
 function checkout() {
 
+    if (cart.length === 0) {
+
+        alert(
+            "Your cart is empty."
+        );
+
+        return;
+    }
+
+
     const currentUser =
         JSON.parse(
             localStorage.getItem(
@@ -405,24 +353,18 @@ function checkout() {
         );
 
 
-    // User is NOT logged in
-
     if (!currentUser) {
 
         alert(
             "Please sign in or create an account before checkout."
         );
 
-
         window.location.href =
             "signin.html";
-
 
         return;
     }
 
-
-    // User is logged in
 
     window.location.href =
         "checkout.html";
@@ -431,7 +373,7 @@ function checkout() {
 
 
 // =========================================
-// INITIALIZE CART
+// INITIALIZE
 // =========================================
 
 displayCart();
