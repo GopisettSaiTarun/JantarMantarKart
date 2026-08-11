@@ -1,0 +1,2101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>JantarMantarKart — Admin Dashboard</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f5f5f2;
+            color: #111;
+        }
+
+        button,
+        input,
+        select,
+        textarea {
+            font-family: inherit;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        .admin-layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* SIDEBAR */
+
+        .sidebar {
+            width: 230px;
+            background: #111;
+            color: white;
+            min-height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            display: flex;
+            flex-direction: column;
+            z-index: 20;
+        }
+
+        .admin-logo {
+            padding: 25px 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1px solid #292929;
+        }
+
+        .logo-box {
+            width: 40px;
+            height: 40px;
+            border-radius: 11px;
+            background: #c8ff38;
+            color: #111;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 20px;
+            font-weight: 900;
+        }
+
+        .admin-logo strong {
+            display: block;
+            font-size: 14px;
+        }
+
+        .admin-logo span {
+            display: block;
+            color: #777;
+            font-size: 8px;
+            letter-spacing: 2px;
+            margin-top: 3px;
+        }
+
+        .sidebar-nav {
+            padding: 20px 12px;
+            flex: 1;
+        }
+
+        .nav-item {
+            width: 100%;
+            border: none;
+            background: transparent;
+            color: #999;
+            padding: 13px 14px;
+            margin-bottom: 5px;
+            border-radius: 8px;
+            text-align: left;
+            font-size: 11px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .nav-item span {
+            width: 18px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .nav-item:hover,
+        .nav-item.active {
+            background: #222;
+            color: white;
+        }
+
+        .nav-item.active {
+            color: #c8ff38;
+        }
+
+        .sidebar-bottom {
+            padding: 15px;
+            border-top: 1px solid #292929;
+        }
+
+        .store-link,
+        .logout-btn {
+            display: block;
+            width: 100%;
+            padding: 11px;
+            border-radius: 7px;
+            text-align: center;
+            text-decoration: none;
+            font-size: 10px;
+            margin-bottom: 7px;
+        }
+
+        .store-link {
+            color: #aaa;
+            background: #1b1b1b;
+        }
+
+        .logout-btn {
+            border: none;
+            background: #2b2b2b;
+            color: white;
+        }
+
+        /* MAIN */
+
+        .main-content {
+            margin-left: 230px;
+            width: calc(100% - 230px);
+            padding: 25px;
+        }
+
+        .topbar {
+            min-height: 70px;
+            background: white;
+            border-radius: 13px;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 22px;
+        }
+
+        .small-label {
+            font-size: 8px;
+            letter-spacing: 1.8px;
+            color: #999;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .topbar h1 {
+            font-size: 22px;
+        }
+
+        .topbar-right {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .notification-btn {
+            position: relative;
+            border: none;
+            background: #f5f5f2;
+            width: 38px;
+            height: 38px;
+            border-radius: 9px;
+        }
+
+        .notification-btn span {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            background: #111;
+            color: white;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            font-size: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .admin-profile {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            cursor: pointer;
+        }
+
+        .profile-avatar {
+            width: 37px;
+            height: 37px;
+            border-radius: 50%;
+            background: #c8ff38;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+        }
+
+        .admin-profile strong {
+            display: block;
+            font-size: 10px;
+        }
+
+        .admin-profile small {
+            color: #999;
+            font-size: 8px;
+        }
+
+        /* SECTIONS */
+
+        .admin-section {
+            display: none;
+        }
+
+        .admin-section.active {
+            display: block;
+        }
+
+        .welcome-card {
+            background: #111;
+            color: white;
+            border-radius: 15px;
+            padding: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+        }
+
+        .welcome-card h2 {
+            font-size: 25px;
+            margin-bottom: 8px;
+        }
+
+        .welcome-card p:last-child {
+            color: #999;
+            font-size: 11px;
+        }
+
+        .welcome-symbol {
+            width: 65px;
+            height: 65px;
+            border-radius: 18px;
+            background: #c8ff38;
+            color: #111;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            font-weight: 900;
+        }
+
+        /* STATS */
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 18px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            display: flex;
+            gap: 13px;
+            align-items: center;
+        }
+
+        .stat-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 9px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f1f1ed;
+            font-weight: bold;
+        }
+
+        .stat-card span {
+            display: block;
+            color: #999;
+            font-size: 9px;
+            margin-bottom: 5px;
+        }
+
+        .stat-card strong {
+            display: block;
+            font-size: 19px;
+        }
+
+        .stat-card small {
+            font-size: 8px;
+            color: #777;
+        }
+
+        .positive {
+            color: #3b7b27 !important;
+        }
+
+        /* PANELS */
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1.4fr 1fr;
+            gap: 18px;
+            margin-bottom: 18px;
+        }
+
+        .panel {
+            background: white;
+            border-radius: 13px;
+            padding: 22px;
+            margin-bottom: 18px;
+        }
+
+        .panel-header,
+        .section-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+        }
+
+        .panel-header h3,
+        .section-title h2 {
+            font-size: 17px;
+        }
+
+        .panel-header select,
+        .toolbar select {
+            border: 1px solid #ddd;
+            padding: 9px;
+            border-radius: 7px;
+            background: white;
+            font-size: 10px;
+        }
+
+        .text-btn {
+            border: none;
+            background: transparent;
+            font-size: 9px;
+            color: #666;
+        }
+
+        /* CHART */
+
+        .chart {
+            height: 230px;
+            display: flex;
+            align-items: end;
+        }
+
+        .chart-bars {
+            width: 100%;
+            height: 190px;
+            display: flex;
+            justify-content: space-around;
+            align-items: end;
+        }
+
+        .bar-container {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: end;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .bar {
+            width: 27px;
+            background: #ddd;
+            border-radius: 6px 6px 0 0;
+        }
+
+        .active-bar {
+            background: #111;
+        }
+
+        .bar-container span {
+            font-size: 8px;
+            color: #999;
+        }
+
+        /* STOCK */
+
+        .stock-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .stock-product {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .stock-product img {
+            width: 38px;
+            height: 38px;
+            object-fit: cover;
+            border-radius: 7px;
+        }
+
+        .stock-product strong {
+            display: block;
+            font-size: 9px;
+        }
+
+        .stock-product span {
+            color: #999;
+            font-size: 8px;
+        }
+
+        .stock-number {
+            font-size: 9px;
+            color: #d45c4b;
+        }
+
+        /* TABLE */
+
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 650px;
+        }
+
+        th {
+            text-align: left;
+            font-size: 8px;
+            color: #999;
+            padding: 12px 8px;
+            border-bottom: 1px solid #eee;
+        }
+
+        td {
+            font-size: 9px;
+            padding: 13px 8px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 5px 8px;
+            border-radius: 20px;
+            font-size: 7px;
+        }
+
+        .processing {
+            background: #fff2d9;
+            color: #9a6c20;
+        }
+
+        .completed {
+            background: #e5f6df;
+            color: #39762a;
+        }
+
+        .cancelled {
+            background: #ffe5e5;
+            color: #a03b3b;
+        }
+
+        /* PRODUCTS */
+
+        .primary-btn {
+            border: none;
+            background: #111;
+            color: white;
+            padding: 11px 16px;
+            border-radius: 7px;
+            font-size: 9px;
+            font-weight: bold;
+        }
+
+        .primary-btn:hover {
+            background: #333;
+        }
+
+        .toolbar {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 18px;
+        }
+
+        .toolbar input {
+            flex: 1;
+            border: 1px solid #ddd;
+            padding: 11px;
+            border-radius: 7px;
+            outline: none;
+            font-size: 10px;
+        }
+
+        .admin-products-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+        .admin-product {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .admin-product > img {
+            width: 100%;
+            height: 170px;
+            object-fit: cover;
+        }
+
+        .admin-product-info {
+            padding: 15px;
+        }
+
+        .admin-product-info h3 {
+            font-size: 12px;
+            margin-bottom: 5px;
+        }
+
+        .admin-product-info p {
+            font-size: 8px;
+            color: #999;
+            text-transform: uppercase;
+        }
+
+        .product-price {
+            font-size: 15px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .product-stock {
+            color: #777;
+            font-size: 9px;
+            margin-top: 5px;
+        }
+
+        .product-actions {
+            display: flex;
+            gap: 7px;
+            margin-top: 12px;
+        }
+
+        .product-actions button {
+            border: none;
+            background: #111;
+            color: white;
+            padding: 7px 11px;
+            border-radius: 5px;
+            font-size: 8px;
+        }
+
+        .product-actions .delete-btn {
+            background: #eee;
+            color: #111;
+        }
+
+        /* ANALYTICS */
+
+        .analytics-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 18px;
+        }
+
+        .analytics-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .analytics-card span {
+            display: block;
+            color: #999;
+            font-size: 9px;
+            margin-bottom: 9px;
+        }
+
+        .analytics-card strong {
+            display: block;
+            font-size: 23px;
+            margin-bottom: 5px;
+        }
+
+        .analytics-card small {
+            font-size: 8px;
+        }
+
+        .insight-panel {
+            background: #111;
+            color: white;
+        }
+
+        .insight-panel h3 {
+            margin-bottom: 8px;
+        }
+
+        .insight-panel p:last-child {
+            color: #aaa;
+            font-size: 10px;
+            line-height: 1.6;
+        }
+
+        /* PROFILE */
+
+        .profile-card {
+            max-width: 850px;
+            background: white;
+            border-radius: 15px;
+            padding: 28px;
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding-bottom: 22px;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 25px;
+        }
+
+        .profile-big-avatar {
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            background: #c8ff38;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 25px;
+            font-weight: 900;
+        }
+
+        .profile-header h2 {
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+
+        .profile-header p {
+            font-size: 9px;
+            color: #999;
+        }
+
+        .profile-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 17px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group.full {
+            grid-column: 1 / -1;
+        }
+
+        .form-group label {
+            font-size: 9px;
+            font-weight: bold;
+            margin-bottom: 7px;
+            color: #555;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 7px;
+            outline: none;
+            font-size: 10px;
+            background: white;
+        }
+
+        .form-group textarea {
+            min-height: 90px;
+            resize: vertical;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            border-color: #111;
+        }
+
+        .profile-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 22px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+
+        .secondary-btn {
+            border: none;
+            background: #eee;
+            color: #111;
+            padding: 11px 16px;
+            border-radius: 7px;
+            font-size: 9px;
+            font-weight: bold;
+        }
+
+        /* MODAL */
+
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,.65);
+            z-index: 100;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-box {
+            width: 100%;
+            max-width: 450px;
+            max-height: 90vh;
+            overflow-y: auto;
+            background: white;
+            border-radius: 14px;
+            padding: 25px;
+            position: relative;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 14px;
+            right: 14px;
+            border: none;
+            background: #eee;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            font-size: 18px;
+        }
+
+        .modal-box h2 {
+            margin-bottom: 20px;
+        }
+
+        .modal-box label {
+            display: block;
+            font-size: 9px;
+            font-weight: bold;
+            margin: 13px 0 6px;
+        }
+
+        .modal-box input,
+        .modal-box select,
+        .modal-box textarea {
+            width: 100%;
+            padding: 11px;
+            border: 1px solid #ddd;
+            border-radius: 7px;
+            outline: none;
+            font-size: 10px;
+        }
+
+        .modal-box textarea {
+            min-height: 80px;
+        }
+
+        .full-btn {
+            width: 100%;
+            margin-top: 18px;
+        }
+
+        /* NOTIFICATION */
+
+        .notification-box {
+            position: fixed;
+            right: 25px;
+            bottom: 25px;
+            background: #111;
+            color: white;
+            padding: 13px 18px;
+            border-radius: 8px;
+            font-size: 10px;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: .3s;
+            z-index: 200;
+        }
+
+        .notification-box.active {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        /* RESPONSIVE */
+
+        @media (max-width: 1000px) {
+
+            .stats-grid,
+            .analytics-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .admin-products-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 700px) {
+
+            .sidebar {
+                width: 70px;
+            }
+
+            .admin-logo strong,
+            .admin-logo span,
+            .nav-item {
+                font-size: 0;
+            }
+
+            .nav-item span {
+                font-size: 16px;
+            }
+
+            .admin-logo {
+                justify-content: center;
+            }
+
+            .main-content {
+                margin-left: 70px;
+                width: calc(100% - 70px);
+                padding: 12px;
+            }
+
+            .topbar {
+                padding: 12px;
+            }
+
+            .admin-profile div:last-child {
+                display: none;
+            }
+
+            .profile-form {
+                grid-template-columns: 1fr;
+            }
+
+            .form-group.full {
+                grid-column: auto;
+            }
+
+            .admin-products-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid,
+            .analytics-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .welcome-card {
+                padding: 22px;
+            }
+
+            .welcome-symbol {
+                display: none;
+            }
+
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="admin-layout">
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+        <div class="admin-logo">
+
+            <div class="logo-box">
+                J
+            </div>
+
+            <div>
+                <strong>JantarMantar</strong>
+                <span>ADMIN</span>
+            </div>
+
+        </div>
+
+
+        <nav class="sidebar-nav">
+
+            <button
+                class="nav-item active"
+                onclick="showSection('dashboard', this)"
+            >
+                <span>▦</span>
+                Dashboard
+            </button>
+
+
+            <button
+                class="nav-item"
+                onclick="showSection('products', this)"
+            >
+                <span>◈</span>
+                Products
+            </button>
+
+
+            <button
+                class="nav-item"
+                onclick="showSection('orders', this)"
+            >
+                <span>□</span>
+                Orders
+            </button>
+
+
+            <button
+                class="nav-item"
+                onclick="showSection('customers', this)"
+            >
+                <span>♙</span>
+                Customers
+            </button>
+
+
+            <button
+                class="nav-item"
+                onclick="showSection('analytics', this)"
+            >
+                <span>↗</span>
+                Analytics
+            </button>
+
+
+            <button
+                class="nav-item"
+                onclick="showSection('profile', this)"
+            >
+                <span>●</span>
+                My Profile
+            </button>
+
+        </nav>
+
+
+        <div class="sidebar-bottom">
+
+            <a
+                href="index.html"
+                class="store-link"
+            >
+                ← Back to Store
+            </a>
+
+
+            <button
+                class="logout-btn"
+                onclick="logoutAdmin()"
+            >
+                Logout
+            </button>
+
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN -->
+
+    <main class="main-content">
+
+        <!-- TOPBAR -->
+
+        <header class="topbar">
+
+            <div>
+
+                <p class="small-label">
+                    ADMIN PANEL
+                </p>
+
+                <h1 id="pageTitle">
+                    Dashboard
+                </h1>
+
+            </div>
+
+
+            <div class="topbar-right">
+
+                <button
+                    class="notification-btn"
+                    onclick="showNotifications()"
+                >
+                    🔔
+                    <span id="notificationCount">
+                        0
+                    </span>
+                </button>
+
+
+                <div
+                    class="admin-profile"
+                    onclick="showSectionById('profile')"
+                >
+
+                    <div
+                        class="profile-avatar"
+                        id="topProfileAvatar"
+                    >
+                        A
+                    </div>
+
+
+                    <div>
+
+                        <strong id="topProfileName">
+                            Administrator
+                        </strong>
+
+                        <small id="topProfileRole">
+                            Store Administrator
+                        </small>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- DASHBOARD -->
+
+        <section
+            id="dashboard"
+            class="admin-section active"
+        >
+
+            <div class="welcome-card">
+
+                <div>
+
+                    <p class="small-label">
+                        WELCOME BACK
+                    </p>
+
+                    <h2>
+                        Store overview
+                    </h2>
+
+                    <p>
+                        Here's what's happening with your store today.
+                    </p>
+
+                </div>
+
+
+                <div class="welcome-symbol">
+                    J
+                </div>
+
+            </div>
+
+
+            <div class="stats-grid">
+
+                <div class="stat-card">
+
+                    <div class="stat-icon">
+                        $
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Total Revenue
+                        </span>
+
+                        <strong id="totalRevenue">
+                            $0.00
+                        </strong>
+
+                        <small class="positive">
+                            ↑ 12.5%
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-icon">
+                        □
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Total Orders
+                        </span>
+
+                        <strong id="totalOrders">
+                            0
+                        </strong>
+
+                        <small class="positive">
+                            ↑ 8.2%
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-icon">
+                        ♙
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Customers
+                        </span>
+
+                        <strong id="totalCustomers">
+                            0
+                        </strong>
+
+                        <small class="positive">
+                            ↑ 5.4%
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-icon">
+                        ◈
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Products
+                        </span>
+
+                        <strong id="totalProducts">
+                            0
+                        </strong>
+
+                        <small id="stockStatus">
+                            Healthy stock
+                        </small>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="dashboard-grid">
+
+                <div class="panel">
+
+                    <div class="panel-header">
+
+                        <div>
+
+                            <p class="small-label">
+                                PERFORMANCE
+                            </p>
+
+                            <h3>
+                                Sales overview
+                            </h3>
+
+                        </div>
+
+
+                        <select
+                            onchange="updateChart()"
+                        >
+                            <option>
+                                Last 7 days
+                            </option>
+
+                            <option>
+                                Last 30 days
+                            </option>
+
+                            <option>
+                                Last 90 days
+                            </option>
+                        </select>
+
+                    </div>
+
+
+                    <div class="chart">
+
+                        <div class="chart-bars">
+
+                            <div class="bar-container">
+                                <div class="bar" style="height:45%"></div>
+                                <span>Mon</span>
+                            </div>
+
+                            <div class="bar-container">
+                                <div class="bar" style="height:62%"></div>
+                                <span>Tue</span>
+                            </div>
+
+                            <div class="bar-container">
+                                <div class="bar" style="height:50%"></div>
+                                <span>Wed</span>
+                            </div>
+
+                            <div class="bar-container">
+                                <div class="bar" style="height:78%"></div>
+                                <span>Thu</span>
+                            </div>
+
+                            <div class="bar-container">
+                                <div class="bar" style="height:67%"></div>
+                                <span>Fri</span>
+                            </div>
+
+                            <div class="bar-container">
+                                <div class="bar" style="height:88%"></div>
+                                <span>Sat</span>
+                            </div>
+
+                            <div class="bar-container">
+                                <div
+                                    class="bar active-bar"
+                                    style="height:95%"
+                                ></div>
+                                <span>Sun</span>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="panel">
+
+                    <div class="panel-header">
+
+                        <div>
+
+                            <p class="small-label">
+                                INVENTORY
+                            </p>
+
+                            <h3>
+                                Stock alerts
+                            </h3>
+
+                        </div>
+
+                        <button
+                            class="text-btn"
+                            onclick="showSectionById('products')"
+                        >
+                            View all
+                        </button>
+
+                    </div>
+
+
+                    <div id="stockAlerts"></div>
+
+                </div>
+
+            </div>
+
+
+            <div class="panel">
+
+                <div class="panel-header">
+
+                    <div>
+
+                        <p class="small-label">
+                            ORDERS
+                        </p>
+
+                        <h3>
+                            Recent orders
+                        </h3>
+
+                    </div>
+
+                    <button
+                        class="text-btn"
+                        onclick="showSectionById('orders')"
+                    >
+                        View all orders
+                    </button>
+
+                </div>
+
+
+                <div class="table-wrapper">
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+                                <th>Order</th>
+                                <th>Customer</th>
+                                <th>Date</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                            </tr>
+
+                        </thead>
+
+                        <tbody id="recentOrders"></tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- PRODUCTS -->
+
+        <section
+            id="products"
+            class="admin-section"
+        >
+
+            <div class="section-title">
+
+                <div>
+
+                    <p class="small-label">
+                        INVENTORY
+                    </p>
+
+                    <h2>
+                        Products
+                    </h2>
+
+                </div>
+
+
+                <button
+                    class="primary-btn"
+                    onclick="openProductForm()"
+                >
+                    + Add Product
+                </button>
+
+            </div>
+
+
+            <div class="toolbar">
+
+                <input
+                    type="text"
+                    id="productSearch"
+                    placeholder="Search products..."
+                    oninput="renderAdminProducts()"
+                >
+
+
+                <select
+                    id="productCategory"
+                    onchange="renderAdminProducts()"
+                >
+
+                    <option value="all">
+                        All categories
+                    </option>
+
+                    <option value="electronics">
+                        Electronics
+                    </option>
+
+                    <option value="fashion">
+                        Fashion
+                    </option>
+
+                    <option value="home">
+                        Home
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div
+                id="adminProducts"
+                class="admin-products-grid"
+            ></div>
+
+        </section>
+
+
+        <!-- ORDERS -->
+
+        <section
+            id="orders"
+            class="admin-section"
+        >
+
+            <div class="section-title">
+
+                <div>
+
+                    <p class="small-label">
+                        STORE ACTIVITY
+                    </p>
+
+                    <h2>
+                        Orders
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <div class="panel">
+
+                <div class="table-wrapper">
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Customer</th>
+                                <th>Items</th>
+                                <th>Total</th>
+                                <th>Payment</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+
+                        </thead>
+
+                        <tbody id="ordersTable"></tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- CUSTOMERS -->
+
+        <section
+            id="customers"
+            class="admin-section"
+        >
+
+            <div class="section-title">
+
+                <div>
+
+                    <p class="small-label">
+                        CUSTOMER MANAGEMENT
+                    </p>
+
+                    <h2>
+                        Customers
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <div class="stats-grid">
+
+                <div class="stat-card">
+
+                    <div class="stat-icon">
+                        ♙
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Registered Users
+                        </span>
+
+                        <strong id="registeredUsers">
+                            0
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-icon">
+                        $
+                    </div>
+
+                    <div>
+
+                        <span>
+                            Average Order
+                        </span>
+
+                        <strong id="averageOrder">
+                            $0.00
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="panel">
+
+                <div class="table-wrapper">
+
+                    <table>
+
+                        <thead>
+
+                            <tr>
+                                <th>Customer</th>
+                                <th>Email</th>
+                                <th>Orders</th>
+                                <th>Spent</th>
+                                <th>Status</th>
+                            </tr>
+
+                        </thead>
+
+                        <tbody id="customersTable"></tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ANALYTICS -->
+
+        <section
+            id="analytics"
+            class="admin-section"
+        >
+
+            <div class="section-title">
+
+                <div>
+
+                    <p class="small-label">
+                        BUSINESS INTELLIGENCE
+                    </p>
+
+                    <h2>
+                        Analytics
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <div class="analytics-grid">
+
+                <div class="analytics-card">
+
+                    <span>
+                        Conversion Rate
+                    </span>
+
+                    <strong>
+                        4.82%
+                    </strong>
+
+                    <small class="positive">
+                        ↑ 0.8% this month
+                    </small>
+
+                </div>
+
+
+                <div class="analytics-card">
+
+                    <span>
+                        Average Order Value
+                    </span>
+
+                    <strong id="analyticsAOV">
+                        $0.00
+                    </strong>
+
+                    <small class="positive">
+                        ↑ 4.1%
+                    </small>
+
+                </div>
+
+
+                <div class="analytics-card">
+
+                    <span>
+                        Returning Customers
+                    </span>
+
+                    <strong>
+                        38%
+                    </strong>
+
+                    <small class="positive">
+                        ↑ 6.3%
+                    </small>
+
+                </div>
+
+
+                <div class="analytics-card">
+
+                    <span>
+                        Cart Abandonment
+                    </span>
+
+                    <strong>
+                        21%
+                    </strong>
+
+                    <small>
+                        ↓ 2.1%
+                    </small>
+
+                </div>
+
+            </div>
+
+
+            <div class="panel insight-panel">
+
+                <p class="small-label">
+                    SMART INSIGHT
+                </p>
+
+                <h3>
+                    Store recommendation
+                </h3>
+
+                <p id="smartInsight">
+                    Your dashboard is analyzing store activity...
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- MY PROFILE -->
+
+        <section
+            id="profile"
+            class="admin-section"
+        >
+
+            <div class="section-title">
+
+                <div>
+
+                    <p class="small-label">
+                        ACCOUNT MANAGEMENT
+                    </p>
+
+                    <h2>
+                        My Profile
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <div class="profile-card">
+
+                <div class="profile-header">
+
+                    <div
+                        class="profile-big-avatar"
+                        id="profileAvatar"
+                    >
+                        A
+                    </div>
+
+
+                    <div>
+
+                        <h2 id="profileDisplayName">
+                            Create your profile
+                        </h2>
+
+                        <p id="profileDisplayRole">
+                            Store Administrator
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <form
+                    id="adminProfileForm"
+                    class="profile-form"
+                >
+
+                    <div class="form-group">
+
+                        <label>
+                            Full Name
+                        </label>
+
+                        <input
+                            id="profileName"
+                            type="text"
+                            placeholder="Enter your full name"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Email Address
+                        </label>
+
+                        <input
+                            id="profileEmail"
+                            type="email"
+                            placeholder="Enter your email"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Phone Number
+                        </label>
+
+                        <input
+                            id="profilePhone"
+                            type="tel"
+                            placeholder="Enter your phone number"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Store Name
+                        </label>
+
+                        <input
+                            id="profileStore"
+                            type="text"
+                            placeholder="Enter your store name"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Admin Role
+                        </label>
+
+                        <select id="profileRole">
+
+                            <option>
+                                Store Administrator
+                            </option>
+
+                            <option>
+                                Super Admin
+                            </option>
+
+                            <option>
+                                Store Manager
+                            </option>
+
+                            <option>
+                                Inventory Manager
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Password
+                        </label>
+
+                        <input
+                            id="profilePassword"
+                            type="password"
+                            placeholder="Create or update password"
+                        >
+
+                    </div>
+
+
+                    <div class="form-group full">
+
+                        <label>
+                            Address
+                        </label>
+
+                        <textarea
+                            id="profileAddress"
+                            placeholder="Enter your address"
+                        ></textarea>
+
+                    </div>
+
+
+                    <div class="profile-actions">
+
+                        <button
+                            type="submit"
+                            class="primary-btn"
+                        >
+                            Save / Update Profile
+                        </button>
+
+
+                        <button
+                            type="button"
+                            class="secondary-btn"
+                            onclick="resetProfileForm()"
+                        >
+                            Reset
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<!-- PRODUCT MODAL -->
+
+<div
+    class="modal"
+    id="productModal"
+>
+
+    <div class="modal-box">
+
+        <button
+            class="close-btn"
+            onclick="closeProductForm()"
+        >
+            ×
+        </button>
+
+
+        <p class="small-label">
+            PRODUCT MANAGEMENT
+        </p>
+
+
+        <h2 id="productFormTitle">
+            Add Product
+        </h2>
+
+
+        <form id="productForm">
+
+            <input
+                type="hidden"
+                id="editProductId"
+            >
+
+
+            <label>
+                Product Name
+            </label>
+
+            <input
+                id="productName"
+                type="text"
+                placeholder="Product name"
+                required
+            >
+
+
+            <label>
+                Category
+            </label>
+
+            <select
+                id="productFormCategory"
+                required
+            >
+
+                <option value="electronics">
+                    Electronics
+                </option>
+
+                <option value="fashion">
+                    Fashion
+                </option>
+
+                <option value="home">
+                    Home
+                </option>
+
+            </select>
+
+
+            <label>
+                Price ($)
+            </label>
+
+            <input
+                id="productPrice"
+                type="number"
+                min="0"
+                step="0.01"
+                required
+            >
+
+
+            <label>
+                Stock
+            </label>
+
+            <input
+                id="productStock"
+                type="number"
+                min="0"
+                required
+            >
+
+
+            <label>
+                Image URL
+            </label>
+
+            <input
+                id="productImage"
+                type="url"
+                placeholder="https://..."
+                required
+            >
+
+
+            <label>
+                Description
+            </label>
+
+            <textarea
+                id="productDescription"
+                placeholder="Product description..."
+                required
+            ></textarea>
+
+
+            <button
+                type="submit"
+                class="primary-btn full-btn"
+            >
+                Save Product
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<div
+    id="notificationBox"
+    class="notification-box"
+></div>
+
+
+<script src="admin.js"></script>
+
+</body>
+</html>

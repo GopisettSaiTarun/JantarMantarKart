@@ -12,6 +12,10 @@
 
     <link rel="stylesheet" href="./style.css">
 
+    <!-- AI SHOPPING ASSISTANT -->
+    <link rel="stylesheet" href="./ai-assistant.css">
+    <script src="./ai-assistant.js" defer></script>
+
 </head>
 
 <body>
@@ -166,6 +170,7 @@
                    class="primary-button">
 
                     Explore Collection
+
                     <span>↗</span>
 
                 </a>
@@ -175,6 +180,7 @@
                    class="secondary-button">
 
                     Your Wishlist
+
                     <span>♡</span>
 
                 </a>
@@ -197,7 +203,6 @@
         <!-- RIGHT -->
 
         <div class="hero-art">
-
 
             <div class="art-glow"></div>
 
@@ -232,9 +237,7 @@
                 <div class="art-circle">
 
                     <div class="circle-inner">
-
                         JMK
-
                     </div>
 
                 </div>
@@ -274,7 +277,6 @@
                 </div>
 
             </div>
-
 
         </div>
 
@@ -517,6 +519,7 @@
         </div>
 
 
+
         <div class="why-item">
 
             <span>
@@ -537,6 +540,7 @@
             </div>
 
         </div>
+
 
 
         <div class="why-item">
@@ -589,6 +593,7 @@
        class="primary-button">
 
         Start Shopping
+
         <span>↗</span>
 
     </a>
@@ -641,9 +646,10 @@
             <a href="cart.html">
                 Cart
             </a>
+
             <a href="contact.html">
-    Contact Us
-</a>
+                Contact Us
+            </a>
 
         </div>
 
@@ -673,6 +679,7 @@
 <script src="./auth.js"></script>
 
 
+
 <!-- =========================================
      COUNTERS
 ========================================= -->
@@ -698,7 +705,9 @@ function updateHomeCounters() {
     cart.forEach(function(item) {
 
         cartTotal +=
-            Number(item.quantity || 0);
+            Number(
+                item.quantity || 0
+            );
 
     });
 
