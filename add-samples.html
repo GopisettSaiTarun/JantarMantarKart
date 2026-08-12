@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Add Sample Products | JantarMantarKart</title>
+
+<style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+        font-family: Arial, Helvetica, sans-serif;
+        background: #f5f5f2;
+        color: #111;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 25px;
+    }
+
+    .card {
+        max-width: 620px;
+        width: 100%;
+        background: white;
+        border-radius: 18px;
+        padding: 35px;
+        box-shadow: 0 10px 40px rgba(0,0,0,.06);
+    }
+
+    .small-label {
+        font-size: 9px;
+        letter-spacing: 2px;
+        color: #999;
+        font-weight: 800;
+        margin-bottom: 10px;
+    }
+
+    h1 {
+        font-size: 26px;
+        letter-spacing: -1px;
+        margin-bottom: 12px;
+    }
+
+    p {
+        color: #666;
+        font-size: 13px;
+        line-height: 1.6;
+        margin-bottom: 10px;
+    }
+
+    .preview {
+        margin: 22px 0;
+        border: 1px solid #eee;
+        border-radius: 12px;
+        max-height: 280px;
+        overflow-y: auto;
+    }
+
+    .preview-item {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        padding: 11px 14px;
+        border-bottom: 1px solid #f0f0f0;
+        font-size: 12px;
+    }
+
+    .preview-item:last-child { border-bottom: none; }
+
+    .preview-item span:first-child { font-weight: 700; }
+    .preview-item span:last-child { color: #999; }
+
+    button {
+        width: 100%;
+        border: none;
+        background: #111;
+        color: #c8ff38;
+        padding: 16px;
+        border-radius: 10px;
+        font-size: 13px;
+        font-weight: 900;
+        cursor: pointer;
+        transition: .2s;
+    }
+
+    button:hover { background: #333; }
+
+    button:disabled {
+        background: #ccc;
+        color: #888;
+        cursor: not-allowed;
+    }
+
+    .status {
+        display: none;
+        margin-top: 16px;
+        padding: 14px;
+        border-radius: 10px;
+        font-size: 12px;
+        line-height: 1.6;
+    }
+
+    .status.success {
+        display: block;
+        background: #eafbdc;
+        color: #2f5a17;
+    }
+
+    .status.info {
+        display: block;
+        background: #fff6e0;
+        color: #7a5b00;
+    }
+
+    .links {
+        margin-top: 18px;
+        display: flex;
+        gap: 10px;
+    }
+
+    .links a {
+        flex: 1;
+        text-align: center;
+        padding: 12px;
+        border-radius: 9px;
+        background: #f0f0ea;
+        color: #111;
+        text-decoration: none;
+        font-size: 11px;
+        font-weight: 800;
+    }
+
+    .links a:hover { background: #e5e5df; }
+</style>
+</head>
+
+<body>
+
+<div class="card">
+
+    <p class="small-label">JANTARMANTARKART — ONE-TIME SETUP</p>
+    <h1>Add sample products</h1>
+    <p>
+        This adds 15 sample products (Electronics, Fashion, and Home)
+        to your store. They'll show up on your Homepage, Products page,
+        and Admin Dashboard right away. Your existing products are kept —
+        nothing is overwritten.
+    </p>
+
+    <div class="preview" id="preview"></div>
+
+    <button id="addBtn" onclick="addSampleProducts()">
+        + Add 15 Sample Products
+    </button>
+
+    <div class="status" id="status"></div>
+
+    <div class="links">
+        <a href="index.html">← Go to Homepage</a>
+        <a href="admin.html">Go to Admin Dashboard →</a>
+    </div>
+
+</div>
+
+<script>
+
+const PRODUCTS_KEY = "jantarMantarKartProducts";
+
+const sampleProducts = [
+
+    {
+        name: "Pulse Wireless Earbuds",
+        category: "electronics",
+        price: 59.99,
+        oldPrice: 79.99,
+        badge: "BESTSELLER",
+        stock: 40,
+        description: "True wireless earbuds with active noise cancellation and 30-hour battery life.",
+        image: "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?auto=format&fit=crop&w=900&q=85"
+    },
+    {
+        name: "Halo Smart Bulb (4-Pack)",
+        category: "electronics",
+        price: 34.99,
+        stock: 65,
+        description: "App-controlled color-changing smart bulbs, compatible with most voice assistants.",
+        image: "https://images.unsplash.com/photo-1558002038-1055907df827?auto=format&fit=crop&w=900&q=85"
+    },
+    {
+        name: "Circuit Portable SSD 1TB",
+        category: "electronics",
+        price: 89.99,
+        oldPrice: 109.99,
+        badge: "SALE",
+        stock: 25,
+        description: "Compact, shockproof external storage with USB-C transfer speeds up to 1050MB/s.",
+        image: "https://images.unsplash.com/photo-1531492746076-161ba9bf7ab7?auto=format&fit=crop&w=900&q=85"
+    },
+    {
+        name: "Flux 20W Fast Charger",
+        category: "electronics",
+        price: 19.99,
+        stock: 120,
+        description: "Compact USB-C wall charger with fast-charge support for phones and tablets.",
+        image: "https://images.unsplash.com/photo-1591290619762-c8f4d0a52f7c?auto=format&fit=crop&w=900&q=85"
+    },
+    {
+        name: "Nimbus 4K Webcam",
+        category: "electronics",
+        price: 64.99,
+        badge: "NEW",
+        stock: 30,
+        description: "Ultra-sharp 4K webcam with auto-focus and built-in noise-canceling mic.",
+        image: "https://images.unsplash.com/photo-1587826080692-f439065ecf90?auto=format&fit=crop&w=900&q=85"
+    },
+
+    {
+        name: "Everyday Linen Shirt",
+        category: "fashion",
+        price: 39.99,
+        stock: 55,
+        description: "Breathable, relaxed-fit linen shirt for warm-weather everyday wear.",
+        image: "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?auto=format&fit=crop&w=900&q=85"
+    },
+    {
+        name: "Stride Running Sneakers",
+        category: "fashion",
+        price: 74.99,
+        oldPrice: 94.99,
+        badge: "BESTSELLER",
+        stock: 42,
+        description: "Lightweight cushioned sneakers built for daily runs and all-day comfort.",
+        image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=900&q=85"
+    },
+    {
+        name: "Denali Wool Beanie",
+        category: "fashion",
+        price: 17.99,
+        stock: 80,
+        description: "Soft ribbed-knit beanie for cold-weather layering.",
+        image: "https://images.unsplash.com/photo-1576871337622-98d48d1cf531?auto=format&fit=crop&w=900&q=85"
+    },
+    {
+        name: "Voyage Leather Wallet",
+        category: "fashion",
+        price: 29.99,
+        badge: "NEW",
+        stock: 60,
+        description: "Slim genuine-leather bifold wallet with RFID-blocking card slots.",
+        image: "https://images.unsplash.com/photo-1627123424574-724758594e93?auto=format&fit=crop&w=900&q=85"
+    },
+    {
+        name: "Aviator Polarized Sunglasses",
+        category: "fashion",
+        price: 24.99,
+        oldPrice: 34.99,
+        stock: 0,
+        description: "Classic aviator frames with 100% UV-protective polarized lenses.",
+        image: "https://images.unsplash.com/photo-1572635196237-14b3f281503f?auto=format&fit=crop&w=900&q=85"
+    },
+
+    {
+        name: "Hearth Ceramic Mug Set",
+        category: "home",
+        price: 22.99,
+        stock: 70,
+        description: "Set of 4 handcrafted ceramic mugs, dishwasher and microwave safe.",
+        image: "https://images.unsplash.com/photo-1517914309068-e5354658c8ed?auto=format&fit=crop&w=900&q=85"
+    },
+    {
+        name: "Drift Memory Foam Pillow",
+        category: "home",
+        price: 32.99,
+        badge: "BESTSELLER",
+        stock: 45,
+        description: "Contoured memory foam pillow for better neck and spine support.",
+        image: "https://images.unsplash.com/photo-1584100936595-c0654b55a2e2?auto=format&fit=crop&w=900&q=85"
+    },
+    {
+        name: "Meadow Scented Candle Trio",
+        category: "home",
+        price: 18.99,
+        oldPrice: 24.99,
+        badge: "SALE",
+        stock: 90,
+        description: "Set of 3 soy-wax candles in fresh floral and woody scents.",
+        image: "https://images.unsplash.com/photo-1602874801007-bd458bb1b8b6?auto=format&fit=crop&w=900&q=85"
+    },
+    {
+        name: "Canvas Storage Baskets (Set of 2)",
+        category: "home",
+        price: 27.99,
+        stock: 38,
+        description: "Foldable canvas storage baskets with handles, great for shelves or closets.",
+        image: "https://images.unsplash.com/photo-1584622781564-1d987f7333c1?auto=format&fit=crop&w=900&q=85"
+    },
+    {
+        name: "Verdant Ceramic Planter Set",
+        category: "home",
+        price: 21.99,
+        badge: "NEW",
+        stock: 50,
+        description: "Set of 3 minimalist ceramic planters with drainage holes, ideal for succulents.",
+        image: "https://images.unsplash.com/photo-1485955900006-10f4d324d411?auto=format&fit=crop&w=900&q=85"
+    }
+
+];
+
+
+function getExistingProducts() {
+
+    try {
+
+        const products =
+            JSON.parse(localStorage.getItem(PRODUCTS_KEY));
+
+        return Array.isArray(products) ? products : [];
+
+    } catch (error) {
+
+        return [];
+
+    }
+
+}
+
+
+function renderPreview() {
+
+    const preview =
+        document.getElementById("preview");
+
+    preview.innerHTML =
+        sampleProducts.map(function(product) {
+
+            return `
+                <div class="preview-item">
+                    <span>${product.name}</span>
+                    <span>$${product.price.toFixed(2)} · ${product.category}</span>
+                </div>
+            `;
+
+        }).join("");
+
+}
+
+
+function addSampleProducts() {
+
+    const existing =
+        getExistingProducts();
+
+    const existingNames =
+        new Set(
+            existing.map(function(p) {
+                return String(p.name || "").trim().toLowerCase();
+            })
+        );
+
+    const baseId =
+        Date.now();
+
+    let addedCount = 0;
+    let skippedCount = 0;
+
+    const newProducts =
+        sampleProducts
+            .filter(function(product) {
+
+                const isDuplicate =
+                    existingNames.has(
+                        product.name.trim().toLowerCase()
+                    );
+
+                if (isDuplicate) {
+                    skippedCount++;
+                }
+
+                return !isDuplicate;
+
+            })
+            .map(function(product, index) {
+
+                addedCount++;
+
+                return Object.assign(
+                    { id: baseId + index },
+                    product
+                );
+
+            });
+
+    const combined =
+        existing.concat(newProducts);
+
+    localStorage.setItem(
+        PRODUCTS_KEY,
+        JSON.stringify(combined)
+    );
+
+    const status =
+        document.getElementById("status");
+
+    const button =
+        document.getElementById("addBtn");
+
+    if (addedCount > 0) {
+
+        status.className = "status success";
+
+        status.textContent =
+            `✓ Added ${addedCount} new product(s).` +
+            (skippedCount > 0
+                ? ` Skipped ${skippedCount} already in your store.`
+                : "") +
+            ` Your store now has ${combined.length} product(s) total.`;
+
+    } else {
+
+        status.className = "status info";
+
+        status.textContent =
+            "All of these sample products are already in your store — nothing new was added.";
+
+    }
+
+    button.disabled = true;
+    button.textContent = "Done ✓";
+
+}
+
+
+renderPreview();
+
+</script>
+
+</body>
+</html>

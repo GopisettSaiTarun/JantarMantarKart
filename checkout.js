@@ -1,824 +1,633 @@
-// =========================================
-// JANTARMANTARKART
-// UNIQUE CHECKOUT
-// =========================================
+/* =========================================================
+   JANTARMANTARKART - CHECKOUT SYSTEM
 
+   Customer must be logged in.
+   Order is created after Place Order.
+========================================================= */
 
-// =========================================
-// GET CART
-// =========================================
+const CHECKOUT_CART_KEY =
+    "jantarMantarKartCart";
 
-let checkoutCart = JSON.parse(
-    localStorage.getItem("jantarMantarKartCart")
-) || [];
+const CHECKOUT_USER_KEY =
+    "jantarMantarKartCurrentUser";
 
+const ORDERS_KEY =
+    "jantarMantarKartOrders";
 
-// =========================================
-// CHECK CART
-// =========================================
+const LAST_ORDER_KEY =
+    "jantarMantarKartLastOrder";
 
-if (checkoutCart.length === 0) {
+/* =========================================================
+   GET CART
+========================================================= */
 
-    alert("Your cart is empty.");
+function checkoutGetCart() {
 
-    window.location.href = "products.html";
+    try {
 
+        const cart =
+            JSON.parse(
+                localStorage.getItem(
+                    CHECKOUT_CART_KEY
+                )
+            );
+
+        return Array.isArray(cart)
+            ? cart
+            : [];
+
+    } catch (error) {
+
+        return [];
+    }
 }
 
+/* =========================================================
+   GET CURRENT USER
+========================================================= */
 
-// =========================================
-// GET CURRENT USER
-// =========================================
+function checkoutGetUser() {
 
-const currentUser =
-    JSON.parse(
-        localStorage.getItem(
-            "jantarMantarKartCurrentUser"
-        )
-    );
+    try {
 
-
-// =========================================
-// LOAD USER INFORMATION
-// =========================================
-
-function loadUserInformation() {
-
-    if (!currentUser) {
-        return;
-    }
-
-
-    const fullName =
-        currentUser.name ||
-        currentUser.fullName ||
-        currentUser.username ||
-        "";
-
-
-    const email =
-        currentUser.email ||
-        "";
-
-
-    const nameInput =
-        document.getElementById("full-name");
-
-
-    const emailInput =
-        document.getElementById("email");
-
-
-    if (nameInput) {
-
-        nameInput.value =
-            fullName;
-
-    }
-
-
-    if (emailInput) {
-
-        emailInput.value =
-            email;
-
-    }
-
-}
-
-
-// =========================================
-// DISPLAY PRODUCTS
-// =========================================
-
-function displayCheckoutProducts() {
-
-    const container =
-        document.getElementById(
-            "checkout-items"
+        return JSON.parse(
+            localStorage.getItem(
+                CHECKOUT_USER_KEY
+            )
         );
 
+    } catch (error) {
 
-    if (!container) {
-        return;
+        return null;
     }
-
-
-    container.innerHTML = "";
-
-
-    checkoutCart.forEach(
-        function(item) {
-
-            const product =
-                document.createElement("div");
-
-
-            product.className =
-                "checkout-product";
-
-
-            const itemTotal =
-                Number(item.price) *
-                Number(item.quantity);
-
-
-            product.innerHTML = `
-
-                <div class="checkout-product-image">
-
-                    <img
-                        src="${item.image}"
-                        alt="${item.name}"
-                    >
-
-                </div>
-
-
-                <div class="checkout-product-info">
-
-                    <strong>
-                        ${item.name}
-                    </strong>
-
-                    <span>
-                        Qty ${item.quantity}
-                    </span>
-
-                </div>
-
-
-                <strong>
-                    $${itemTotal.toFixed(2)}
-                </strong>
-
-            `;
-
-
-            container.appendChild(product);
-
-        }
-    );
-
 }
 
+/* =========================================================
+   GET ORDERS
+========================================================= */
 
-// =========================================
-// CALCULATE TOTAL
-// =========================================
+function checkoutGetOrders() {
 
-function calculateTotal() {
+    try {
+
+        const orders =
+            JSON.parse(
+                localStorage.getItem(
+                    ORDERS_KEY
+                )
+            );
+
+        return Array.isArray(orders)
+            ? orders
+            : [];
+
+    } catch (error) {
+
+        return [];
+    }
+}
+
+/* =========================================================
+   SHOW ERROR
+========================================================= */
+
+function showCheckoutError(message) {
+
+    const errorBox =
+        document.getElementById(
+            "checkoutError"
+        );
+
+    if (!errorBox) return;
+
+    errorBox.textContent =
+        message;
+
+    errorBox.style.display =
+        "block";
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+}
+
+/* =========================================================
+   HIDE ERROR
+========================================================= */
+
+function hideCheckoutError() {
+
+    const errorBox =
+        document.getElementById(
+            "checkoutError"
+        );
+
+    if (errorBox) {
+        errorBox.style.display =
+            "none";
+    }
+}
+
+/* =========================================================
+   CALCULATE TOTALS
+========================================================= */
+
+function calculateCheckoutTotals() {
+
+    const cart =
+        checkoutGetCart();
 
     let subtotal = 0;
 
+    cart.forEach(item => {
 
-    checkoutCart.forEach(
-        function(item) {
+        subtotal +=
+            Number(item.price || 0) *
+            Number(item.quantity || 1);
 
-            subtotal +=
-                Number(item.price) *
-                Number(item.quantity);
+    });
 
-        }
-    );
-
+    /*
+       Free shipping for orders >= $100.
+       Otherwise $9.99.
+    */
 
     const shipping =
         subtotal >= 100
-        ? 0
-        : 9.99;
-
+            ? 0
+            : 9.99;
 
     const total =
         subtotal + shipping;
 
-
-    document.getElementById(
-        "checkout-subtotal"
-    ).textContent =
-        "$" + subtotal.toFixed(2);
-
-
-    document.getElementById(
-        "checkout-shipping"
-    ).textContent =
-        shipping === 0
-        ? "FREE"
-        : "$" + shipping.toFixed(2);
-
-
-    document.getElementById(
-        "checkout-total"
-    ).textContent =
-        "$" + total.toFixed(2);
-
-
     return {
-
-        subtotal:
-            subtotal,
-
-        shipping:
-            shipping,
-
-        total:
-            total
-
+        subtotal,
+        shipping,
+        total
     };
-
 }
 
+/* =========================================================
+   RENDER ORDER SUMMARY
+========================================================= */
 
-// =========================================
-// PAYMENT METHOD
-// =========================================
+function renderCheckoutSummary() {
 
-const paymentMethods =
-    document.querySelectorAll(
-        'input[name="payment"]'
-    );
+    const cart =
+        checkoutGetCart();
 
-
-paymentMethods.forEach(
-    function(input) {
-
-        input.addEventListener(
-            "change",
-            function() {
-
-                updatePaymentUI(
-                    this.value
-                );
-
-            }
-        );
-
-    }
-);
-
-
-// =========================================
-// PAYMENT UI
-// =========================================
-
-function updatePaymentUI(
-    paymentType
-) {
-
-    const methods =
-        document.querySelectorAll(
-            ".payment-method"
-        );
-
-
-    methods.forEach(
-        function(method) {
-
-            method.classList.remove(
-                "selected"
-            );
-
-        }
-    );
-
-
-    const selectedInput =
-        document.querySelector(
-            `input[name="payment"][value="${paymentType}"]`
-        );
-
-
-    if (selectedInput) {
-
-        selectedInput
-            .closest(".payment-method")
-            .classList.add("selected");
-
-    }
-
-
-    const cardPayment =
+    const itemsContainer =
         document.getElementById(
-            "card-payment"
+            "checkoutItems"
         );
 
+    const totals =
+        calculateCheckoutTotals();
 
-    const upiPayment =
-        document.getElementById(
-            "upi-payment"
-        );
+    if (!itemsContainer) return;
 
+    if (cart.length === 0) {
 
-    const codPayment =
-        document.getElementById(
-            "cod-payment"
-        );
+        itemsContainer.innerHTML = `
+            <p style="color:#aaa;">
+                Your cart is empty.
+            </p>
+        `;
 
-
-    cardPayment.classList.add(
-        "hidden"
-    );
-
-
-    upiPayment.classList.add(
-        "hidden"
-    );
-
-
-    codPayment.classList.add(
-        "hidden"
-    );
-
-
-    if (paymentType === "card") {
-
-        cardPayment.classList.remove(
-            "hidden"
-        );
-
+        return;
     }
 
+    itemsContainer.innerHTML = "";
 
-    if (paymentType === "upi") {
+    cart.forEach(item => {
 
-        upiPayment.classList.remove(
-            "hidden"
-        );
+        const quantity =
+            Number(item.quantity || 1);
 
-    }
+        const price =
+            Number(item.price || 0);
 
+        const total =
+            price * quantity;
 
-    if (paymentType === "cod") {
+        const row =
+            document.createElement("div");
 
-        codPayment.classList.remove(
-            "hidden"
-        );
+        row.style.display =
+            "flex";
 
-    }
+        row.style.justifyContent =
+            "space-between";
 
-}
+        row.style.gap =
+            "10px";
 
+        row.style.padding =
+            "8px 0";
 
-// =========================================
-// FORMAT CARD NUMBER
-// =========================================
+        row.style.fontSize =
+            "12px";
 
-const cardNumber =
+        row.innerHTML = `
+
+            <span>
+                ${escapeCheckoutHTML(item.name)}
+                × ${quantity}
+            </span>
+
+            <strong>
+                $${total.toFixed(2)}
+            </strong>
+        `;
+
+        itemsContainer.appendChild(row);
+    });
+
     document.getElementById(
-        "card-number"
-    );
+        "checkoutSubtotal"
+    ).textContent =
+        `$${totals.subtotal.toFixed(2)}`;
 
-
-if (cardNumber) {
-
-    cardNumber.addEventListener(
-        "input",
-        function() {
-
-            let value =
-                this.value.replace(
-                    /\D/g,
-                    ""
-                );
-
-
-            value =
-                value.substring(
-                    0,
-                    16
-                );
-
-
-            this.value =
-                value.replace(
-                    /(.{4})/g,
-                    "$1 "
-                ).trim();
-
-        }
-    );
-
-}
-
-
-// =========================================
-// FORMAT EXPIRY
-// =========================================
-
-const expiry =
     document.getElementById(
-        "expiry"
-    );
+        "checkoutShipping"
+    ).textContent =
+        totals.shipping === 0
+            ? "FREE"
+            : `$${totals.shipping.toFixed(2)}`;
 
-
-if (expiry) {
-
-    expiry.addEventListener(
-        "input",
-        function() {
-
-            let value =
-                this.value.replace(
-                    /\D/g,
-                    ""
-                );
-
-
-            value =
-                value.substring(
-                    0,
-                    4
-                );
-
-
-            if (value.length >= 3) {
-
-                value =
-                    value.substring(
-                        0,
-                        2
-                    )
-                    + "/"
-                    +
-                    value.substring(2);
-
-            }
-
-
-            this.value =
-                value;
-
-        }
-    );
-
+    document.getElementById(
+        "checkoutTotal"
+    ).textContent =
+        `$${totals.total.toFixed(2)}`;
 }
 
+/* =========================================================
+   LOAD CUSTOMER DETAILS
+========================================================= */
 
-// =========================================
-// VALIDATE CUSTOMER
-// =========================================
+function loadCustomerDetails() {
 
-function validateCustomer() {
+    const user =
+        checkoutGetUser();
 
-    const fields = [
+    if (!user) {
 
-        "full-name",
-        "email",
-        "phone",
-        "address",
-        "city",
-        "state",
-        "zip"
-
-    ];
-
-
-    for (
-        let i = 0;
-        i < fields.length;
-        i++
-    ) {
-
-        const field =
-            document.getElementById(
-                fields[i]
-            );
-
-
-        if (
-            !field ||
-            field.value.trim() === ""
-        ) {
-
-            field.focus();
-
-            alert(
-                "Please complete all customer and delivery details."
-            );
-
-            return false;
-
-        }
-
-    }
-
-
-    const email =
-        document.getElementById(
-            "email"
-        ).value.trim();
-
-
-    const emailPattern =
-        /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-
-    if (
-        !emailPattern.test(email)
-    ) {
-
-        alert(
-            "Please enter a valid email address."
-        );
-
-        document.getElementById(
-            "email"
-        ).focus();
-
-        return false;
-
-    }
-
-
-    return true;
-
-}
-
-
-// =========================================
-// VALIDATE PAYMENT
-// =========================================
-
-function validatePayment() {
-
-    const selected =
-        document.querySelector(
-            'input[name="payment"]:checked'
-        );
-
-
-    if (!selected) {
-
-        alert(
-            "Please select a payment method."
-        );
-
-        return false;
-
-    }
-
-
-    const method =
-        selected.value;
-
-
-    // CARD
-
-    if (method === "card") {
-
-        const cardName =
-            document.getElementById(
-                "card-name"
-            ).value.trim();
-
-
-        const number =
-            document.getElementById(
-                "card-number"
-            ).value.replace(
-                /\s/g,
-                ""
-            );
-
-
-        const expiryValue =
-            document.getElementById(
-                "expiry"
-            ).value.trim();
-
-
-        const cvv =
-            document.getElementById(
-                "cvv"
-            ).value.trim();
-
-
-        if (
-            !cardName ||
-            number.length < 16 ||
-            !expiryValue ||
-            cvv.length < 3
-        ) {
-
-            alert(
-                "Please enter valid card details."
-            );
-
-            return false;
-
-        }
-
-    }
-
-
-    // UPI
-
-    if (method === "upi") {
-
-        const upi =
-            document.getElementById(
-                "upi-id"
-            ).value.trim();
-
-
-        if (!upi || !upi.includes("@")) {
-
-            alert(
-                "Please enter a valid UPI ID."
-            );
-
-            document.getElementById(
-                "upi-id"
-            ).focus();
-
-            return false;
-
-        }
-
-    }
-
-
-    return true;
-
-}
-
-
-// =========================================
-// PLACE ORDER
-// =========================================
-
-function placeOrder() {
-
-    if (checkoutCart.length === 0) {
-
-        alert(
-            "Your cart is empty."
+        localStorage.setItem(
+            "jantarMantarKartReturnAfterLogin",
+            "checkout.html"
         );
 
         window.location.href =
-            "products.html";
+            "signin.html";
 
-        return;
-
-    }
-
-
-    if (!validateCustomer()) {
         return;
     }
 
+    const name =
+        user.name ||
+        user.username ||
+        "";
 
-    if (!validatePayment()) {
+    const email =
+        user.email ||
+        "";
+
+    document.getElementById(
+        "customerName"
+    ).value = name;
+
+    document.getElementById(
+        "customerEmail"
+    ).value = email;
+
+    if (user.phone) {
+
+        document.getElementById(
+            "customerPhone"
+        ).value =
+            user.phone;
+    }
+
+    if (user.address) {
+
+        document.getElementById(
+            "customerAddress"
+        ).value =
+            user.address;
+    }
+
+    if (user.pin) {
+
+        document.getElementById(
+            "customerPin"
+        ).value =
+            user.pin;
+    }
+}
+
+/* =========================================================
+   CREATE ORDER
+========================================================= */
+
+function createOrder() {
+
+    const cart =
+        checkoutGetCart();
+
+    const user =
+        checkoutGetUser();
+
+    if (!user) {
+
+        localStorage.setItem(
+            "jantarMantarKartReturnAfterLogin",
+            "checkout.html"
+        );
+
+        window.location.href =
+            "signin.html";
+
         return;
     }
 
+    if (cart.length === 0) {
+
+        showCheckoutError(
+            "Your cart is empty."
+        );
+
+        return;
+    }
+
+    const name =
+        document.getElementById(
+            "customerName"
+        ).value.trim();
+
+    const email =
+        document.getElementById(
+            "customerEmail"
+        ).value.trim();
+
+    const phone =
+        document.getElementById(
+            "customerPhone"
+        ).value.trim();
+
+    const pin =
+        document.getElementById(
+            "customerPin"
+        ).value.trim();
+
+    const address =
+        document.getElementById(
+            "customerAddress"
+        ).value.trim();
+
+    const paymentElement =
+        document.querySelector(
+            'input[name="paymentMethod"]:checked'
+        );
+
+    const paymentMethod =
+        paymentElement
+            ? paymentElement.value
+            : "Card";
+
+    if (
+        !name ||
+        !email ||
+        !phone ||
+        !pin ||
+        !address
+    ) {
+
+        showCheckoutError(
+            "Please complete all delivery details."
+        );
+
+        return;
+    }
+
+    hideCheckoutError();
 
     const totals =
-        calculateTotal();
+        calculateCheckoutTotals();
 
+    /*
+       Unique order ID.
+    */
 
-    const payment =
-        document.querySelector(
-            'input[name="payment"]:checked'
-        ).value;
-
-
-    // =====================================
-    // CUSTOMER
-    // =====================================
-
-    const customer = {
-
-        name:
-            document.getElementById(
-                "full-name"
-            ).value.trim(),
-
-        email:
-            document.getElementById(
-                "email"
-            ).value.trim(),
-
-        phone:
-            document.getElementById(
-                "phone"
-            ).value.trim(),
-
-        address:
-            document.getElementById(
-                "address"
-            ).value.trim(),
-
-        city:
-            document.getElementById(
-                "city"
-            ).value.trim(),
-
-        state:
-            document.getElementById(
-                "state"
-            ).value.trim(),
-
-        zip:
-            document.getElementById(
-                "zip"
-            ).value.trim()
-
-    };
-
-
-    // =====================================
-    // ORDER
-    // =====================================
+    const orderId =
+        "JMK-" +
+        Date.now()
+            .toString()
+            .slice(-8);
 
     const order = {
 
-        orderNumber:
-            "JMK-" +
-            Date.now(),
+        id: orderId,
 
-        customer:
-            customer,
+        customerName: name,
 
-        items:
-            checkoutCart,
+        email: email,
+
+        phone: phone,
+
+        pin: pin,
+
+        address: address,
 
         paymentMethod:
-            payment,
+            paymentMethod,
+
+        items:
+            cart.map(item => ({
+
+                id: item.id,
+
+                name: item.name,
+
+                price:
+                    Number(item.price || 0),
+
+                image:
+                    item.image || "",
+
+                quantity:
+                    Number(item.quantity || 1)
+
+            })),
 
         subtotal:
-            totals.subtotal,
+            Number(
+                totals.subtotal.toFixed(2)
+            ),
 
         shipping:
-            totals.shipping,
+            Number(
+                totals.shipping.toFixed(2)
+            ),
 
         total:
-            totals.total,
+            Number(
+                totals.total.toFixed(2)
+            ),
+
+        status:
+            "Processing",
+
+        trackingStatus:
+            "Processing",
+
+        date:
+            new Date().toLocaleString(),
 
         createdAt:
-            new Date().toISOString()
+            new Date().toISOString(),
+
+        tracking: {
+
+            processing: {
+                completed: true,
+                date:
+                    new Date().toLocaleString()
+            },
+
+            shipped: {
+                completed: false,
+                date: null
+            },
+
+            outForDelivery: {
+                completed: false,
+                date: null
+            },
+
+            delivered: {
+                completed: false,
+                date: null
+            }
+
+        }
 
     };
 
+    const orders =
+        checkoutGetOrders();
 
-    // =====================================
-    // SAVE ORDER
-    // =====================================
-
-    localStorage.setItem(
-        "jantarMantarKartLastOrder",
-        JSON.stringify(order)
-    );
-
-
-    // =====================================
-    // SAVE ORDER HISTORY
-    // =====================================
-
-    let orders =
-        JSON.parse(
-            localStorage.getItem(
-                "jantarMantarKartOrders"
-            )
-        ) || [];
-
-
-    orders.unshift(order);
-
+    orders.push(order);
 
     localStorage.setItem(
-        "jantarMantarKartOrders",
+        ORDERS_KEY,
         JSON.stringify(orders)
     );
 
+    /*
+       Save latest order.
+    */
 
-    // =====================================
-    // CLEAR CART
-    // =====================================
-
-    localStorage.removeItem(
-        "jantarMantarKartCart"
+    localStorage.setItem(
+        LAST_ORDER_KEY,
+        JSON.stringify(order)
     );
 
+    /*
+       Clear cart AFTER order creation.
+    */
 
-    // =====================================
-    // SUCCESS
-    // =====================================
+    localStorage.removeItem(
+        CHECKOUT_CART_KEY
+    );
+
+    /*
+       Go to order success page.
+    */
 
     window.location.href =
         "order-success.html";
-
 }
 
+/* =========================================================
+   ESCAPE HTML
+========================================================= */
 
-// =========================================
-// INITIALIZE
-// =========================================
+function escapeCheckoutHTML(value) {
 
-loadUserInformation();
+    return String(value || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
 
-displayCheckoutProducts();
+/* =========================================================
+   INITIALIZE
+========================================================= */
 
-calculateTotal();
+document.addEventListener(
+    "DOMContentLoaded",
+    function() {
 
-updatePaymentUI("card");
+        const user =
+            checkoutGetUser();
+
+        const cart =
+            checkoutGetCart();
+
+        /*
+           Login protection.
+        */
+
+        if (!user) {
+
+            localStorage.setItem(
+                "jantarMantarKartReturnAfterLogin",
+                "checkout.html"
+            );
+
+            window.location.href =
+                "signin.html";
+
+            return;
+        }
+
+        /*
+           Empty cart protection.
+        */
+
+        if (cart.length === 0) {
+
+            window.location.href =
+                "cart.html";
+
+            return;
+        }
+
+        loadCustomerDetails();
+
+        renderCheckoutSummary();
+
+        const form =
+            document.getElementById(
+                "checkoutForm"
+            );
+
+        if (form) {
+
+            form.addEventListener(
+                "submit",
+                function(event) {
+
+                    event.preventDefault();
+
+                    createOrder();
+
+                }
+            );
+        }
+
+    }
+);

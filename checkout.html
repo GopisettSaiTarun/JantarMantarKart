@@ -1,788 +1,866 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Secure Checkout | JantarMantarKart</title>
 
-    <meta charset="UTF-8">
+  <style>
+    :root {
+      --black: #101010;
+      --lime: #b8ff00;
+      --cream: #f6f6f1;
+      --border: #e6e6de;
+      --muted: #6f716a;
+      --danger: #d92d20;
+      --white: #ffffff;
+    }
 
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+    * { box-sizing: border-box; }
 
-    <title>Checkout | JantarMantarKart</title>
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--black);
+      background:
+        radial-gradient(circle at 88% 5%, rgba(184, 255, 0, .17), transparent 23rem),
+        var(--cream);
+    }
 
-    <link rel="stylesheet" href="checkout.css">
+    button, input, select, textarea { font: inherit; }
 
+    .checkout-header {
+      min-height: 76px;
+      padding: 18px 7%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      color: white;
+      background: var(--black);
+    }
+
+    .brand {
+      color: white;
+      text-decoration: none;
+      font-size: 22px;
+      font-weight: 900;
+      letter-spacing: -.8px;
+    }
+
+    .brand span { color: var(--lime); }
+
+    .back-link {
+      color: #d9d9d9;
+      font-size: 13px;
+      text-decoration: none;
+      transition: color .2s ease;
+    }
+
+    .back-link:hover { color: var(--lime); }
+
+    .checkout-title {
+      width: min(1120px, 92%);
+      margin: 0 auto;
+      padding: 48px 0 30px;
+    }
+
+    .checkout-title small {
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 3px;
+    }
+
+    .checkout-title h1 {
+      margin: 9px 0 8px;
+      font-size: clamp(32px, 5vw, 50px);
+      letter-spacing: -2px;
+    }
+
+    .checkout-title p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .checkout-container {
+      width: min(1120px, 92%);
+      margin: 0 auto 70px;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 360px;
+      gap: 26px;
+      align-items: start;
+    }
+
+    .checkout-card {
+      padding: 26px;
+      margin-bottom: 20px;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, .035);
+    }
+
+    .checkout-card h2 {
+      margin: 0;
+      font-size: 20px;
+      letter-spacing: -.5px;
+    }
+
+    .card-heading {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 22px;
+    }
+
+    .step-number {
+      display: grid;
+      width: 27px;
+      height: 27px;
+      place-items: center;
+      color: var(--black);
+      background: var(--lime);
+      border-radius: 50%;
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .form-group { margin-bottom: 16px; }
+    .form-grid .form-group { margin-bottom: 0; }
+    .full-width { grid-column: 1 / -1; }
+
+    label {
+      display: block;
+      margin: 0 0 8px;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 13px 14px;
+      color: var(--black);
+      background: #fbfbf9;
+      border: 1px solid #dfdfd8;
+      border-radius: 10px;
+      outline: none;
+      transition: border .2s, box-shadow .2s, background .2s;
+    }
+
+    textarea {
+      min-height: 88px;
+      resize: vertical;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      background: white;
+      border-color: var(--black);
+      box-shadow: 0 0 0 3px rgba(184, 255, 0, .45);
+    }
+
+    .payment-options {
+      display: grid;
+      gap: 11px;
+    }
+
+    .payment-option {
+      position: relative;
+      display: flex;
+      gap: 13px;
+      align-items: center;
+      padding: 15px;
+      cursor: pointer;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      transition: border .2s, background .2s;
+    }
+
+    .payment-option:hover { border-color: #b6b6ae; }
+
+    .payment-option:has(input:checked) {
+      border-color: var(--black);
+      background: #fbffeF;
+    }
+
+    .payment-option input {
+      width: 18px;
+      height: 18px;
+      margin: 0;
+      accent-color: var(--black);
+    }
+
+    .payment-icon {
+      display: grid;
+      flex: 0 0 35px;
+      width: 35px;
+      height: 35px;
+      place-items: center;
+      background: #f0f0ea;
+      border-radius: 9px;
+      font-size: 18px;
+    }
+
+    .payment-option strong {
+      display: block;
+      font-size: 14px;
+    }
+
+    .payment-option small {
+      display: block;
+      margin-top: 3px;
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .payment-note {
+      display: none;
+      margin: 14px 0 0;
+      padding: 12px 14px;
+      color: #53554e;
+      background: #f7f7f2;
+      border-radius: 10px;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .payment-note.active { display: block; }
+
+    .payment-details {
+      display: none;
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px solid var(--border);
+    }
+
+    .payment-details.active { display: block; }
+
+    .payment-details .form-grid {
+      margin-bottom: 0;
+    }
+
+    .payment-details .form-group {
+      margin-bottom: 16px;
+    }
+
+    .payment-details .form-group:last-child,
+    .payment-details .form-grid .form-group {
+      margin-bottom: 0;
+    }
+
+    .payment-details .form-grid + .form-group {
+      margin-top: 16px;
+    }
+
+    .order-summary {
+      position: sticky;
+      top: 20px;
+      overflow: hidden;
+      padding: 0;
+    }
+
+    .summary-top {
+      padding: 24px 24px 20px;
+      color: white;
+      background: var(--black);
+    }
+
+    .summary-top h2 { margin: 0; font-size: 20px; }
+
+    .summary-top p {
+      margin: 7px 0 0;
+      color: #bcbcb6;
+      font-size: 12px;
+    }
+
+    .cart-items {
+      max-height: 320px;
+      overflow-y: auto;
+      padding: 7px 24px 2px;
+    }
+
+    .cart-item {
+      display: flex;
+      gap: 12px;
+      padding: 16px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .item-image {
+      display: grid;
+      flex: 0 0 52px;
+      width: 52px;
+      height: 52px;
+      place-items: center;
+      overflow: hidden;
+      color: #777;
+      background: #f1f1eb;
+      border-radius: 10px;
+      font-size: 20px;
+    }
+
+    .item-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .item-info { flex: 1; min-width: 0; }
+
+    .item-info h4 {
+      margin: 1px 0 5px;
+      overflow: hidden;
+      font-size: 13px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .item-info p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .item-price {
+      font-size: 13px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .summary-calculation {
+      padding: 16px 24px 24px;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+      margin: 10px 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .summary-row.total {
+      margin: 18px 0 0;
+      padding-top: 18px;
+      color: var(--black);
+      border-top: 1px solid var(--border);
+      font-size: 17px;
+      font-weight: 900;
+    }
+
+    .free-shipping {
+      margin: 15px 0 0;
+      padding: 10px 11px;
+      color: #4e5f20;
+      background: #f4ffd8;
+      border-radius: 8px;
+      font-size: 11px;
+      line-height: 1.45;
+    }
+
+    .place-order-btn {
+      width: 100%;
+      margin-top: 20px;
+      padding: 15px;
+      cursor: pointer;
+      color: var(--black);
+      background: var(--lime);
+      border: 0;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 900;
+      transition: transform .18s, background .18s;
+    }
+
+    .place-order-btn:hover {
+      background: #a8e900;
+      transform: translateY(-2px);
+    }
+
+    .place-order-btn:disabled {
+      cursor: not-allowed;
+      opacity: .6;
+      transform: none;
+    }
+
+    .secure-message {
+      margin: 14px 0 0;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.5;
+      text-align: center;
+    }
+
+    .empty-cart {
+      padding: 28px 0;
+      color: var(--muted);
+      font-size: 13px;
+      text-align: center;
+    }
+
+    .error-message {
+      display: none;
+      margin: 0 0 18px;
+      padding: 12px 14px;
+      color: #8c1c13;
+      background: #fff0ee;
+      border: 1px solid #ffc7c1;
+      border-radius: 10px;
+      font-size: 13px;
+    }
+
+    .error-message.show { display: block; }
+
+    @media (max-width: 850px) {
+      .checkout-container { grid-template-columns: 1fr; }
+      .order-summary { position: static; order: -1; }
+    }
+
+    @media (max-width: 550px) {
+      .checkout-header { padding: 17px 5%; }
+      .brand { font-size: 19px; }
+      .checkout-title { padding: 35px 0 22px; }
+      .checkout-card { padding: 20px; border-radius: 14px; }
+      .form-grid { grid-template-columns: 1fr; }
+      .full-width { grid-column: auto; }
+      .summary-top, .summary-calculation { padding-left: 20px; padding-right: 20px; }
+      .cart-items { padding-left: 20px; padding-right: 20px; }
+    }
+  </style>
 </head>
 
 <body>
-
-<!-- =========================================
-     TOP BAR
-========================================= -->
-
-<header class="checkout-header">
-
-    <div class="checkout-nav">
-
-        <a href="index.html" class="checkout-logo">
-
-            <span>Jantar</span><b>Mantar</b><span>Kart</span>
-
-        </a>
-
-        <div class="secure-checkout">
-
-            <span class="secure-icon">✓</span>
-
-            <span>Secure Checkout</span>
-
-        </div>
-
-        <a href="cart.html" class="back-cart-top">
-
-            ← Back to Cart
-
-        </a>
-
-    </div>
-
-</header>
-
-
-<!-- =========================================
-     PROGRESS
-========================================= -->
-
-<section class="progress-section">
-
-    <div class="progress-container">
-
-        <div class="progress-step active">
-
-            <span>01</span>
-
-            <div>
-
-                <strong>Details</strong>
-
-                <small>Customer information</small>
-
-            </div>
-
-        </div>
-
-
-        <div class="progress-line"></div>
-
-
-        <div class="progress-step">
-
-            <span>02</span>
-
-            <div>
-
-                <strong>Delivery</strong>
-
-                <small>Shipping address</small>
-
-            </div>
-
-        </div>
-
-
-        <div class="progress-line"></div>
-
-
-        <div class="progress-step">
-
-            <span>03</span>
-
-            <div>
-
-                <strong>Payment</strong>
-
-                <small>Choose payment</small>
-
-            </div>
-
-        </div>
-
-
-        <div class="progress-line"></div>
-
-
-        <div class="progress-step">
-
-            <span>04</span>
-
-            <div>
-
-                <strong>Complete</strong>
-
-                <small>Place your order</small>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-<!-- =========================================
-     MAIN
-========================================= -->
-
-<main class="checkout-wrapper">
-
-
-    <!-- =====================================
-         LEFT SIDE
-    ====================================== -->
-
-    <section class="checkout-main">
-
-
-        <!-- CUSTOMER -->
+  <header class="checkout-header">
+    <a class="brand" href="index.html">JantarMantar<span>Kart</span></a>
+    <a class="back-link" href="index.html">← Continue Shopping</a>
+  </header>
+
+  <section class="checkout-title">
+    <small>ONE LAST STEP</small>
+    <h1>Checkout, made simple.</h1>
+    <p>Enter your delivery details and choose how you would like to pay.</p>
+  </section>
+
+  <main class="checkout-container">
+    <section>
+      <form id="checkoutForm">
+        <div id="checkoutError" class="error-message"></div>
 
         <div class="checkout-card">
+          <div class="card-heading">
+            <span class="step-number">1</span>
+            <h2>Delivery details</h2>
+          </div>
 
-            <div class="card-heading">
-
-                <div class="heading-number">
-                    01
-                </div>
-
-                <div>
-
-                    <p>
-                        CUSTOMER
-                    </p>
-
-                    <h1>
-                        Who are we delivering to?
-                    </h1>
-
-                    <span>
-                        Tell us where we can reach you.
-                    </span>
-
-                </div>
-
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="fullName">Full name</label>
+              <input id="fullName" name="fullName" type="text" placeholder="Your full name" required />
             </div>
 
+            <div class="form-group">
+              <label for="phone">Mobile number</label>
+              <input id="phone" name="phone" type="tel" placeholder="10-digit mobile number" required />
+            </div>
+
+            <div class="form-group full-width">
+              <label for="email">Email address</label>
+              <input id="email" name="email" type="email" placeholder="you@example.com" required />
+            </div>
+
+            <div class="form-group full-width">
+              <label for="address">Delivery address</label>
+              <textarea id="address" name="address" placeholder="House number, street, landmark..." required></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="city">City</label>
+              <input id="city" name="city" type="text" placeholder="Your city" required />
+            </div>
+
+            <div class="form-group">
+              <label for="pincode">PIN code</label>
+              <input id="pincode" name="pincode" type="text" inputmode="numeric" maxlength="6" placeholder="6-digit PIN code" required />
+            </div>
+
+            <div class="form-group full-width">
+              <label for="state">State</label>
+              <input id="state" name="state" type="text" placeholder="Your state" required />
+            </div>
+          </div>
+        </div>
+
+        <div class="checkout-card">
+          <div class="card-heading">
+            <span class="step-number">2</span>
+            <h2>Payment method</h2>
+          </div>
+
+          <div class="payment-options">
+            <label class="payment-option">
+              <input type="radio" name="paymentMethod" value="UPI" checked />
+              <span class="payment-icon">📱</span>
+              <span>
+                <strong>UPI Payment</strong>
+                <small>Pay using Google Pay, PhonePe, Paytm or any UPI app.</small>
+              </span>
+            </label>
+
+            <label class="payment-option">
+              <input type="radio" name="paymentMethod" value="Card" />
+              <span class="payment-icon">💳</span>
+              <span>
+                <strong>Debit / Credit Card</strong>
+                <small>Secure card payment via our payment partner.</small>
+              </span>
+            </label>
+
+            <label class="payment-option">
+              <input type="radio" name="paymentMethod" value="Cash on Delivery" />
+              <span class="payment-icon">💵</span>
+              <span>
+                <strong>Cash on Delivery</strong>
+                <small>Pay when your order reaches your doorstep.</small>
+              </span>
+            </label>
+          </div>
+
+          <p id="paymentNote" class="payment-note active">
+            You will be directed to your UPI app after placing the order.
+          </p>
+
+          <div id="upiDetails" class="payment-details active">
+            <div class="form-group">
+              <label for="upiId">UPI ID</label>
+              <input id="upiId" name="upiId" type="text" placeholder="yourname@upi" />
+            </div>
+          </div>
+
+          <div id="cardDetails" class="payment-details">
+            <div class="form-group">
+              <label for="cardName">Name on card</label>
+              <input id="cardName" name="cardName" type="text" placeholder="As shown on your card" />
+            </div>
+
+            <div class="form-group">
+              <label for="cardNumber">Card number</label>
+              <input id="cardNumber" name="cardNumber" type="text" inputmode="numeric" maxlength="19" placeholder="1234 5678 9012 3456" />
+            </div>
 
             <div class="form-grid">
+              <div class="form-group">
+                <label for="cardExpiry">Expiry (MM/YY)</label>
+                <input id="cardExpiry" name="cardExpiry" type="text" inputmode="numeric" maxlength="5" placeholder="MM/YY" />
+              </div>
 
-
-                <div class="field full">
-
-                    <label for="full-name">
-                        Full Name
-                    </label>
-
-                    <input
-                        id="full-name"
-                        type="text"
-                        placeholder="Your full name"
-                        autocomplete="name"
-                    >
-
-                </div>
-
-
-                <div class="field">
-
-                    <label for="email">
-                        Email Address
-                    </label>
-
-                    <input
-                        id="email"
-                        type="email"
-                        placeholder="you@example.com"
-                        autocomplete="email"
-                    >
-
-                </div>
-
-
-                <div class="field">
-
-                    <label for="phone">
-                        Phone Number
-                    </label>
-
-                    <input
-                        id="phone"
-                        type="tel"
-                        placeholder="+1 234 567 890"
-                        autocomplete="tel"
-                    >
-
-                </div>
-
+              <div class="form-group">
+                <label for="cardCvv">CVV</label>
+                <input id="cardCvv" name="cardCvv" type="password" inputmode="numeric" maxlength="4" placeholder="123" />
+              </div>
             </div>
-
+          </div>
         </div>
-
-
-
-        <!-- DELIVERY -->
-
-        <div class="checkout-card">
-
-            <div class="card-heading">
-
-                <div class="heading-number">
-                    02
-                </div>
-
-                <div>
-
-                    <p>
-                        DELIVERY
-                    </p>
-
-                    <h1>
-                        Where should it go?
-                    </h1>
-
-                    <span>
-                        Your order will be delivered here.
-                    </span>
-
-                </div>
-
-            </div>
-
-
-            <div class="form-grid">
-
-
-                <div class="field full">
-
-                    <label for="address">
-                        Street Address
-                    </label>
-
-                    <textarea
-                        id="address"
-                        rows="3"
-                        placeholder="House number, street, apartment..."
-                        autocomplete="street-address"
-                    ></textarea>
-
-                </div>
-
-
-                <div class="field">
-
-                    <label for="city">
-                        City
-                    </label>
-
-                    <input
-                        id="city"
-                        type="text"
-                        placeholder="Your city"
-                        autocomplete="address-level2"
-                    >
-
-                </div>
-
-
-                <div class="field">
-
-                    <label for="state">
-                        State
-                    </label>
-
-                    <input
-                        id="state"
-                        type="text"
-                        placeholder="State"
-                        autocomplete="address-level1"
-                    >
-
-                </div>
-
-
-                <div class="field">
-
-                    <label for="zip">
-                        ZIP / Postal Code
-                    </label>
-
-                    <input
-                        id="zip"
-                        type="text"
-                        placeholder="Postal code"
-                        autocomplete="postal-code"
-                    >
-
-                </div>
-
-            </div>
-
-        </div>
-
-
-
-        <!-- PAYMENT -->
-
-        <div class="checkout-card">
-
-            <div class="card-heading">
-
-                <div class="heading-number">
-                    03
-                </div>
-
-                <div>
-
-                    <p>
-                        PAYMENT
-                    </p>
-
-                    <h1>
-                        How would you like to pay?
-                    </h1>
-
-                    <span>
-                        Choose your preferred payment method.
-                    </span>
-
-                </div>
-
-            </div>
-
-
-            <div class="payment-grid">
-
-
-                <label class="payment-method selected">
-
-                    <input
-                        type="radio"
-                        name="payment"
-                        value="card"
-                        checked
-                    >
-
-                    <div class="payment-icon">
-                        ◈
-                    </div>
-
-                    <div class="payment-text">
-
-                        <strong>
-                            Card
-                        </strong>
-
-                        <span>
-                            Credit / Debit Card
-                        </span>
-
-                    </div>
-
-                    <div class="payment-check">
-                        ✓
-                    </div>
-
-                </label>
-
-
-                <label class="payment-method">
-
-                    <input
-                        type="radio"
-                        name="payment"
-                        value="upi"
-                    >
-
-                    <div class="payment-icon">
-                        U
-                    </div>
-
-                    <div class="payment-text">
-
-                        <strong>
-                            UPI
-                        </strong>
-
-                        <span>
-                            Fast digital payment
-                        </span>
-
-                    </div>
-
-                    <div class="payment-check">
-                        ✓
-                    </div>
-
-                </label>
-
-
-                <label class="payment-method">
-
-                    <input
-                        type="radio"
-                        name="payment"
-                        value="cod"
-                    >
-
-                    <div class="payment-icon">
-                        $
-                    </div>
-
-                    <div class="payment-text">
-
-                        <strong>
-                            Cash
-                        </strong>
-
-                        <span>
-                            Cash on delivery
-                        </span>
-
-                    </div>
-
-                    <div class="payment-check">
-                        ✓
-                    </div>
-
-                </label>
-
-            </div>
-
-
-            <!-- CARD FORM -->
-
-            <div id="card-payment"
-                 class="payment-form">
-
-                <div class="form-grid">
-
-                    <div class="field full">
-
-                        <label for="card-number">
-                            Card Number
-                        </label>
-
-                        <input
-                            id="card-number"
-                            type="text"
-                            maxlength="19"
-                            placeholder="1234 5678 9012 3456"
-                        >
-
-                    </div>
-
-
-                    <div class="field">
-
-                        <label for="card-name">
-                            Name on Card
-                        </label>
-
-                        <input
-                            id="card-name"
-                            type="text"
-                            placeholder="Cardholder name"
-                        >
-
-                    </div>
-
-
-                    <div class="field">
-
-                        <label for="expiry">
-                            Expiry
-                        </label>
-
-                        <input
-                            id="expiry"
-                            type="text"
-                            maxlength="5"
-                            placeholder="MM/YY"
-                        >
-
-                    </div>
-
-
-                    <div class="field">
-
-                        <label for="cvv">
-                            CVV
-                        </label>
-
-                        <input
-                            id="cvv"
-                            type="password"
-                            maxlength="4"
-                            placeholder="•••"
-                        >
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <!-- UPI FORM -->
-
-            <div id="upi-payment"
-                 class="payment-form hidden">
-
-                <div class="field">
-
-                    <label for="upi-id">
-                        UPI ID
-                    </label>
-
-                    <input
-                        id="upi-id"
-                        type="text"
-                        placeholder="example@upi"
-                    >
-
-                </div>
-
-            </div>
-
-
-            <!-- COD -->
-
-            <div id="cod-payment"
-                 class="cod-message hidden">
-
-                <span>
-                    ✓
-                </span>
-
-                <div>
-
-                    <strong>
-                        Cash on Delivery selected
-                    </strong>
-
-                    <p>
-                        Pay when your JantarMantarKart
-                        order arrives at your doorstep.
-                    </p>
-
-                </div>
-
-            </div>
-
-        </div>
-
-
+      </form>
     </section>
 
+    <aside class="checkout-card order-summary">
+      <div class="summary-top">
+        <h2>Your order</h2>
+        <p><span id="itemCount">0</span> item(s) ready to ship</p>
+      </div>
 
+      <div id="checkoutItems" class="cart-items">
+        <div class="empty-cart">Your cart is empty.</div>
+      </div>
 
-    <!-- =====================================
-         RIGHT ORDER PANEL
-    ====================================== -->
-
-    <aside class="order-panel">
-
-
-        <div class="order-panel-top">
-
-            <p>
-                YOUR ORDER
-            </p>
-
-            <h2>
-                Almost yours.
-            </h2>
-
-            <span>
-                Review everything before placing
-                your order.
-            </span>
-
+      <div class="summary-calculation">
+        <div class="summary-row">
+          <span>Subtotal</span>
+          <strong id="subtotal">$0</strong>
         </div>
 
-
-        <!-- PRODUCTS -->
-
-        <div id="checkout-items"
-             class="order-products">
-
+        <div class="summary-row">
+          <span>Shipping</span>
+          <strong id="shipping">FREE</strong>
         </div>
 
-
-        <!-- PRICE -->
-
-        <div class="price-breakdown">
-
-
-            <div>
-
-                <span>
-                    Subtotal
-                </span>
-
-                <strong id="checkout-subtotal">
-                    $0.00
-                </strong>
-
-            </div>
-
-
-            <div>
-
-                <span>
-                    Shipping
-                </span>
-
-                <strong id="checkout-shipping">
-                    $0.00
-                </strong>
-
-            </div>
-
-
+        <div class="summary-row total">
+          <span>Total</span>
+          <span id="total">$0</span>
         </div>
 
+        <div class="free-shipping">✓ Free shipping on every JantarMantarKart order.</div>
 
-        <div class="free-shipping-note">
-
-            <span>✦</span>
-
-            Free shipping on orders above $100
-
-        </div>
-
-
-        <!-- TOTAL -->
-
-        <div class="grand-total">
-
-            <div>
-
-                <span>
-                    TOTAL
-                </span>
-
-                <small>
-                    USD
-                </small>
-
-            </div>
-
-            <strong id="checkout-total">
-                $0.00
-            </strong>
-
-        </div>
-
-
-        <!-- SECURITY -->
-
-        <div class="security-box">
-
-            <span>
-                ✓
-            </span>
-
-            <div>
-
-                <strong>
-                    Secure & protected
-                </strong>
-
-                <p>
-                    Your checkout information is
-                    handled securely.
-                </p>
-
-            </div>
-
-        </div>
-
-
-        <!-- PLACE ORDER -->
-
-        <button
-            id="place-order-button"
-            class="place-order-button"
-            onclick="placeOrder()"
-        >
-
-            <span>
-                Place My Order
-            </span>
-
-            <b>
-                →
-            </b>
-
+        <button id="placeOrderBtn" class="place-order-btn" type="submit" form="checkoutForm">
+          Place Secure Order →
         </button>
 
-
-        <p class="terms">
-
-            By placing your order, you agree to our
-            terms and shopping policies.
-
-        </p>
-
-
-        <a href="cart.html"
-           class="return-cart">
-
-            ← Return to cart
-
-        </a>
-
+        <p class="secure-message">🔒 Your personal information is protected and used only to process your order.</p>
+      </div>
     </aside>
+  </main>
 
-</main>
+  <script>
+    /*
+      Compatible cart keys:
+      cart, jmCart, jantarMantarKartCart
+      The code also accepts product title/name, image/img, price, and quantity/qty.
+    */
 
+    const cartKeys = ["cart", "jmCart", "jantarMantarKartCart"];
+    const money = new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+      maximumFractionDigits: 2
+    });
 
-<!-- =========================================
-     FOOTER
-========================================= -->
+    function getCart() {
+      for (const key of cartKeys) {
+        try {
+          const saved = JSON.parse(localStorage.getItem(key));
+          if (Array.isArray(saved)) return saved;
+        } catch (error) {
+          console.warn("Could not read cart:", error);
+        }
+      }
+      return [];
+    }
 
-<footer class="checkout-footer">
+    function getPrice(item) {
+      const value = item.price ?? item.productPrice ?? 0;
+      return Number(String(value).replace(/[$₹,\s]/g, "")) || 0;
+    }
 
-    <div>
+    function getQuantity(item) {
+      return Number(item.quantity ?? item.qty ?? 1) || 1;
+    }
 
-        <strong>
-            Jantar<span>Mantar</span>Kart
-        </strong>
+    function renderOrderSummary() {
+      const cart = getCart();
+      const itemsContainer = document.getElementById("checkoutItems");
+      const itemCount = document.getElementById("itemCount");
+      const subtotalElement = document.getElementById("subtotal");
+      const totalElement = document.getElementById("total");
+      const orderButton = document.getElementById("placeOrderBtn");
 
-        <p>
-            Curated everyday essentials.
-        </p>
+      const totalItems = cart.reduce((sum, item) => sum + getQuantity(item), 0);
+      const subtotal = cart.reduce((sum, item) => sum + getPrice(item) * getQuantity(item), 0);
 
-    </div>
+      itemCount.textContent = totalItems;
+      subtotalElement.textContent = money.format(subtotal);
+      totalElement.textContent = money.format(subtotal);
 
+      if (!cart.length) {
+        itemsContainer.innerHTML = '<div class="empty-cart">Your cart is empty. Add something wonderful before checking out.</div>';
+        orderButton.disabled = true;
+        orderButton.textContent = "Your Cart Is Empty";
+        return;
+      }
 
-    <div>
+      orderButton.disabled = false;
+      orderButton.textContent = "Place Secure Order →";
 
-        <span>
-            © 2026 JantarMantarKart
-        </span>
+      itemsContainer.innerHTML = cart.map(item => {
+        const name = item.name || item.title || item.productName || "JantarMantarKart Product";
+        const image = item.image || item.img || item.imageUrl || "";
+        const quantity = getQuantity(item);
+        const lineTotal = getPrice(item) * quantity;
 
-        <span>
-            Secure Checkout
-        </span>
+        return `
+          <div class="cart-item">
+            <div class="item-image">
+              ${image ? `<img src="${image}" alt="${name}">` : "🛍️"}
+            </div>
+            <div class="item-info">
+              <h4>${name}</h4>
+              <p>Quantity: ${quantity}</p>
+            </div>
+            <div class="item-price">${money.format(lineTotal)}</div>
+          </div>
+        `;
+      }).join("");
+    }
 
-    </div>
+    function showPaymentNote() {
+      const selected = document.querySelector('input[name="paymentMethod"]:checked').value;
+      const note = document.getElementById("paymentNote");
+      const upiDetails = document.getElementById("upiDetails");
+      const cardDetails = document.getElementById("cardDetails");
 
-</footer>
+      const messages = {
+        "UPI": "You will be directed to your UPI app after placing the order.",
+        "Card": "You will be redirected to a secure payment page after placing the order.",
+        "Cash on Delivery": "Keep the exact amount ready when your order arrives."
+      };
 
+      note.textContent = messages[selected];
+      note.classList.add("active");
 
-<script src="checkout.js"></script>
+      upiDetails.classList.toggle("active", selected === "UPI");
+      cardDetails.classList.toggle("active", selected === "Card");
+    }
 
+    document.querySelectorAll('input[name="paymentMethod"]').forEach(input => {
+      input.addEventListener("change", showPaymentNote);
+    });
+
+    // Auto-format card number as 4-digit groups
+    document.getElementById("cardNumber").addEventListener("input", function (event) {
+      event.target.value = event.target.value
+        .replace(/\D/g, "")
+        .slice(0, 16)
+        .replace(/(.{4})/g, "$1 ")
+        .trim();
+    });
+
+    // Auto-format expiry as MM/YY
+    document.getElementById("cardExpiry").addEventListener("input", function (event) {
+      let value = event.target.value.replace(/\D/g, "").slice(0, 4);
+      if (value.length > 2) value = value.slice(0, 2) + "/" + value.slice(2);
+      event.target.value = value;
+    });
+
+    // CVV: numbers only
+    document.getElementById("cardCvv").addEventListener("input", function (event) {
+      event.target.value = event.target.value.replace(/\D/g, "").slice(0, 4);
+    });
+
+    document.getElementById("checkoutForm").addEventListener("submit", function (event) {
+      event.preventDefault();
+
+      const errorBox = document.getElementById("checkoutError");
+      const cart = getCart();
+
+      if (!cart.length) {
+        errorBox.textContent = "Your cart is empty. Please add products before placing an order.";
+        errorBox.classList.add("show");
+        return;
+      }
+
+      const pincode = document.getElementById("pincode").value.trim();
+      const phone = document.getElementById("phone").value.replace(/\D/g, "");
+
+      if (!/^\d{6}$/.test(pincode)) {
+        errorBox.textContent = "Please enter a valid 6-digit PIN code.";
+        errorBox.classList.add("show");
+        return;
+      }
+
+      if (phone.length < 10) {
+        errorBox.textContent = "Please enter a valid mobile number.";
+        errorBox.classList.add("show");
+        return;
+      }
+
+      const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
+      let paymentDetails = {};
+
+      if (paymentMethod === "UPI") {
+        const upiId = document.getElementById("upiId").value.trim();
+
+        if (!/^[\w.\-]{2,}@[a-zA-Z]{2,}$/.test(upiId)) {
+          errorBox.textContent = "Please enter a valid UPI ID (e.g. yourname@upi).";
+          errorBox.classList.add("show");
+          return;
+        }
+
+        paymentDetails = { upiId };
+      }
+
+      if (paymentMethod === "Card") {
+        const cardName = document.getElementById("cardName").value.trim();
+        const cardNumber = document.getElementById("cardNumber").value.replace(/\s/g, "");
+        const cardExpiry = document.getElementById("cardExpiry").value.trim();
+        const cardCvv = document.getElementById("cardCvv").value.trim();
+
+        if (!cardName) {
+          errorBox.textContent = "Please enter the name on your card.";
+          errorBox.classList.add("show");
+          return;
+        }
+
+        if (!/^\d{16}$/.test(cardNumber)) {
+          errorBox.textContent = "Please enter a valid 16-digit card number.";
+          errorBox.classList.add("show");
+          return;
+        }
+
+        if (!/^(0[1-9]|1[0-2])\/\d{2}$/.test(cardExpiry)) {
+          errorBox.textContent = "Please enter a valid expiry date (MM/YY).";
+          errorBox.classList.add("show");
+          return;
+        }
+
+        if (!/^\d{3,4}$/.test(cardCvv)) {
+          errorBox.textContent = "Please enter a valid CVV.";
+          errorBox.classList.add("show");
+          return;
+        }
+
+        // Only the last 4 digits are kept; full card number/CVV are never stored.
+        paymentDetails = {
+          cardName,
+          cardLast4: cardNumber.slice(-4),
+          cardExpiry
+        };
+      }
+
+      errorBox.classList.remove("show");
+
+      const subtotal = cart.reduce((sum, item) => sum + getPrice(item) * getQuantity(item), 0);
+      const order = {
+        orderId: "JMK" + Date.now().toString().slice(-8),
+        date: new Date().toLocaleString("en-US"),
+        items: cart,
+        total: subtotal,
+        subtotal: subtotal,
+        shipping: 0,
+        customer: {
+          fullName: document.getElementById("fullName").value.trim(),
+          phone: document.getElementById("phone").value.trim(),
+          email: document.getElementById("email").value.trim(),
+          address: document.getElementById("address").value.trim(),
+          city: document.getElementById("city").value.trim(),
+          pincode: pincode,
+          state: document.getElementById("state").value.trim()
+        },
+        paymentMethod: paymentMethod,
+        paymentDetails: paymentDetails,
+        status: "Order Confirmed"
+      };
+
+      // Saves with common names so your existing order-success page can access it.
+      localStorage.setItem("latestOrder", JSON.stringify(order));
+      localStorage.setItem("lastOrder", JSON.stringify(order));
+      localStorage.setItem("orderDetails", JSON.stringify(order));
+
+      const oldOrders = JSON.parse(localStorage.getItem("orders") || "[]");
+      oldOrders.push(order);
+      localStorage.setItem("orders", JSON.stringify(oldOrders));
+
+      // Clears whichever cart key your existing store uses.
+      cartKeys.forEach(key => {
+        if (localStorage.getItem(key) !== null) localStorage.removeItem(key);
+      });
+
+      const button = document.getElementById("placeOrderBtn");
+      button.disabled = true;
+      button.textContent = "Processing Your Order...";
+
+      setTimeout(() => {
+        window.location.href = "order-success.html";
+      }, 700);
+    });
+
+    renderOrderSummary();
+  </script>
 </body>
-
 </html>

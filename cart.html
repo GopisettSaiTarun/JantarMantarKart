@@ -5,357 +5,511 @@
 
     <meta charset="UTF-8">
 
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-    <title>Shopping Cart | JantarMantarKart</title>
+    <title>
+        Cart | JantarMantarKart
+    </title>
 
-    <link rel="stylesheet" href="style.css">
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
 
     <style>
 
-        /* =========================================
-           COMPACT CART PAGE
-        ========================================= */
+        /* ================================
+           CART PAGE
+        ================================= */
 
-        .cart-page {
-            background: #f7f7f4;
-            min-height: 100vh;
-        }
-
-
-        /* CART HEADER */
-
-        .cart-header {
-            padding: 55px 6% 30px;
-            text-align: center;
-        }
-
-        .cart-header .small-title {
-            font-size: 9px;
-            letter-spacing: 3px;
-            font-weight: 800;
-            color: #888;
-            margin-bottom: 10px;
-        }
-
-        .cart-header h1 {
-            font-size: clamp(32px, 4vw, 48px);
-            line-height: 1;
-            letter-spacing: -2px;
+        body {
             margin: 0;
+            background: #f7f7f4;
+            color: #111;
+            font-family: Arial, sans-serif;
         }
 
+        .cart-page-header {
+            text-align: center;
+            padding: 50px 20px 30px;
+        }
 
-        /* MAIN */
+        .cart-page-header small {
+            color: #888;
+            letter-spacing: 3px;
+            font-size: 10px;
+            font-weight: 800;
+        }
+
+        .cart-page-header h1 {
+            margin: 12px 0 8px;
+            font-size: 42px;
+        }
+
+        .cart-page-header p {
+            color: #888;
+            font-size: 12px;
+        }
+
+        /* ================================
+           ACTIONS
+        ================================= */
+
+        .cart-actions {
+            width: 92%;
+            max-width: 1050px;
+            margin: 0 auto 25px;
+
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .cart-actions a {
+            text-decoration: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+
+            background: #fff;
+            color: #111;
+
+            border: 1px solid #ddd;
+
+            font-size: 10px;
+            font-weight: 800;
+        }
+
+        /* ================================
+           CONTAINER
+        ================================= */
 
         .cart-container {
-            width: min(1050px, 92%);
+            width: 92%;
+            max-width: 1050px;
+
             margin: 0 auto 70px;
 
             display: grid;
-            grid-template-columns: minmax(0, 1fr) 300px;
+
+            grid-template-columns:
+                minmax(0, 1fr)
+                300px;
 
             gap: 25px;
 
             align-items: start;
         }
 
+        /* ================================
+           CART PRODUCTS
+        ================================= */
 
-        /* CART ITEMS */
-
-        #cart-items {
+        #cartItems {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 12px;
         }
 
-
-        /*
-           These styles target common cart.js
-           generated elements.
-        */
-
-        #cart-items > div {
+        .cart-item {
             background: #fff;
-            border: 1px solid #e7e7e3;
-            border-radius: 12px;
-            padding: 12px;
 
-            min-height: 100px;
+            border: 1px solid #e5e5e0;
 
-            box-shadow: none;
+            border-radius: 14px;
+
+            padding: 15px;
+
+            display: grid;
+
+            grid-template-columns:
+                minmax(0, 1fr)
+                auto
+                auto
+                auto;
+
+            align-items: center;
+
+            gap: 18px;
         }
 
+        .cart-product {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
 
-        #cart-items img {
-            width: 82px !important;
-            height: 82px !important;
+        .cart-product img {
+            width: 90px;
+            height: 90px;
 
             object-fit: cover;
 
-            border-radius: 9px;
+            border-radius: 10px;
+
+            background: #eee;
+
+            flex-shrink: 0;
         }
 
+        .cart-product-info h3 {
+            margin: 0 0 7px;
 
-        #cart-items h2,
-        #cart-items h3,
-        #cart-items h4 {
-            font-size: 13px !important;
-            line-height: 1.3;
-            margin: 0 0 5px;
+            font-size: 15px;
         }
 
+        .cart-product-info p {
+            margin: 4px 0;
 
-        #cart-items p {
-            font-size: 10px !important;
-            line-height: 1.5;
-            margin: 3px 0;
+            color: #777;
+
+            font-size: 11px;
         }
 
+        .cart-quantity {
+            display: flex;
 
-        #cart-items button {
-            min-height: 30px;
+            align-items: center;
 
-            padding: 6px 10px;
-
-            border-radius: 6px;
-
-            font-size: 9px;
-
-            cursor: pointer;
+            gap: 8px;
         }
 
-
-        /* QUANTITY */
-
-        #cart-items input[type="number"] {
-            width: 45px !important;
-            height: 30px !important;
-
-            border: 1px solid #ddd;
-            border-radius: 6px;
-
-            text-align: center;
-
-            font-size: 10px;
-        }
-
-
-        #cart-items select {
+        .cart-quantity button {
+            width: 30px;
             height: 30px;
 
             border: 1px solid #ddd;
 
-            border-radius: 6px;
-
-            font-size: 9px;
-
-            padding: 0 7px;
-        }
-
-
-        /* SUMMARY */
-
-        #cart-summary {
-            background: #111;
-            color: #fff;
-
-            border-radius: 14px;
-
-            padding: 22px;
-
-            position: sticky;
-            top: 20px;
-        }
-
-
-        #cart-summary h2,
-        #cart-summary h3,
-        #cart-summary h4 {
-            font-size: 16px !important;
-            margin: 0 0 15px;
-        }
-
-
-        #cart-summary p {
-            font-size: 10px !important;
-            color: #aaa;
-
-            margin: 8px 0;
-        }
-
-
-        #cart-summary strong {
-            color: #fff;
-        }
-
-
-        #cart-summary button,
-        #cart-summary a {
-            display: block;
-
-            width: 100%;
-
-            min-height: 42px;
-
-            border: none;
+            background: #fff;
 
             border-radius: 7px;
 
-            margin-top: 10px;
+            cursor: pointer;
 
-            padding: 12px;
+            font-size: 16px;
+        }
+
+        .cart-quantity button:hover {
+            background: #111;
+            color: #fff;
+        }
+
+        .cart-quantity span {
+            min-width: 25px;
 
             text-align: center;
 
-            text-decoration: none;
+            font-size: 12px;
+
+            font-weight: 800;
+        }
+
+        .cart-item-total {
+            font-size: 13px;
+
+            font-weight: 800;
+
+            white-space: nowrap;
+        }
+
+        .remove-cart-item {
+            border: none;
+
+            background: #eee;
+
+            color: #555;
+
+            padding: 8px 12px;
+
+            border-radius: 7px;
+
+            cursor: pointer;
 
             font-size: 9px;
+        }
+
+        .remove-cart-item:hover {
+            background: #111;
+            color: #fff;
+        }
+
+        /* ================================
+           SUMMARY
+        ================================= */
+
+        #cart-summary {
+            background: #111;
+
+            color: #fff;
+
+            padding: 22px;
+
+            border-radius: 15px;
+
+            position: sticky;
+
+            top: 20px;
+        }
+
+        #cart-summary h2 {
+            margin: 0 0 20px;
+
+            font-size: 18px;
+        }
+
+        .summary-row {
+            display: flex;
+
+            justify-content: space-between;
+
+            padding: 9px 0;
+
+            color: #aaa;
+
+            font-size: 11px;
+        }
+
+        .summary-row strong {
+            color: #fff;
+        }
+
+        .summary-total {
+            border-top: 1px solid #333;
+
+            margin-top: 10px;
+
+            padding-top: 15px;
+
+            color: #fff;
+
+            font-size: 15px;
+        }
+
+        #proceedCheckout {
+            width: 100%;
+
+            margin-top: 18px;
+
+            padding: 13px;
+
+            border: none;
+
+            border-radius: 8px;
+
+            background: #fff;
+
+            color: #111;
+
+            font-size: 10px;
 
             font-weight: 800;
 
             cursor: pointer;
         }
 
+        #proceedCheckout:hover {
+            background: #ddd;
+        }
 
-        /* EMPTY CART */
+        .summary-shopping {
+            display: block;
+
+            width: 100%;
+
+            box-sizing: border-box;
+
+            margin-top: 10px;
+
+            padding: 13px;
+
+            text-align: center;
+
+            text-decoration: none;
+
+            border: 1px solid #444;
+
+            border-radius: 8px;
+
+            color: #aaa;
+
+            font-size: 10px;
+        }
+
+        .summary-shopping:hover {
+            color: #fff;
+
+            border-color: #777;
+        }
+
+        .checkout-info {
+            margin-top: 15px;
+
+            padding: 11px;
+
+            background: #1d1d1d;
+
+            border-radius: 8px;
+
+            color: #888;
+
+            font-size: 9px;
+
+            line-height: 1.5;
+        }
+
+        /* ================================
+           EMPTY CART
+        ================================= */
 
         .empty-cart {
             background: #fff;
 
-            border: 1px solid #e7e7e3;
+            border: 1px solid #e5e5e0;
 
-            border-radius: 14px;
+            border-radius: 15px;
 
-            padding: 55px 25px;
+            padding: 70px 25px;
 
             text-align: center;
         }
 
+        .empty-cart-icon {
+            font-size: 45px;
 
-        .empty-cart h2 {
-            font-size: 20px;
-
-            margin-bottom: 8px;
+            margin-bottom: 10px;
         }
 
+        .empty-cart h2 {
+            margin: 0 0 8px;
+
+            font-size: 22px;
+        }
 
         .empty-cart p {
             color: #888;
 
-            font-size: 10px;
+            font-size: 11px;
 
             margin-bottom: 20px;
         }
 
-
         .empty-cart a {
             display: inline-block;
+
+            padding: 12px 20px;
+
+            border-radius: 8px;
 
             background: #111;
 
             color: #fff;
 
-            padding: 12px 20px;
-
-            border-radius: 7px;
-
             text-decoration: none;
 
-            font-size: 9px;
+            font-size: 10px;
 
             font-weight: 800;
         }
 
+        /* ================================
+           MESSAGE
+        ================================= */
 
-        /* FOOTER */
+        #cartMessage {
+            position: fixed;
+
+            bottom: 25px;
+            right: 25px;
+
+            z-index: 99999;
+
+            background: #111;
+
+            color: #fff;
+
+            padding: 14px 20px;
+
+            border-radius: 9px;
+
+            font-size: 12px;
+
+            box-shadow:
+                0 10px 30px
+                rgba(0,0,0,.25);
+
+            display: none;
+        }
+
+        /* ================================
+           FOOTER
+        ================================= */
 
         .cart-footer {
             background: #111;
 
             color: #fff;
 
-            padding: 35px 6%;
-
             text-align: center;
-        }
 
+            padding: 35px 20px;
+        }
 
         .cart-footer h2 {
+            margin: 0 0 8px;
+
             font-size: 18px;
-
-            margin-bottom: 7px;
         }
-
 
         .cart-footer p {
-            color: #888;
+            color: #777;
 
-            font-size: 9px;
-
-            margin: 5px 0;
+            font-size: 10px;
         }
 
-
-        .cart-footer .copyright {
-            margin-top: 18px;
-
-            color: #555;
-        }
-
-
-        /* MOBILE */
+        /* ================================
+           MOBILE
+        ================================= */
 
         @media (max-width: 800px) {
 
-            .cart-header {
-                padding: 40px 20px 25px;
-            }
-
-
             .cart-container {
-
-                width: 94%;
-
                 grid-template-columns: 1fr;
-
-                gap: 15px;
-
             }
-
 
             #cart-summary {
-
                 position: static;
+            }
 
+            .cart-item {
+                grid-template-columns: 1fr;
+            }
+
+            .cart-product {
+                width: 100%;
+            }
+
+            .cart-item-total {
+                font-size: 14px;
+            }
+
+            .remove-cart-item {
+                width: 100%;
             }
 
         }
 
-
         @media (max-width: 500px) {
 
-            #cart-items img {
-
-                width: 65px !important;
-
-                height: 65px !important;
-
-            }
-
-
-            #cart-items > div {
-
-                padding: 9px;
-
-            }
-
-
-            .cart-header h1 {
-
+            .cart-page-header h1 {
                 font-size: 30px;
+            }
 
+            .cart-product img {
+                width: 70px;
+                height: 70px;
             }
 
         }
@@ -364,19 +518,20 @@
 
 </head>
 
+<body>
 
-<body class="cart-page">
-
-
-<!-- =========================================
+<!-- =====================================================
      NAVIGATION
-========================================= -->
+===================================================== -->
 
 <header class="site-header">
 
     <nav class="navbar">
 
-        <a href="index.html" class="brand">
+        <a
+            href="index.html"
+            class="brand"
+        >
 
             <span class="brand-main">
                 Jantar
@@ -392,7 +547,6 @@
 
         </a>
 
-
         <div class="nav-links">
 
             <a href="index.html">
@@ -404,20 +558,29 @@
             </a>
 
             <a href="wishlist.html">
+
                 Wishlist
-                <span class="nav-count"
-                      id="wishlist-count">
+
+                <span
+                    class="nav-count"
+                    id="wishlist-count"
+                >
                     0
                 </span>
+
             </a>
 
-            <a href="cart.html"
-               class="active">
+            <a
+                href="cart.html"
+                class="active"
+            >
 
                 Cart
 
-                <span class="nav-count"
-                      id="cart-count">
+                <span
+                    class="nav-count"
+                    id="cart-count"
+                >
                     0
                 </span>
 
@@ -427,9 +590,8 @@
                 Contact Us
             </a>
 
-            <a href="#"
-               onclick="logout(); return false;">
-                Logout
+            <a href="signin.html">
+                Login
             </a>
 
         </div>
@@ -438,52 +600,132 @@
 
 </header>
 
+<!-- =====================================================
+     HEADER
+===================================================== -->
 
+<section class="cart-page-header">
 
-<!-- =========================================
-     CART HEADER
-========================================= -->
-
-<section class="cart-header">
-
-    <p class="small-title">
+    <small>
         JANTARMANTARKART
-    </p>
+    </small>
 
     <h1>
         Your Shopping Cart
     </h1>
 
+    <p>
+        Review your products before checkout.
+    </p>
+
 </section>
 
+<!-- =====================================================
+     ACTION BUTTONS
+===================================================== -->
 
+<div class="cart-actions">
 
-<!-- =========================================
+    <a href="products.html">
+        Continue Shopping
+    </a>
+
+</div>
+
+<!-- =====================================================
      CART
-========================================= -->
+===================================================== -->
 
 <main class="cart-container">
 
-    <div id="cart-items">
+    <!-- PRODUCTS -->
 
-        <!-- cart.js loads products here -->
+    <section id="cartItems">
 
-    </div>
+        <!-- cart.js will automatically display products here -->
 
+    </section>
 
-    <div id="cart-summary">
+    <!-- SUMMARY -->
 
-        <!-- cart.js loads summary here -->
+    <aside id="cart-summary">
 
-    </div>
+        <h2>
+            Order Summary
+        </h2>
+
+        <div class="summary-row">
+
+            <span>
+                Subtotal
+            </span>
+
+            <strong id="cartSubtotal">
+                $0.00
+            </strong>
+
+        </div>
+
+        <div class="summary-row">
+
+            <span>
+                Shipping
+            </span>
+
+            <strong>
+                FREE
+            </strong>
+
+        </div>
+
+        <div
+            class="summary-row summary-total"
+        >
+
+            <span>
+                Total
+            </span>
+
+            <strong id="cartTotal">
+                $0.00
+            </strong>
+
+        </div>
+
+        <button
+            type="button"
+            id="proceedCheckout"
+            onclick="proceedToCheckout()"
+        >
+            Proceed to Checkout
+        </button>
+
+        <a
+            href="products.html"
+            class="summary-shopping"
+        >
+            Continue Shopping
+        </a>
+
+        <div class="checkout-info">
+
+            You can browse products and add them
+            to your cart without signing in.
+
+            <br><br>
+
+            Login is required only when you
+            proceed to checkout.
+
+        </div>
+
+    </aside>
 
 </main>
 
-
-
-<!-- =========================================
+<!-- =====================================================
      FOOTER
-========================================= -->
+===================================================== -->
 
 <footer class="cart-footer">
 
@@ -495,70 +737,48 @@
         Your modern destination for everyday shopping.
     </p>
 
-    <p class="copyright">
-        © 2026 JantarMantarKart.
-        All rights reserved.
+    <p>
+        © 2026 JantarMantarKart. All rights reserved.
     </p>
 
 </footer>
 
-
-
-<!-- =========================================
+<!-- =====================================================
      JAVASCRIPT
-========================================= -->
+===================================================== -->
 
 <script src="auth.js"></script>
 
 <script src="cart.js"></script>
 
-
 <script>
 
-    /* Update cart counter */
+    document.addEventListener(
+        "DOMContentLoaded",
+        function() {
 
-    function updateCartPageCount() {
+            if (
+                typeof updateCartCount ===
+                "function"
+            ) {
 
-        const cart =
-            JSON.parse(
-                localStorage.getItem(
-                    "jantarMantarKartCart"
-                )
-            ) || [];
+                updateCartCount();
 
+            }
 
-        let count = 0;
+            if (
+                typeof renderCart ===
+                "function"
+            ) {
 
+                renderCart();
 
-        cart.forEach(function(item) {
-
-            count += Number(
-                item.quantity || 0
-            );
-
-        });
-
-
-        const cartCount =
-            document.getElementById(
-                "cart-count"
-            );
-
-
-        if (cartCount) {
-
-            cartCount.textContent =
-                count;
+            }
 
         }
-
-    }
-
-
-    updateCartPageCount();
+    );
 
 </script>
-
 
 </body>
 

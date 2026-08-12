@@ -822,6 +822,39 @@
             margin-top: 18px;
         }
 
+        /* CUSTOMER DETAILS MODAL */
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 10px 0;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 10px;
+        }
+
+        .detail-row span:first-child {
+            color: #999;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .detail-row span:last-child {
+            text-align: right;
+        }
+
+        .detail-section-label {
+            font-size: 8px;
+            letter-spacing: 1.5px;
+            color: #999;
+            font-weight: 700;
+            margin: 18px 0 4px;
+        }
+
+        .detail-section-label:first-of-type {
+            margin-top: 0;
+        }
+
         /* NOTIFICATION */
 
         .notification-box {
@@ -1616,9 +1649,11 @@
                             <tr>
                                 <th>Customer</th>
                                 <th>Email</th>
+                                <th>Phone</th>
                                 <th>Orders</th>
                                 <th>Spent</th>
                                 <th>Status</th>
+                                <th>Action</th>
                             </tr>
 
                         </thead>
@@ -2053,6 +2088,30 @@
 
 
             <label>
+                Old Price ($) — optional, shows a strikethrough sale price
+            </label>
+
+            <input
+                id="productOldPrice"
+                type="number"
+                min="0"
+                step="0.01"
+                placeholder="Leave blank if not on sale"
+            >
+
+
+            <label>
+                Badge — optional, e.g. NEW, BESTSELLER, SALE
+            </label>
+
+            <input
+                id="productBadge"
+                type="text"
+                placeholder="Leave blank for no badge"
+            >
+
+
+            <label>
                 Image URL
             </label>
 
@@ -2083,6 +2142,40 @@
             </button>
 
         </form>
+
+    </div>
+
+</div>
+
+
+<!-- CUSTOMER DETAILS MODAL -->
+
+<div
+    class="modal"
+    id="customerModal"
+>
+
+    <div class="modal-box">
+
+        <button
+            class="close-btn"
+            onclick="closeCustomerModal()"
+        >
+            ×
+        </button>
+
+
+        <p class="small-label">
+            CUSTOMER DETAILS
+        </p>
+
+
+        <h2 id="customerModalTitle">
+            Customer
+        </h2>
+
+
+        <div id="customerModalBody"></div>
 
     </div>
 

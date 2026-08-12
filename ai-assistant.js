@@ -1,1278 +1,815 @@
-/* =========================================================
-   JANTARMANTARKART - AI SHOPPING ASSISTANT
-========================================================= */
-
-(function () {
-
-    const CART_KEY = "jantarMantarKartCart";
-
-    let products = [];
+/* =========================================
+   JANTARMANTARKART AI ASSISTANT
+========================================= */
 
 
-    /* =====================================================
-       PRODUCT DATA
-    ===================================================== */
+/* =========================================
+   ELEMENTS
+========================================= */
 
-    function loadProducts() {
+const chatMessages =
+    document.getElementById("chat-messages");
 
-        /*
-         * If your project already has a global products array,
-         * use it.
-         */
+const aiInput =
+    document.getElementById("ai-input");
 
-        if (
-            typeof window.products !== "undefined" &&
-            Array.isArray(window.products)
-        ) {
-            products = window.products;
-            return;
-        }
+const sendButton =
+    document.getElementById("send-button");
 
 
-        /*
-         * Fallback products so the assistant still works.
-         * Replace these with your actual products if necessary.
-         */
+/* =========================================
+   CART COUNT
+========================================= */
 
-        products = [
-            {
-                id: 1,
-                name: "Wireless Headphones",
-                price: 59.99,
-                category: "Electronics",
-                rating: 4.5,
-                stock: 20,
-                image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e"
-            },
-            {
-                id: 2,
-                name: "Smart Watch",
-                price: 89.99,
-                category: "Electronics",
-                rating: 4.4,
-                stock: 15,
-                image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30"
-            },
-            {
-                id: 3,
-                name: "Premium Backpack",
-                price: 49.99,
-                category: "Fashion",
-                rating: 4.6,
-                stock: 25,
-                image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62"
-            },
-            {
-                id: 4,
-                name: "Running Shoes",
-                price: 74.99,
-                category: "Fashion",
-                rating: 4.7,
-                stock: 18,
-                image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff"
-            },
-            {
-                id: 5,
-                name: "Coffee Maker",
-                price: 69.99,
-                category: "Home",
-                rating: 4.3,
-                stock: 10,
-                image: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085"
-            }
-        ];
+function updateAssistantCartCount() {
+
+    const cartCount =
+        document.getElementById(
+            "sidebar-cart-count"
+        );
+
+    if (!cartCount) {
+        return;
+    }
+
+    let cart = [];
+
+    try {
+
+        cart =
+            JSON.parse(
+                localStorage.getItem(
+                    "jantarMantarKartCart"
+                )
+            ) || [];
+
+    } catch (error) {
+
+        cart = [];
 
     }
 
+    const total =
+        cart.reduce(
+            function(sum, item) {
 
-    /* =====================================================
-       CREATE AI BUTTON
-    ===================================================== */
+                return sum +
+                    Number(item.quantity || 0);
 
-    function createAssistant() {
+            },
+            0
+        );
 
-        if (
-            document.getElementById("aiAssistantButton")
-        ) {
-            return;
-        }
+    cartCount.textContent = total;
 
-
-        const button =
-            document.createElement("button");
-
-        button.id =
-            "aiAssistantButton";
-
-        button.className =
-            "ai-button";
-
-        button.innerHTML =
-            "✦";
-
-        button.title =
-            "AI Shopping Assistant";
+}
 
 
-        document.body.appendChild(button);
+/* =========================================
+   ADD USER MESSAGE
+========================================= */
+
+function addUserMessage(text) {
+
+    const message =
+        document.createElement("div");
+
+    message.className =
+        "message user";
+
+    message.innerHTML = `
+
+        <div class="message-content">
+
+            <span class="message-name">
+                You
+            </span>
+
+            <div class="bubble">
+                ${escapeHTML(text)}
+            </div>
+
+        </div>
+
+        <div class="message-avatar">
+            You
+        </div>
+
+    `;
+
+    chatMessages.appendChild(message);
+
+    scrollChat();
+
+}
 
 
-        /* CHAT */
+/* =========================================
+   ADD BOT MESSAGE
+========================================= */
 
-        const chat =
-            document.createElement("div");
+function addBotMessage(text) {
 
-        chat.id =
-            "aiShoppingChat";
+    const message =
+        document.createElement("div");
 
-        chat.className =
-            "ai-chat";
+    message.className =
+        "message bot";
+
+    message.innerHTML = `
+
+        <div class="message-avatar">
+            ✦
+        </div>
+
+        <div class="message-content">
+
+            <span class="message-name">
+                JantarMantar AI
+            </span>
+
+            <div class="bubble">
+                ${text}
+            </div>
+
+        </div>
+
+    `;
+
+    chatMessages.appendChild(message);
+
+    scrollChat();
+
+}
 
 
-        chat.innerHTML = `
+/* =========================================
+   TYPING INDICATOR
+========================================= */
 
-            <div class="ai-header">
+function showTyping() {
 
-                <div class="ai-title">
+    const typing =
+        document.createElement("div");
 
-                    <div class="ai-avatar">
-                        ✦
-                    </div>
+    typing.id = "typing-message";
 
-                    <div>
-                        <strong>
-                            JantarMantar AI
-                        </strong>
+    typing.className =
+        "message bot";
 
-                        <span>
-                            Shopping Assistant
-                        </span>
-                    </div>
+    typing.innerHTML = `
+
+        <div class="message-avatar">
+            ✦
+        </div>
+
+        <div class="message-content">
+
+            <span class="message-name">
+                JantarMantar AI
+            </span>
+
+            <div class="bubble">
+
+                <div class="typing">
+
+                    <span></span>
+                    <span></span>
+                    <span></span>
 
                 </div>
 
-                <button
-                    class="ai-close"
-                    id="aiClose"
-                >
-                    ×
-                </button>
-
             </div>
 
+        </div>
 
-            <div
-                class="ai-messages"
-                id="aiMessages"
-            >
+    `;
 
-                <div class="ai-message bot">
+    chatMessages.appendChild(typing);
 
-                    Hi! 👋 I'm your JantarMantarKart
-                    shopping assistant.
+    scrollChat();
 
-                    <br><br>
-
-                    Tell me what you're looking for,
-                    your budget, or what product you
-                    want to compare.
-
-                </div>
-
-            </div>
+}
 
 
-            <div class="ai-quick">
+function removeTyping() {
 
-                <button data-question="Show me products under $50">
-                    Under $50
-                </button>
-
-                <button data-question="Show me electronics">
-                    Electronics
-                </button>
-
-                <button data-question="What do you recommend?">
-                    Recommend
-                </button>
-
-                <button data-question="What is in my cart?">
-                    My Cart
-                </button>
-
-            </div>
-
-
-            <div class="ai-input-area">
-
-                <input
-                    id="aiInput"
-                    class="ai-input"
-                    type="text"
-                    placeholder="Ask me anything..."
-                    autocomplete="off"
-                >
-
-                <button
-                    id="aiSend"
-                    class="ai-send"
-                >
-                    ➤
-                </button>
-
-            </div>
-
-        `;
-
-
-        document.body.appendChild(chat);
-
-
-        /* EVENTS */
-
-        button.addEventListener(
-            "click",
-            toggleChat
+    const typing =
+        document.getElementById(
+            "typing-message"
         );
 
+    if (typing) {
+        typing.remove();
+    }
 
-        document
-            .getElementById("aiClose")
-            .addEventListener(
-                "click",
-                toggleChat
-            );
+}
 
 
-        document
-            .getElementById("aiSend")
-            .addEventListener(
-                "click",
-                sendMessage
-            );
+/* =========================================
+   ESCAPE HTML
+========================================= */
+
+function escapeHTML(value) {
+
+    return String(value)
+
+        .replace(/&/g, "&amp;")
+
+        .replace(/</g, "&lt;")
+
+        .replace(/>/g, "&gt;")
+
+        .replace(/"/g, "&quot;")
+
+        .replace(/'/g, "&#039;");
+
+}
 
 
-        document
-            .getElementById("aiInput")
-            .addEventListener(
-                "keydown",
-                function (event) {
+/* =========================================
+   CART INFORMATION
+========================================= */
 
-                    if (
-                        event.key === "Enter"
-                    ) {
+function getCartInfo() {
 
-                        sendMessage();
+    let cart = [];
 
-                    }
+    try {
 
-                }
-            );
+        cart =
+            JSON.parse(
+                localStorage.getItem(
+                    "jantarMantarKartCart"
+                )
+            ) || [];
 
+    } catch (error) {
 
-        document
-            .querySelectorAll(
-                ".ai-quick button"
-            )
-            .forEach(
-                function (quickButton) {
-
-                    quickButton.addEventListener(
-                        "click",
-                        function () {
-
-                            const question =
-                                this.dataset.question;
-
-                            document
-                                .getElementById(
-                                    "aiInput"
-                                )
-                                .value =
-                                question;
-
-                            sendMessage();
-
-                        }
-                    );
-
-                }
-            );
+        cart = [];
 
     }
 
-
-    /* =====================================================
-       OPEN / CLOSE CHAT
-    ===================================================== */
-
-    function toggleChat() {
-
-        const chat =
-            document.getElementById(
-                "aiShoppingChat"
-            );
-
-
-        if (!chat) return;
-
-
-        chat.classList.toggle(
-            "active"
+    const count =
+        cart.reduce(
+            (sum, item) =>
+                sum +
+                Number(item.quantity || 0),
+            0
         );
 
+    let subtotal = 0;
 
-        if (
-            chat.classList.contains(
-                "active"
-            )
-        ) {
+    cart.forEach(function(item) {
 
-            setTimeout(
-                function () {
+        subtotal +=
+            Number(item.price || 0) *
+            Number(item.quantity || 0);
 
-                    const input =
-                        document.getElementById(
-                            "aiInput"
-                        );
+    });
 
-                    if (input) {
-                        input.focus();
-                    }
+    return {
+        cart,
+        count,
+        subtotal
+    };
 
-                },
-                100
-            );
+}
 
-        }
 
-    }
+/* =========================================
+   AI RESPONSE
+========================================= */
 
+function getAIResponse(question) {
 
-    /* =====================================================
-       SEND MESSAGE
-    ===================================================== */
+    const q =
+        question.toLowerCase().trim();
 
-    function sendMessage() {
 
-        const input =
-            document.getElementById(
-                "aiInput"
-            );
-
-
-        if (!input) return;
-
-
-        const text =
-            input.value.trim();
-
-
-        if (!text) {
-            return;
-        }
-
-
-        addMessage(
-            text,
-            "user"
-        );
-
-
-        input.value = "";
-
-
-        showTyping();
-
-
-        setTimeout(
-            function () {
-
-                hideTyping();
-
-
-                const response =
-                    generateResponse(
-                        text
-                    );
-
-
-                addMessage(
-                    response,
-                    "bot"
-                );
-
-            },
-            600
-        );
-
-    }
-
-
-    /* =====================================================
-       GENERATE RESPONSE
-    ===================================================== */
-
-    function generateResponse(
-        message
-    ) {
-
-        const text =
-            message.toLowerCase();
-
-
-        /* CART */
-
-        if (
-            text.includes("cart") ||
-            text.includes("basket")
-        ) {
-
-            return getCartResponse();
-
-        }
-
-
-        /* BUDGET */
-
-        const budget =
-            extractBudget(
-                text
-            );
-
-
-        if (budget) {
-
-            return getBudgetProducts(
-                budget
-            );
-
-        }
-
-
-        /* ELECTRONICS */
-
-        if (
-            text.includes("electronic") ||
-            text.includes("headphone") ||
-            text.includes("headphones") ||
-            text.includes("watch") ||
-            text.includes("smartphone") ||
-            text.includes("laptop")
-        ) {
-
-            return getCategoryProducts(
-                "electronics"
-            );
-
-        }
-
-
-        /* FASHION */
-
-        if (
-            text.includes("fashion") ||
-            text.includes("shoe") ||
-            text.includes("shoes") ||
-            text.includes("bag") ||
-            text.includes("backpack")
-        ) {
-
-            return getCategoryProducts(
-                "fashion"
-            );
-
-        }
-
-
-        /* HOME */
-
-        if (
-            text.includes("home") ||
-            text.includes("coffee") ||
-            text.includes("kitchen")
-        ) {
-
-            return getCategoryProducts(
-                "home"
-            );
-
-        }
-
-
-        /* CHEAP */
-
-        if (
-            text.includes("cheap") ||
-            text.includes("cheapest") ||
-            text.includes("low price")
-        ) {
-
-            return getCheapestProducts();
-
-        }
-
-
-        /* BEST */
-
-        if (
-            text.includes("best") ||
-            text.includes("recommend") ||
-            text.includes("recommendation")
-        ) {
-
-            return getRecommendedProducts();
-
-        }
-
-
-        /* STOCK */
-
-        if (
-            text.includes("stock") ||
-            text.includes("available")
-        ) {
-
-            return getStockResponse();
-
-        }
-
-
-        /* GREETING */
-
-        if (
-            text.includes("hello") ||
-            text.includes("hi") ||
-            text.includes("hey")
-        ) {
-
-            return `
-                Hello! 👋
-
-                I'm ready to help you shop.
-
-                You can ask:
-                <br><br>
-                • "Show me electronics"
-                <br>
-                • "Products under $50"
-                <br>
-                • "Recommend something"
-                <br>
-                • "What's in my cart?"
-            `;
-
-        }
-
-
-        /* DEFAULT */
-
-        return `
-            I can help you find the right product. 🤖
-
-            <br><br>
-
-            Try asking:
-            <br>
-            • "Show me products under $50"
-            <br>
-            • "Show me electronics"
-            <br>
-            • "What do you recommend?"
-            <br>
-            • "What's in my cart?"
-        `;
-
-    }
-
-
-    /* =====================================================
-       EXTRACT BUDGET
-    ===================================================== */
-
-    function extractBudget(
-        text
-    ) {
-
-        const patterns = [
-
-            /under\s*\$?\s*(\d+(?:\.\d+)?)/i,
-
-            /below\s*\$?\s*(\d+(?:\.\d+)?)/i,
-
-            /less than\s*\$?\s*(\d+(?:\.\d+)?)/i,
-
-            /within\s*\$?\s*(\d+(?:\.\d+)?)/i,
-
-            /budget\s*(?:of)?\s*\$?\s*(\d+(?:\.\d+)?)/i
-
-        ];
-
-
-        for (
-            let i = 0;
-            i < patterns.length;
-            i++
-        ) {
-
-            const match =
-                text.match(
-                    patterns[i]
-                );
-
-
-            if (match) {
-
-                return Number(
-                    match[1]
-                );
-
-            }
-
-        }
-
-
-        return null;
-
-    }
-
-
-    /* =====================================================
-       BUDGET PRODUCTS
-    ===================================================== */
-
-    function getBudgetProducts(
-        budget
-    ) {
-
-        const matches =
-            products
-                .filter(
-                    product =>
-                        Number(
-                            product.price
-                        ) <= budget &&
-                        Number(
-                            product.stock
-                        ) > 0
-                )
-                .sort(
-                    (a, b) =>
-                        Number(a.price) -
-                        Number(b.price)
-                )
-                .slice(0, 4);
-
-
-        if (!matches.length) {
-
-            return `
-                I couldn't find an available
-                product under <strong>$${budget.toFixed(2)}</strong>.
-
-                <br><br>
-
-                Try increasing your budget a little.
-            `;
-
-        }
-
-
-        return `
-            Here are some options under
-            <strong>$${budget.toFixed(2)}</strong>:
-
-            ${renderProducts(matches)}
-        `;
-
-    }
-
-
-    /* =====================================================
-       CATEGORY PRODUCTS
-    ===================================================== */
-
-    function getCategoryProducts(
-        category
-    ) {
-
-        const matches =
-            products
-                .filter(
-                    product =>
-                        String(
-                            product.category
-                        )
-                        .toLowerCase()
-                        .includes(category)
-                )
-                .filter(
-                    product =>
-                        Number(
-                            product.stock
-                        ) > 0
-                )
-                .sort(
-                    (a, b) =>
-                        Number(b.rating || 0) -
-                        Number(a.rating || 0)
-                )
-                .slice(0, 4);
-
-
-        if (!matches.length) {
-
-            return `
-                I couldn't find available
-                ${category} products right now.
-            `;
-
-        }
-
-
-        return `
-            Here are some ${category}
-            products you may like:
-
-            ${renderProducts(matches)}
-        `;
-
-    }
-
-
-    /* =====================================================
-       RECOMMENDED PRODUCTS
-    ===================================================== */
-
-    function getRecommendedProducts() {
-
-        const matches =
-            [...products]
-                .filter(
-                    product =>
-                        Number(
-                            product.stock
-                        ) > 0
-                )
-                .sort(
-                    (a, b) =>
-                        Number(b.rating || 0) -
-                        Number(a.rating || 0)
-                )
-                .slice(0, 4);
-
-
-        return `
-            Based on rating and availability,
-            these are some of my recommendations:
-
-            ${renderProducts(matches)}
-        `;
-
-    }
-
-
-    /* =====================================================
-       CHEAPEST
-    ===================================================== */
-
-    function getCheapestProducts() {
-
-        const matches =
-            [...products]
-                .filter(
-                    product =>
-                        Number(
-                            product.stock
-                        ) > 0
-                )
-                .sort(
-                    (a, b) =>
-                        Number(a.price) -
-                        Number(b.price)
-                )
-                .slice(0, 4);
-
-
-        return `
-            Here are some of the
-            lowest-priced available products:
-
-            ${renderProducts(matches)}
-        `;
-
-    }
-
-
-    /* =====================================================
-       STOCK
-    ===================================================== */
-
-    function getStockResponse() {
-
-        const available =
-            products.filter(
-                product =>
-                    Number(
-                        product.stock
-                    ) > 0
-            );
-
-
-        const outOfStock =
-            products.filter(
-                product =>
-                    Number(
-                        product.stock
-                    ) <= 0
-            );
-
-
-        return `
-            <strong>Store availability</strong>
-
-            <br><br>
-
-            Available products:
-            <strong>${available.length}</strong>
-
-            <br>
-
-            Out-of-stock products:
-            <strong>${outOfStock.length}</strong>
-
-            <br><br>
-
-            I can also help you find a product
-            by category or budget.
-        `;
-
-    }
-
-
-    /* =====================================================
-       CART RESPONSE
-    ===================================================== */
-
-    function getCartResponse() {
-
-        let cart = [];
-
-
-        try {
-
-            cart =
-                JSON.parse(
-                    localStorage.getItem(
-                        CART_KEY
-                    )
-                ) || [];
-
-        } catch (error) {
-
-            cart = [];
-
-        }
-
-
-        if (!cart.length) {
-
-            return `
-                Your shopping cart is currently empty. 🛒
-
-                <br><br>
-
-                I can help you find something
-                to add to it.
-            `;
-
-        }
-
-
-        let total = 0;
-
-
-        cart.forEach(
-            item => {
-
-                const price =
-                    Number(
-                        item.price || 0
-                    );
-
-                const quantity =
-                    Number(
-                        item.quantity ||
-                        item.qty ||
-                        1
-                    );
-
-                total +=
-                    price *
-                    quantity;
-
-            }
-        );
-
-
-        return `
-            You currently have
-            <strong>${cart.length}</strong>
-            item(s) in your cart.
-
-            <br><br>
-
-            Cart total:
-            <strong>$${total.toFixed(2)}</strong>
-
-            <br><br>
-
-            Ready to checkout? 🛒
-        `;
-
-    }
-
-
-    /* =====================================================
-       RENDER PRODUCTS
-    ===================================================== */
-
-    function renderProducts(
-        productList
-    ) {
-
-        let html =
-            '<div class="ai-products">';
-
-
-        productList.forEach(
-            product => {
-
-                const image =
-                    product.image ||
-                    "";
-
-
-                html += `
-
-                    <div class="ai-product">
-
-                        <img
-                            src="${image}"
-                            alt="${escapeHTML(
-                                product.name
-                            )}"
-                            onerror="
-                                this.style.display='none'
-                            "
-                        >
-
-                        <div class="ai-product-info">
-
-                            <strong>
-                                ${escapeHTML(
-                                    product.name
-                                )}
-                            </strong>
-
-                            <span>
-                                $${Number(
-                                    product.price
-                                ).toFixed(2)}
-                                · ⭐ ${Number(
-                                    product.rating || 0
-                                )}
-                            </span>
-
-                        </div>
-
-                        <button
-                            onclick="
-                                window.aiAddToCart(
-                                    ${Number(product.id)}
-                                )
-                            "
-                        >
-                            Add
-                        </button>
-
-                    </div>
-
-                `;
-
-            }
-        );
-
-
-        html +=
-            "</div>";
-
-
-        return html;
-
-    }
-
-
-    /* =====================================================
-       ADD TO CART
-    ===================================================== */
-
-    window.aiAddToCart =
-        function (productId) {
-
-            const product =
-                products.find(
-                    item =>
-                        Number(item.id) ===
-                        Number(productId)
-                );
-
-
-            if (!product) {
-
-                return;
-
-            }
-
-
-            let cart = [];
-
-
-            try {
-
-                cart =
-                    JSON.parse(
-                        localStorage.getItem(
-                            CART_KEY
-                        )
-                    ) || [];
-
-            } catch (error) {
-
-                cart = [];
-
-            }
-
-
-            const existing =
-                cart.find(
-                    item =>
-                        Number(item.id) ===
-                        Number(product.id)
-                );
-
-
-            if (existing) {
-
-                existing.quantity =
-                    Number(
-                        existing.quantity ||
-                        existing.qty ||
-                        0
-                    ) + 1;
-
-            } else {
-
-                cart.push({
-
-                    ...product,
-
-                    quantity: 1
-
-                });
-
-            }
-
-
-            localStorage.setItem(
-                CART_KEY,
-                JSON.stringify(cart)
-            );
-
-
-            /* Update existing cart UI */
-
-            if (
-                typeof window.updateCartCount ===
-                "function"
-            ) {
-
-                window.updateCartCount();
-
-            }
-
-
-            addMessage(
-                `✓ ${product.name} was added to your cart.`,
-                "bot"
-            );
-
-        };
-
-
-    /* =====================================================
-       ADD MESSAGE
-    ===================================================== */
-
-    function addMessage(
-        message,
-        type
-    ) {
-
-        const messages =
-            document.getElementById(
-                "aiMessages"
-            );
-
-
-        if (!messages) return;
-
-
-        const div =
-            document.createElement(
-                "div"
-            );
-
-
-        div.className =
-            "ai-message " +
-            type;
-
-
-        div.innerHTML =
-            message;
-
-
-        messages.appendChild(
-            div
-        );
-
-
-        messages.scrollTop =
-            messages.scrollHeight;
-
-    }
-
-
-    /* =====================================================
-       TYPING INDICATOR
-    ===================================================== */
-
-    function showTyping() {
-
-        const messages =
-            document.getElementById(
-                "aiMessages"
-            );
-
-
-        if (!messages) return;
-
-
-        const typing =
-            document.createElement(
-                "div"
-            );
-
-
-        typing.id =
-            "aiTyping";
-
-        typing.className =
-            "ai-typing active";
-
-        typing.textContent =
-            "JantarMantar AI is thinking...";
-
-
-        messages.appendChild(
-            typing
-        );
-
-
-        messages.scrollTop =
-            messages.scrollHeight;
-
-    }
-
-
-    function hideTyping() {
-
-        const typing =
-            document.getElementById(
-                "aiTyping"
-            );
-
-
-        if (typing) {
-
-            typing.remove();
-
-        }
-
-    }
-
-
-    /* =====================================================
-       SECURITY
-    ===================================================== */
-
-    function escapeHTML(
-        value
-    ) {
-
-        return String(value)
-            .replace(
-                /&/g,
-                "&amp;"
-            )
-            .replace(
-                /</g,
-                "&lt;"
-            )
-            .replace(
-                />/g,
-                "&gt;"
-            )
-            .replace(
-                /"/g,
-                "&quot;"
-            )
-            .replace(
-                /'/g,
-                "&#039;"
-            );
-
-    }
-
-
-    /* =====================================================
-       INITIALIZE
-    ===================================================== */
-
-    function initialize() {
-
-        loadProducts();
-
-        createAssistant();
-
-    }
-
+    /* TRACK ORDER */
 
     if (
-        document.readyState ===
-        "loading"
+        q.includes("track") ||
+        q.includes("where is my order") ||
+        q.includes("order status")
     ) {
 
-        document.addEventListener(
-            "DOMContentLoaded",
-            initialize
-        );
+        return `
 
-    } else {
+            You can track your order from our
+            <strong>Track Order</strong> page. 📦
 
-        initialize();
+            <br><br>
+
+            <a
+                href="track-order.html"
+                style="
+                    display:inline-block;
+                    background:#111;
+                    color:#fff;
+                    padding:8px 12px;
+                    border-radius:7px;
+                    text-decoration:none;
+                    font-size:9px;
+                "
+            >
+                Track My Order →
+            </a>
+
+        `;
 
     }
 
-})();
+
+    /* CART */
+
+    if (
+        q.includes("cart") ||
+        q.includes("add") ||
+        q.includes("shopping basket")
+    ) {
+
+        const cart =
+            getCartInfo();
+
+        return `
+
+            Your current cart has
+            <strong>${cart.count}</strong>
+            item${cart.count === 1 ? "" : "s"}.
+
+            <br><br>
+
+            You can browse products and select
+            <strong>Add to Cart</strong>.
+
+            <br><br>
+
+            <a
+                href="cart.html"
+                style="
+                    display:inline-block;
+                    background:#111;
+                    color:#fff;
+                    padding:8px 12px;
+                    border-radius:7px;
+                    text-decoration:none;
+                    font-size:9px;
+                "
+            >
+                Open My Cart →
+            </a>
+
+        `;
+
+    }
+
+
+    /* WISHLIST */
+
+    if (
+        q.includes("wishlist") ||
+        q.includes("favorite") ||
+        q.includes("favourite")
+    ) {
+
+        return `
+
+            Your wishlist is where you can
+            keep products you want to save
+            for later. ♡
+
+            <br><br>
+
+            <a
+                href="wishlist.html"
+                style="
+                    display:inline-block;
+                    background:#111;
+                    color:#fff;
+                    padding:8px 12px;
+                    border-radius:7px;
+                    text-decoration:none;
+                    font-size:9px;
+                "
+            >
+                Open Wishlist →
+            </a>
+
+        `;
+
+    }
+
+
+    /* PAYMENT */
+
+    if (
+        q.includes("payment") ||
+        q.includes("pay") ||
+        q.includes("card") ||
+        q.includes("upi") ||
+        q.includes("cash")
+    ) {
+
+        return `
+
+            JantarMantarKart checkout currently
+            supports:
+
+            <br><br>
+
+            <strong>💳 Card</strong><br>
+            Credit or debit card
+
+            <br><br>
+
+            <strong>📱 UPI</strong><br>
+            Fast digital payment
+
+            <br><br>
+
+            <strong>💵 Cash on Delivery</strong><br>
+            Pay when your order arrives.
+
+        `;
+
+    }
+
+
+    /* CHECKOUT */
+
+    if (
+        q.includes("checkout") ||
+        q.includes("place order") ||
+        q.includes("buy")
+    ) {
+
+        return `
+
+            Checkout is simple:
+
+            <br><br>
+
+            <strong>01.</strong>
+            Enter your customer details.
+
+            <br>
+
+            <strong>02.</strong>
+            Enter your delivery address.
+
+            <br>
+
+            <strong>03.</strong>
+            Select your payment method.
+
+            <br>
+
+            <strong>04.</strong>
+            Review your order and place it.
+
+            <br><br>
+
+            You can start from your
+            <strong>Cart</strong>.
+
+        `;
+
+    }
+
+
+    /* PRODUCTS */
+
+    if (
+        q.includes("product") ||
+        q.includes("shop") ||
+        q.includes("buy something")
+    ) {
+
+        return `
+
+            Of course! 🛍️
+
+            Explore our available products
+            and choose anything you like.
+
+            <br><br>
+
+            <a
+                href="products.html"
+                style="
+                    display:inline-block;
+                    background:#111;
+                    color:#fff;
+                    padding:8px 12px;
+                    border-radius:7px;
+                    text-decoration:none;
+                    font-size:9px;
+                "
+            >
+                Explore Products →
+            </a>
+
+        `;
+
+    }
+
+
+    /* CONTACT */
+
+    if (
+        q.includes("contact") ||
+        q.includes("support") ||
+        q.includes("help") ||
+        q.includes("customer service")
+    ) {
+
+        return `
+
+            I'm happy to help. 💬
+
+            <br><br>
+
+            If you need personal assistance,
+            our Contact Us page is the best
+            place to reach the team.
+
+            <br><br>
+
+            <a
+                href="contact.html"
+                style="
+                    display:inline-block;
+                    background:#111;
+                    color:#fff;
+                    padding:8px 12px;
+                    border-radius:7px;
+                    text-decoration:none;
+                    font-size:9px;
+                "
+            >
+                Contact Us →
+            </a>
+
+        `;
+
+    }
+
+
+    /* LOGIN */
+
+    if (
+        q.includes("login") ||
+        q.includes("sign in") ||
+        q.includes("account")
+    ) {
+
+        return `
+
+            You can sign in to your
+            JantarMantarKart account here.
+
+            <br><br>
+
+            <a
+                href="signin.html"
+                style="
+                    display:inline-block;
+                    background:#111;
+                    color:#fff;
+                    padding:8px 12px;
+                    border-radius:7px;
+                    text-decoration:none;
+                    font-size:9px;
+                "
+            >
+                Sign In →
+            </a>
+
+        `;
+
+    }
+
+
+    /* SHIPPING */
+
+    if (
+        q.includes("shipping") ||
+        q.includes("delivery") ||
+        q.includes("deliver")
+    ) {
+
+        return `
+
+            Shipping is calculated automatically
+            during checkout.
+
+            <br><br>
+
+            Orders of <strong>$100 or more</strong>
+            receive <strong>FREE shipping</strong>.
+
+            <br><br>
+
+            Orders below $100 have a
+            <strong>$9.99</strong> shipping charge.
+
+        `;
+
+    }
+
+
+    /* HELLO */
+
+    if (
+        q.includes("hello") ||
+        q.includes("hi") ||
+        q.includes("hey")
+    ) {
+
+        return `
+
+            Hello! 👋
+
+            I'm JantarMantarKart AI.
+
+            <br><br>
+
+            I can help you with products,
+            cart, wishlist, checkout,
+            payments, delivery, orders and
+            customer support.
+
+            <br><br>
+
+            What would you like to know?
+
+        `;
+
+    }
+
+
+    /* THANK YOU */
+
+    if (
+        q.includes("thank") ||
+        q.includes("thanks")
+    ) {
+
+        return `
+
+            You're very welcome! ✦
+
+            <br><br>
+
+            I'm always here if you need help
+            with your JantarMantarKart order.
+
+        `;
+
+    }
+
+
+    /* DEFAULT */
+
+    return `
+
+        I'm still learning, but I can help
+        with the main parts of
+        <strong>JantarMantarKart</strong>.
+
+        <br><br>
+
+        Try asking me:
+
+        <br><br>
+
+        • How do I track my order?<br>
+        • What payment methods are available?<br>
+        • How do I add something to my cart?<br>
+        • Where is my wishlist?<br>
+        • How does checkout work?<br>
+        • I want to contact support.
+
+    `;
+
+}
+
+
+/* =========================================
+   ASK QUESTION
+========================================= */
+
+function askQuestion(question) {
+
+    if (!question) {
+        return;
+    }
+
+    addUserMessage(question);
+
+    showTyping();
+
+    setTimeout(
+        function() {
+
+            removeTyping();
+
+            const response =
+                getAIResponse(question);
+
+            addBotMessage(response);
+
+        },
+        500
+    );
+
+}
+
+
+/* =========================================
+   SEND MESSAGE
+========================================= */
+
+function sendMessage() {
+
+    if (!aiInput) {
+        return;
+    }
+
+    const message =
+        aiInput.value.trim();
+
+    if (!message) {
+        return;
+    }
+
+    aiInput.value = "";
+
+    askQuestion(message);
+
+}
+
+
+/* =========================================
+   ENTER KEY
+========================================= */
+
+if (aiInput) {
+
+    aiInput.addEventListener(
+        "keydown",
+        function(event) {
+
+            if (
+                event.key === "Enter"
+            ) {
+
+                event.preventDefault();
+
+                sendMessage();
+
+            }
+
+        }
+    );
+
+}
+
+
+/* =========================================
+   SEND BUTTON
+========================================= */
+
+if (sendButton) {
+
+    sendButton.addEventListener(
+        "click",
+        sendMessage
+    );
+
+}
+
+
+/* =========================================
+   SCROLL CHAT
+========================================= */
+
+function scrollChat() {
+
+    if (!chatMessages) {
+        return;
+    }
+
+    chatMessages.scrollTop =
+        chatMessages.scrollHeight;
+
+}
+
+
+/* =========================================
+   INITIALIZE
+========================================= */
+
+updateAssistantCartCount();

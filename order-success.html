@@ -2,281 +2,231 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
 
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>Order Confirmed | JantarMantarKart</title>
 
-    <link rel="stylesheet"
-          href="order-success.css">
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+            background: #f5f5f2;
+            color: #111;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background: #111;
+            padding: 20px 7%;
+        }
+
+        .brand {
+            color: white;
+            text-decoration: none;
+            font-size: 22px;
+            font-weight: 800;
+        }
+
+        .brand span {
+            color: #b8ff00;
+        }
+
+        main {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+        }
+
+        .success-card {
+            width: min(600px, 100%);
+            background: white;
+            border-radius: 20px;
+            padding: 45px;
+            text-align: center;
+            box-shadow:
+                0 20px 60px
+                rgba(0,0,0,.08);
+        }
+
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: #111;
+            color: #b8ff00;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 25px;
+            font-size: 35px;
+            font-weight: 900;
+        }
+
+        .success-card small {
+            letter-spacing: 3px;
+            color: #777;
+            font-weight: 800;
+        }
+
+        .success-card h1 {
+            font-size: 38px;
+            margin: 12px 0;
+        }
+
+        .success-card p {
+            color: #777;
+            line-height: 1.6;
+        }
+
+        .order-box {
+            background: #f5f5f2;
+            border-radius: 12px;
+            padding: 18px;
+            margin: 25px 0;
+        }
+
+        .order-box span {
+            display: block;
+            color: #888;
+            font-size: 11px;
+            margin-bottom: 7px;
+        }
+
+        .order-box strong {
+            font-size: 20px;
+            letter-spacing: 1px;
+        }
+
+        .buttons {
+            display: grid;
+            gap: 10px;
+        }
+
+        .button {
+            display: block;
+            text-decoration: none;
+            border-radius: 9px;
+            padding: 14px;
+            font-weight: 800;
+            font-size: 13px;
+        }
+
+        .track {
+            background: #111;
+            color: white;
+        }
+
+        .shop {
+            border: 1px solid #ddd;
+            color: #111;
+        }
+
+        .track:hover {
+            background: #b8ff00;
+            color: #111;
+        }
+
+        footer {
+            background: #111;
+            color: #777;
+            text-align: center;
+            padding: 20px;
+            font-size: 11px;
+        }
+
+        @media (max-width: 500px) {
+
+            .success-card {
+                padding: 30px 20px;
+            }
+
+            .success-card h1 {
+                font-size: 30px;
+            }
+        }
+
+    </style>
+
 </head>
 
 <body>
 
-<header class="success-header">
+<header>
 
-    <a href="index.html" class="success-logo">
+    <a
+        href="index.html"
+        class="brand"
+    >
         Jantar<span>Mantar</span>Kart
     </a>
 
-    <div class="secure-badge">
-        ✓ Order Secured
-    </div>
-
 </header>
 
+<main>
 
-<main class="success-wrapper">
-
-    <!-- SUCCESS HERO -->
-
-    <section class="success-hero">
+    <section class="success-card">
 
         <div class="success-icon">
             ✓
         </div>
 
-        <p class="eyebrow">
+        <small>
             ORDER CONFIRMED
-        </p>
+        </small>
 
         <h1>
-            Your order is on its way.
+            Thank You!
         </h1>
 
-        <p class="success-message">
-            Thank you for shopping with
-            <strong>JantarMantarKart</strong>.
+        <p>
             Your order has been successfully placed.
+            You can now track your delivery.
         </p>
 
-        <div class="order-number-box">
+        <div class="order-box">
 
             <span>
-                ORDER NUMBER
+                YOUR ORDER ID
             </span>
 
-            <strong id="order-number">
-                JMK-000000
+            <strong id="successOrderId">
+                Loading...
             </strong>
 
         </div>
 
-    </section>
-
-
-    <!-- CUSTOMER + DELIVERY -->
-
-    <section class="information-grid">
-
-        <div class="info-card">
-
-            <div class="info-icon">
-                👤
-            </div>
-
-            <div>
-
-                <p>
-                    CUSTOMER
-                </p>
-
-                <h2 id="customer-name">
-                    —
-                </h2>
-
-                <span id="customer-email">
-                    —
-                </span>
-
-                <span id="customer-phone">
-                    —
-                </span>
-
-            </div>
-
-        </div>
-
-
-        <div class="info-card">
-
-            <div class="info-icon">
-                📍
-            </div>
-
-            <div>
-
-                <p>
-                    DELIVERY ADDRESS
-                </p>
-
-                <h2 id="delivery-city">
-                    —
-                </h2>
-
-                <span id="delivery-address">
-                    —
-                </span>
-
-                <span id="delivery-state">
-                    —
-                </span>
-
-            </div>
-
-        </div>
-
-    </section>
-
-
-    <!-- ORDER CONTENT -->
-
-    <section class="order-section">
-
-        <div class="section-title">
-
-            <div>
-
-                <p>
-                    YOUR PURCHASE
-                </p>
-
-                <h2>
-                    Order Summary
-                </h2>
-
-            </div>
-
-            <span id="order-date">
-                —
-            </span>
-
-        </div>
-
-
-        <div id="ordered-products"
-             class="ordered-products">
-        </div>
-
-
-        <!-- TOTALS -->
-
-        <div class="totals-box">
-
-            <div class="total-row">
-
-                <span>
-                    Subtotal
-                </span>
-
-                <strong id="subtotal">
-                    $0.00
-                </strong>
-
-            </div>
-
-
-            <div class="total-row">
-
-                <span>
-                    Shipping
-                </span>
-
-                <strong id="shipping">
-                    $0.00
-                </strong>
-
-            </div>
-
-
-            <div class="total-line"></div>
-
-
-            <div class="grand-total">
-
-                <div>
-
-                    <span>
-                        TOTAL PAID
-                    </span>
-
-                    <small>
-                        USD
-                    </small>
-
-                </div>
-
-                <strong id="total">
-                    $0.00
-                </strong>
-
-            </div>
-
-        </div>
-
-    </section>
-
-
-    <!-- PAYMENT -->
-
-    <section class="payment-card">
-
-        <div class="payment-status-icon">
-            ✓
-        </div>
-
-        <div>
-
-            <p>
-                PAYMENT METHOD
-            </p>
-
-            <h2 id="payment-method">
-                —
-            </h2>
-
-            <span>
-                Your payment information has been securely processed.
-            </span>
-
-        </div>
-
-        <div class="payment-status">
-            CONFIRMED
-        </div>
-
-    </section>
-
-
-    <!-- NEXT STEPS -->
-
-    <section class="next-section">
-
-        <p class="eyebrow">
-            WHAT'S NEXT?
-        </p>
-
-        <h2>
-            We've got everything from here.
-        </h2>
-
-        <p>
-            Your order details have been saved.
-            Keep your order number handy for future reference.
-        </p>
-
-        <div class="action-buttons">
-
-            <a href="products.html"
-               class="primary-button">
-                Continue Shopping →
+        <div class="buttons">
+
+            <a
+                href="track-order.html"
+                class="button track"
+            >
+                📦 Track My Order
             </a>
 
-            <a href="index.html"
-               class="secondary-button">
-                Back to Home
+            <a
+                href="products.html"
+                class="button shop"
+            >
+                Continue Shopping
             </a>
 
         </div>
@@ -285,37 +235,40 @@
 
 </main>
 
+<footer>
 
-<footer class="success-footer">
-
-    <div>
-
-        <strong>
-            Jantar<span>Mantar</span>Kart
-        </strong>
-
-        <p>
-            Curated everyday essentials.
-        </p>
-
-    </div>
-
-    <div>
-
-        <span>
-            © 2026 JantarMantarKart
-        </span>
-
-        <span>
-            Secure Shopping
-        </span>
-
-    </div>
+    © 2026 JantarMantarKart.
+    All rights reserved.
 
 </footer>
 
+<script>
 
-<script src="order-success.js"></script>
+    const lastOrder =
+        JSON.parse(
+            localStorage.getItem(
+                "jantarMantarKartLastOrder"
+            )
+        );
+
+    const orderIdElement =
+        document.getElementById(
+            "successOrderId"
+        );
+
+    if (lastOrder) {
+
+        orderIdElement.textContent =
+            lastOrder.id;
+
+    } else {
+
+        orderIdElement.textContent =
+            "Order not found";
+
+    }
+
+</script>
 
 </body>
 

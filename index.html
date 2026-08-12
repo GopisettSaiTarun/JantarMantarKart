@@ -8,628 +8,1201 @@
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0">
 
-    <title>JantarMantarKart | Curated Everyday</title>
+    <title>JantarMantarKart | Modern Shopping</title>
 
-    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="style.css">
 
-    <!-- AI SHOPPING ASSISTANT -->
-    <link rel="stylesheet" href="./ai-assistant.css">
-    <script src="./ai-assistant.js" defer></script>
+    <style>
+
+        /* =====================================================
+           JANTARMANTARKART HOME PAGE
+        ===================================================== */
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f6f6f2;
+            color: #111;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        button,
+        input {
+            font-family: inherit;
+        }
+
+
+        /* =====================================================
+           NAVBAR
+        ===================================================== */
+
+        .home-nav {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: rgba(255,255,255,.94);
+            backdrop-filter: blur(18px);
+            border-bottom: 1px solid #e8e8e3;
+        }
+
+        .home-nav-inner {
+            width: 94%;
+            max-width: 1250px;
+            margin: auto;
+            min-height: 72px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 25px;
+        }
+
+        .home-brand {
+            font-size: 22px;
+            font-weight: 900;
+            letter-spacing: -1px;
+            white-space: nowrap;
+            color: #111;
+        }
+
+        .home-brand span {
+            color: #777;
+        }
+
+        .home-nav-links {
+            display: flex;
+            align-items: center;
+            gap: 22px;
+        }
+
+        .home-nav-links a {
+            color: #333;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .home-nav-links a:hover {
+            color: #777;
+        }
+
+        .nav-pill {
+            background: #111;
+            color: #fff !important;
+            padding: 11px 16px;
+            border-radius: 30px;
+        }
+
+        .nav-count {
+            display: inline-flex;
+            min-width: 18px;
+            height: 18px;
+            padding: 0 5px;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: #111;
+            color: #fff;
+            font-size: 9px;
+            margin-left: 3px;
+        }
+
+
+        /* =====================================================
+           HERO
+        ===================================================== */
+
+        .hero {
+            width: 94%;
+            max-width: 1250px;
+            margin: 28px auto 0;
+
+            min-height: 570px;
+
+            border-radius: 30px;
+            overflow: hidden;
+
+            background:
+                radial-gradient(
+                    circle at 80% 20%,
+                    #555 0,
+                    #222 20%,
+                    #111 55%,
+                    #050505 100%
+                );
+
+            color: #fff;
+
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .hero::before {
+            content: "";
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            border: 1px solid rgba(255,255,255,.12);
+            border-radius: 50%;
+            right: -100px;
+            top: -100px;
+        }
+
+        .hero::after {
+            content: "";
+            position: absolute;
+            width: 250px;
+            height: 250px;
+            border: 1px solid rgba(255,255,255,.08);
+            border-radius: 50%;
+            right: 70px;
+            bottom: -100px;
+        }
+
+        .hero-content {
+            width: 58%;
+            padding: 70px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-label {
+            display: inline-block;
+            padding: 8px 13px;
+            border: 1px solid rgba(255,255,255,.2);
+            border-radius: 30px;
+            font-size: 9px;
+            letter-spacing: 2px;
+            color: #bbb;
+            margin-bottom: 22px;
+        }
+
+        .hero h1 {
+            margin: 0;
+            font-size: clamp(48px, 6vw, 82px);
+            line-height: .92;
+            letter-spacing: -5px;
+        }
+
+        .hero h1 span {
+            color: #aaa;
+        }
+
+        .hero p {
+            max-width: 510px;
+            color: #aaa;
+            font-size: 13px;
+            line-height: 1.8;
+            margin: 28px 0;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .hero-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 15px 23px;
+            border-radius: 9px;
+            font-size: 10px;
+            font-weight: 800;
+            transition: .2s;
+        }
+
+        .hero-button.primary {
+            background: #fff;
+            color: #111;
+        }
+
+        .hero-button.secondary {
+            border: 1px solid #444;
+            color: #fff;
+            background: rgba(255,255,255,.04);
+        }
+
+        .hero-button:hover {
+            transform: translateY(-2px);
+        }
+
+        .hero-side {
+            position: absolute;
+            right: 70px;
+            width: 330px;
+            height: 330px;
+            border-radius: 50%;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #444,
+                    #111
+                );
+
+            border: 1px solid #444;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            z-index: 1;
+        }
+
+        .hero-side-inner {
+            width: 220px;
+            height: 220px;
+            border-radius: 50%;
+            border: 1px solid #555;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            text-align: center;
+        }
+
+        .hero-side-inner strong {
+            display: block;
+            font-size: 55px;
+            line-height: 1;
+        }
+
+        .hero-side-inner small {
+            display: block;
+            color: #999;
+            font-size: 9px;
+            letter-spacing: 2px;
+            margin-top: 8px;
+        }
+
+
+        /* =====================================================
+           QUICK ACTIONS
+        ===================================================== */
+
+        .quick-actions {
+            width: 94%;
+            max-width: 1050px;
+            margin: 30px auto;
+
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+        }
+
+        .quick-card {
+            background: #fff;
+            border: 1px solid #e6e6e1;
+            border-radius: 15px;
+            padding: 18px;
+            color: #111;
+
+            transition: .2s;
+        }
+
+        .quick-card:hover {
+            transform: translateY(-3px);
+            border-color: #bbb;
+        }
+
+        .quick-icon {
+            font-size: 22px;
+            margin-bottom: 10px;
+        }
+
+        .quick-card strong {
+            display: block;
+            font-size: 12px;
+        }
+
+        .quick-card span {
+            display: block;
+            color: #999;
+            font-size: 9px;
+            margin-top: 5px;
+        }
+
+
+        /* =====================================================
+           SECTION
+        ===================================================== */
+
+        .home-section {
+            width: 94%;
+            max-width: 1250px;
+            margin: 70px auto;
+        }
+
+        .section-heading {
+            display: flex;
+            align-items: end;
+            justify-content: space-between;
+            margin-bottom: 25px;
+        }
+
+        .section-heading small {
+            color: #999;
+            font-size: 9px;
+            letter-spacing: 2px;
+        }
+
+        .section-heading h2 {
+            margin: 7px 0 0;
+            font-size: 30px;
+            letter-spacing: -1.5px;
+        }
+
+        .view-all {
+            color: #111;
+            font-size: 10px;
+            font-weight: 800;
+            border-bottom: 1px solid #111;
+            padding-bottom: 4px;
+        }
+
+
+        /* =====================================================
+           PRODUCT GRID
+        ===================================================== */
+
+        #homeProducts {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+        }
+
+        .home-product {
+            background: #fff;
+            border: 1px solid #e6e6e1;
+            border-radius: 17px;
+            overflow: hidden;
+            transition: .25s;
+        }
+
+        .home-product:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,.08);
+        }
+
+        .home-product-image {
+            height: 230px;
+            background: #f0f0ec;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .home-product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: .4s;
+        }
+
+        .home-product:hover img {
+            transform: scale(1.04);
+        }
+
+        .product-tag {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: #111;
+            color: #fff;
+            padding: 7px 9px;
+            border-radius: 6px;
+            font-size: 8px;
+            font-weight: 800;
+        }
+
+        .home-product-info {
+            padding: 15px;
+        }
+
+        .home-product-info small {
+            color: #999;
+            font-size: 8px;
+        }
+
+        .home-product-info h3 {
+            margin: 7px 0;
+            font-size: 13px;
+        }
+
+        .home-product-info p {
+            color: #777;
+            font-size: 9px;
+            line-height: 1.5;
+            min-height: 28px;
+        }
+
+        .home-product-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 12px;
+        }
+
+        .home-product-price {
+            font-size: 14px;
+            font-weight: 900;
+        }
+
+        .home-product-button {
+            border: none;
+            background: #111;
+            color: #fff;
+            border-radius: 7px;
+            padding: 9px 11px;
+            font-size: 8px;
+            font-weight: 800;
+            cursor: pointer;
+        }
+
+        .home-product-button:hover {
+            background: #333;
+        }
+
+
+        /* =====================================================
+           FEATURE BANNER
+        ===================================================== */
+
+        .feature-banner {
+            background: #111;
+            color: #fff;
+            border-radius: 25px;
+            padding: 45px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .feature-banner small {
+            color: #777;
+            letter-spacing: 2px;
+            font-size: 8px;
+        }
+
+        .feature-banner h2 {
+            font-size: 34px;
+            letter-spacing: -1.5px;
+            margin: 10px 0;
+        }
+
+        .feature-banner p {
+            color: #999;
+            font-size: 10px;
+            max-width: 500px;
+            line-height: 1.7;
+        }
+
+        .feature-button {
+            flex-shrink: 0;
+            background: #fff;
+            color: #111;
+            padding: 15px 22px;
+            border-radius: 9px;
+            font-size: 9px;
+            font-weight: 900;
+        }
+
+
+        /* =====================================================
+           FOOTER
+        ===================================================== */
+
+        .home-footer {
+            background: #111;
+            color: #fff;
+            padding: 50px 5%;
+            margin-top: 80px;
+        }
+
+        .footer-grid {
+            max-width: 1250px;
+            margin: auto;
+
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 35px;
+        }
+
+        .footer-brand {
+            font-size: 22px;
+            font-weight: 900;
+        }
+
+        .footer-grid p {
+            color: #777;
+            font-size: 10px;
+            line-height: 1.8;
+            max-width: 300px;
+        }
+
+        .footer-grid h4 {
+            font-size: 10px;
+            margin: 0 0 15px;
+            letter-spacing: 1px;
+        }
+
+        .footer-grid a {
+            display: block;
+            color: #777;
+            font-size: 9px;
+            margin: 9px 0;
+        }
+
+        .footer-grid a:hover {
+            color: #fff;
+        }
+
+        .footer-bottom {
+            max-width: 1250px;
+            margin: 40px auto 0;
+            padding-top: 20px;
+            border-top: 1px solid #292929;
+            color: #555;
+            font-size: 9px;
+        }
+
+
+        /* =====================================================
+           AI ASSISTANT
+        ===================================================== */
+
+        .ai-launcher {
+            position: fixed;
+            right: 25px;
+            bottom: 25px;
+            width: 62px;
+            height: 62px;
+
+            border: none;
+            border-radius: 50%;
+
+            background: #111;
+            color: #fff;
+
+            cursor: pointer;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 25px;
+
+            box-shadow:
+                0 12px 35px rgba(0,0,0,.25);
+
+            z-index: 5000;
+
+            transition: .25s;
+        }
+
+        .ai-launcher:hover {
+            transform: translateY(-4px) scale(1.04);
+        }
+
+        .ai-launcher-pulse {
+            position: absolute;
+            inset: -5px;
+            border: 1px solid rgba(0,0,0,.25);
+            border-radius: 50%;
+            animation: aiPulse 2s infinite;
+        }
+
+        @keyframes aiPulse {
+
+            0% {
+                transform: scale(.95);
+                opacity: 1;
+            }
+
+            70% {
+                transform: scale(1.25);
+                opacity: 0;
+            }
+
+            100% {
+                opacity: 0;
+            }
+
+        }
+
+
+        /* =====================================================
+           AI CHAT WINDOW
+        ===================================================== */
+
+        .ai-chat {
+
+            position: fixed;
+
+            right: 25px;
+            bottom: 100px;
+
+            width: 360px;
+            max-width: calc(100vw - 30px);
+            height: 540px;
+
+            background: rgba(255,255,255,.97);
+
+            border: 1px solid #deded9;
+            border-radius: 24px;
+
+            box-shadow:
+                0 25px 70px rgba(0,0,0,.20);
+
+            overflow: hidden;
+
+            display: none;
+            flex-direction: column;
+
+            z-index: 4999;
+
+            animation: aiOpen .25s ease;
+        }
+
+        .ai-chat.open {
+            display: flex;
+        }
+
+        @keyframes aiOpen {
+
+            from {
+                opacity: 0;
+                transform: translateY(15px) scale(.97);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+
+        }
+
+
+        /* =====================================================
+           AI HEADER
+        ===================================================== */
+
+        .ai-header {
+
+            background: #111;
+            color: #fff;
+
+            padding: 18px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .ai-header-left {
+
+            display: flex;
+            align-items: center;
+            gap: 12px;
+
+        }
+
+        .ai-avatar {
+
+            width: 42px;
+            height: 42px;
+
+            border-radius: 14px;
+
+            background: #fff;
+            color: #111;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 20px;
+        }
+
+        .ai-header-text strong {
+
+            display: block;
+            font-size: 13px;
+
+        }
+
+        .ai-header-text span {
+
+            display: block;
+
+            color: #999;
+
+            font-size: 9px;
+
+            margin-top: 4px;
+
+        }
+
+        .ai-online {
+
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .ai-online-dot {
+
+            width: 6px;
+            height: 6px;
+
+            background: #fff;
+
+            border-radius: 50%;
+        }
+
+        .ai-close {
+
+            border: none;
+
+            background: transparent;
+
+            color: #fff;
+
+            font-size: 22px;
+
+            cursor: pointer;
+        }
+
+
+        /* =====================================================
+           AI MESSAGES
+        ===================================================== */
+
+        .ai-messages {
+
+            flex: 1;
+
+            padding: 18px;
+
+            overflow-y: auto;
+
+            background: #f7f7f4;
+        }
+
+        .ai-message {
+
+            max-width: 85%;
+
+            padding: 11px 13px;
+
+            border-radius: 14px;
+
+            margin-bottom: 10px;
+
+            font-size: 11px;
+
+            line-height: 1.55;
+
+        }
+
+        .ai-message.bot {
+
+            background: #fff;
+
+            border: 1px solid #e5e5e0;
+
+            color: #222;
+
+            border-bottom-left-radius: 4px;
+
+        }
+
+        .ai-message.user {
+
+            margin-left: auto;
+
+            background: #111;
+
+            color: #fff;
+
+            border-bottom-right-radius: 4px;
+
+        }
+
+        .ai-time {
+
+            display: block;
+
+            margin-top: 5px;
+
+            font-size: 8px;
+
+            opacity: .5;
+        }
+
+
+        /* =====================================================
+           AI QUICK QUESTIONS
+        ===================================================== */
+
+        .ai-suggestions {
+
+            padding: 10px 14px;
+
+            display: flex;
+
+            gap: 7px;
+
+            overflow-x: auto;
+
+            background: #fff;
+
+            border-top: 1px solid #e8e8e3;
+        }
+
+        .ai-suggestion {
+
+            white-space: nowrap;
+
+            border: 1px solid #ddd;
+
+            background: #fff;
+
+            color: #333;
+
+            border-radius: 20px;
+
+            padding: 7px 10px;
+
+            font-size: 8px;
+
+            cursor: pointer;
+        }
+
+        .ai-suggestion:hover {
+
+            background: #111;
+            color: #fff;
+            border-color: #111;
+
+        }
+
+
+        /* =====================================================
+           AI INPUT
+        ===================================================== */
+
+        .ai-input-area {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            padding: 12px;
+
+            background: #fff;
+
+            border-top: 1px solid #e5e5e0;
+        }
+
+        .ai-input {
+
+            flex: 1;
+
+            border: 1px solid #ddd;
+
+            outline: none;
+
+            border-radius: 13px;
+
+            padding: 12px;
+
+            font-size: 11px;
+
+            background: #f7f7f4;
+        }
+
+        .ai-input:focus {
+
+            border-color: #111;
+
+        }
+
+        .ai-send {
+
+            width: 42px;
+            height: 42px;
+
+            border: none;
+
+            border-radius: 13px;
+
+            background: #111;
+
+            color: #fff;
+
+            cursor: pointer;
+
+            font-size: 17px;
+
+        }
+
+
+        /* =====================================================
+           TYPING
+        ===================================================== */
+
+        .ai-typing {
+
+            display: none;
+
+            width: fit-content;
+
+            padding: 10px 13px;
+
+            background: #fff;
+
+            border: 1px solid #e5e5e0;
+
+            border-radius: 14px;
+
+            margin-bottom: 10px;
+
+        }
+
+        .ai-typing span {
+
+            display: inline-block;
+
+            width: 5px;
+            height: 5px;
+
+            background: #777;
+
+            border-radius: 50%;
+
+            margin: 0 2px;
+
+            animation: typing .8s infinite alternate;
+
+        }
+
+        .ai-typing span:nth-child(2) {
+            animation-delay: .2s;
+        }
+
+        .ai-typing span:nth-child(3) {
+            animation-delay: .4s;
+        }
+
+        @keyframes typing {
+
+            from {
+                opacity: .2;
+                transform: translateY(0);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(-3px);
+            }
+
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ===================================================== */
+
+        @media(max-width: 1000px) {
+
+            .hero-content {
+                width: 70%;
+                padding: 50px;
+            }
+
+            .hero-side {
+                right: 30px;
+                width: 250px;
+                height: 250px;
+            }
+
+            .hero-side-inner {
+                width: 170px;
+                height: 170px;
+            }
+
+            #homeProducts {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .quick-actions {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+        }
+
+
+        @media(max-width: 750px) {
+
+            .home-nav-inner {
+                min-height: 60px;
+            }
+
+            .home-nav-links {
+                gap: 10px;
+            }
+
+            .home-nav-links a:nth-child(1),
+            .home-nav-links a:nth-child(2),
+            .home-nav-links a:nth-child(3) {
+                display: none;
+            }
+
+            .hero {
+                min-height: 550px;
+            }
+
+            .hero-content {
+                width: 100%;
+                padding: 40px 30px;
+            }
+
+            .hero h1 {
+                font-size: 55px;
+                letter-spacing: -3px;
+            }
+
+            .hero-side {
+                opacity: .25;
+                right: -40px;
+                bottom: -20px;
+            }
+
+            #homeProducts {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .feature-banner {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 30px;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+        }
+
+
+        @media(max-width: 500px) {
+
+            .home-brand {
+                font-size: 18px;
+            }
+
+            .home-nav-links a:nth-child(4) {
+                display: none;
+            }
+
+            .hero {
+                border-radius: 20px;
+            }
+
+            .hero-content {
+                padding: 35px 22px;
+            }
+
+            .hero h1 {
+                font-size: 47px;
+            }
+
+            #homeProducts {
+                grid-template-columns: 1fr 1fr;
+                gap: 9px;
+            }
+
+            .home-product-image {
+                height: 170px;
+            }
+
+            .home-product-info {
+                padding: 11px;
+            }
+
+            .quick-actions {
+                gap: 8px;
+            }
+
+            .quick-card {
+                padding: 13px;
+            }
+
+            .section-heading h2 {
+                font-size: 24px;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .ai-chat {
+
+                right: 15px;
+                bottom: 90px;
+
+                width: calc(100vw - 30px);
+
+                height: 500px;
+
+            }
+
+            .ai-launcher {
+
+                right: 17px;
+                bottom: 17px;
+
+            }
+
+        }
+
+    </style>
 
 </head>
+
 
 <body>
 
 
-<!-- =========================================
+<!-- =====================================================
      NAVIGATION
-========================================= -->
+===================================================== -->
 
-<header class="site-header">
+<header class="home-nav">
 
-    <nav class="navbar">
+    <div class="home-nav-inner">
 
-        <a href="index.html" class="brand">
-
-            <span class="brand-main">
-                Jantar
-            </span>
-
-            <span class="brand-accent">
-                Mantar
-            </span>
-
-            <span class="brand-main">
-                Kart
-            </span>
-
+        <a href="index.html" class="home-brand">
+            Jantar<span>Mantar</span>Kart
         </a>
 
 
-        <div class="nav-links">
-
-            <a href="index.html" class="active">
-                Home
-            </a>
-
-            <a href="products.html">
-                Products
-            </a>
-
-            <a href="wishlist.html">
-                Wishlist
-                <span class="nav-count"
-                      id="wishlist-count">
-                    0
-                </span>
-            </a>
-
-            <a href="cart.html">
-                Cart
-                <span class="nav-count"
-                      id="cart-count">
-                    0
-                </span>
-            </a>
-
-            <a href="#"
-               onclick="logout(); return false;">
-                Logout
-            </a>
-
-        </div>
-
-    </nav>
-
-</header>
-
-
-
-<!-- =========================================
-     ANNOUNCEMENT
-========================================= -->
-
-<div class="announcement">
-
-    <div class="announcement-track">
-
-        <span>
-            ✦ FREE SHIPPING ABOVE $100
-        </span>
-
-        <span>
-            ✦ CURATED EVERYDAY ESSENTIALS
-        </span>
-
-        <span>
-            ✦ SECURE CHECKOUT
-        </span>
-
-        <span>
-            ✦ EASY RETURNS
-        </span>
-
-        <span>
-            ✦ FREE SHIPPING ABOVE $100
-        </span>
-
-        <span>
-            ✦ CURATED EVERYDAY ESSENTIALS
-        </span>
-
-    </div>
-
-</div>
-
-
-
-<!-- =========================================
-     HERO
-========================================= -->
-
-<main>
-
-<section class="hero-section">
-
-    <div class="hero-grid">
-
-
-        <!-- LEFT -->
-
-        <div class="hero-copy">
-
-            <div class="eyebrow">
-
-                <span class="eyebrow-dot"></span>
-
-                THE EVERYDAY EDIT
-
-            </div>
-
-
-            <h1>
-
-                Things worth
-                <span>having.</span>
-
-            </h1>
-
-
-            <p class="hero-text">
-
-                A carefully curated collection of
-                everyday products designed to make
-                modern life a little better.
-
-            </p>
-
-
-            <div class="hero-actions">
-
-                <a href="products.html"
-                   class="primary-button">
-
-                    Explore Collection
-
-                    <span>↗</span>
-
-                </a>
-
-
-                <a href="wishlist.html"
-                   class="secondary-button">
-
-                    Your Wishlist
-
-                    <span>♡</span>
-
-                </a>
-
-            </div>
-
-
-            <div class="hero-note">
-
-                <span>●</span>
-
-                New drops added regularly
-
-            </div>
-
-        </div>
-
-
-
-        <!-- RIGHT -->
-
-        <div class="hero-art">
-
-            <div class="art-glow"></div>
-
-
-            <div class="floating-card card-top">
-
-                <span class="mini-icon">
-                    ✦
-                </span>
-
-                <div>
-
-                    <strong>
-                        Curated
-                    </strong>
-
-                    <small>
-                        Not crowded
-                    </small>
-
-                </div>
-
-            </div>
-
-
-            <div class="main-art-card">
-
-                <div class="art-number">
-                    01
-                </div>
-
-                <div class="art-circle">
-
-                    <div class="circle-inner">
-                        JMK
-                    </div>
-
-                </div>
-
-
-                <div class="art-label">
-
-                    <span>
-                        JANTARMANTARKART
-                    </span>
-
-                    <strong>
-                        EVERYDAY.
-                    </strong>
-
-                </div>
-
-            </div>
-
-
-            <div class="floating-card card-bottom">
-
-                <span class="mini-icon">
-                    ✓
-                </span>
-
-                <div>
-
-                    <strong>
-                        Secure
-                    </strong>
-
-                    <small>
-                        Shopping
-                    </small>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-
-<!-- =========================================
-     STATS
-========================================= -->
-
-<section class="stats-section">
-
-    <div class="stat">
-
-        <strong>
-            100%
-        </strong>
-
-        <span>
-            Curated
-        </span>
-
-    </div>
-
-
-    <div class="stat">
-
-        <strong>
-            24/7
-        </strong>
-
-        <span>
-            Shopping
-        </span>
-
-    </div>
-
-
-    <div class="stat">
-
-        <strong>
-            $0
-        </strong>
-
-        <span>
-            Hidden Fees
-        </span>
-
-    </div>
-
-
-    <div class="stat">
-
-        <strong>
-            ∞
-        </strong>
-
-        <span>
-            Possibilities
-        </span>
-
-    </div>
-
-</section>
-
-
-
-<!-- =========================================
-     CATEGORY SECTION
-========================================= -->
-
-<section class="category-section">
-
-    <div class="section-heading">
-
-        <div>
-
-            <p class="section-label">
-                EXPLORE
-            </p>
-
-            <h2>
-                Shop by mood.
-            </h2>
-
-        </div>
-
-
-        <a href="products.html"
-           class="text-link">
-
-            View all products →
-
-        </a>
-
-    </div>
-
-
-    <div class="category-grid">
-
-
-        <a href="products.html"
-           class="category-card category-large">
-
-            <div class="category-number">
-                01
-            </div>
-
-            <div class="category-content">
-
-                <span>
-                    TECH & GADGETS
-                </span>
-
-                <h3>
-                    Smart<br>
-                    Living.
-                </h3>
-
-                <p>
-                    Devices that fit your
-                    everyday rhythm.
-                </p>
-
-            </div>
-
-            <div class="category-arrow">
-                ↗
-            </div>
-
-        </a>
-
-
-
-        <a href="products.html"
-           class="category-card category-orange">
-
-            <div class="category-number">
-                02
-            </div>
-
-            <div class="category-content">
-
-                <span>
-                    LIFESTYLE
-                </span>
-
-                <h3>
-                    Live<br>
-                    Better.
-                </h3>
-
-            </div>
-
-            <div class="category-arrow">
-                ↗
-            </div>
-
-        </a>
-
-
-
-        <a href="products.html"
-           class="category-card category-light">
-
-            <div class="category-number">
-                03
-            </div>
-
-            <div class="category-content">
-
-                <span>
-                    ESSENTIALS
-                </span>
-
-                <h3>
-                    Simple<br>
-                    Things.
-                </h3>
-
-            </div>
-
-            <div class="category-arrow">
-                ↗
-            </div>
-
-        </a>
-
-    </div>
-
-</section>
-
-
-
-<!-- =========================================
-     WHY SECTION
-========================================= -->
-
-<section class="why-section">
-
-    <div class="why-intro">
-
-        <p class="section-label">
-            WHY JMK?
-        </p>
-
-        <h2>
-            Less scrolling.<br>
-            Better choices.
-        </h2>
-
-    </div>
-
-
-    <div class="why-list">
-
-
-        <div class="why-item">
-
-            <span>
-                01
-            </span>
-
-            <div>
-
-                <h3>
-                    Carefully Selected
-                </h3>
-
-                <p>
-                    We focus on useful products
-                    instead of endless choices.
-                </p>
-
-            </div>
-
-        </div>
-
-
-
-        <div class="why-item">
-
-            <span>
-                02
-            </span>
-
-            <div>
-
-                <h3>
-                    Straightforward Pricing
-                </h3>
-
-                <p>
-                    What you see is what you pay.
-                    No unnecessary surprises.
-                </p>
-
-            </div>
-
-        </div>
-
-
-
-        <div class="why-item">
-
-            <span>
-                03
-            </span>
-
-            <div>
-
-                <h3>
-                    Designed for Everyone
-                </h3>
-
-                <p>
-                    A clean shopping experience
-                    across desktop and mobile.
-                </p>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-
-<!-- =========================================
-     CTA
-========================================= -->
-
-<section class="final-cta">
-
-    <div class="cta-symbol">
-        +
-    </div>
-
-    <p class="section-label">
-        READY?
-    </p>
-
-    <h2>
-        Your next favorite<br>
-        thing is waiting.
-    </h2>
-
-    <a href="products.html"
-       class="primary-button">
-
-        Start Shopping
-
-        <span>↗</span>
-
-    </a>
-
-</section>
-
-</main>
-
-
-
-<!-- =========================================
-     FOOTER
-========================================= -->
-
-<footer>
-
-    <div class="footer-top">
-
-        <div>
-
-            <a href="index.html"
-               class="footer-logo">
-
-                Jantar<span>Mantar</span>Kart
-
-            </a>
-
-            <p>
-                Curated everyday essentials
-                for modern living.
-            </p>
-
-        </div>
-
-
-        <div class="footer-links">
+        <nav class="home-nav-links">
 
             <a href="index.html">
                 Home
@@ -641,14 +1214,354 @@
 
             <a href="wishlist.html">
                 Wishlist
+                <span
+                    class="nav-count"
+                    id="wishlist-count"
+                >0</span>
+            </a>
+
+            <a href="cart.html">
+                Cart
+                <span
+                    class="nav-count"
+                    id="cart-count"
+                >0</span>
+            </a>
+
+            <a href="track-order.html">
+                Track Order
+            </a>
+
+            <a href="contact.html">
+                Contact
+            </a>
+
+            <a
+                href="signin.html"
+                class="nav-pill"
+            >
+                Login
+            </a>
+
+        </nav>
+
+    </div>
+
+</header>
+
+
+<!-- =====================================================
+     HERO
+===================================================== -->
+
+<section class="hero">
+
+    <div class="hero-content">
+
+        <div class="hero-label">
+            THE NEW WAY TO SHOP
+        </div>
+
+        <h1>
+            SHOP<br>
+            <span>WITHOUT</span><br>
+            LIMITS.
+        </h1>
+
+        <p>
+            Discover carefully selected products,
+            simple pricing and a smarter shopping
+            experience — all in one place.
+        </p>
+
+        <div class="hero-buttons">
+
+            <a
+                href="products.html"
+                class="hero-button primary"
+            >
+                Explore Products →
+            </a>
+
+            <a
+                href="track-order.html"
+                class="hero-button secondary"
+            >
+                📦 Track My Order
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <div class="hero-side">
+
+        <div class="hero-side-inner">
+
+            <div>
+
+                <strong>MK</strong>
+
+                <small>
+                    JANTARMANTARKART
+                </small>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     QUICK ACTIONS
+===================================================== -->
+
+<section class="quick-actions">
+
+
+    <a
+        href="products.html"
+        class="quick-card"
+    >
+
+        <div class="quick-icon">
+            🛍️
+        </div>
+
+        <strong>
+            Shop Products
+        </strong>
+
+        <span>
+            Explore the collection
+        </span>
+
+    </a>
+
+
+    <a
+        href="cart.html"
+        class="quick-card"
+    >
+
+        <div class="quick-icon">
+            🛒
+        </div>
+
+        <strong>
+            My Cart
+        </strong>
+
+        <span>
+            Review your shopping cart
+        </span>
+
+    </a>
+
+
+    <a
+        href="track-order.html"
+        class="quick-card"
+    >
+
+        <div class="quick-icon">
+            📦
+        </div>
+
+        <strong>
+            Track My Order
+        </strong>
+
+        <span>
+            Available even when logged out
+        </span>
+
+    </a>
+
+
+    <a
+        href="contact.html"
+        class="quick-card"
+    >
+
+        <div class="quick-icon">
+            💬
+        </div>
+
+        <strong>
+            Contact Us
+        </strong>
+
+        <span>
+            Need help? Talk to us
+        </span>
+
+    </a>
+
+</section>
+
+
+<!-- =====================================================
+     PRODUCTS
+===================================================== -->
+
+<section class="home-section">
+
+    <div class="section-heading">
+
+        <div>
+
+            <small>
+                CURATED FOR YOU
+            </small>
+
+            <h2>
+                Popular Products
+            </h2>
+
+        </div>
+
+        <a
+            href="products.html"
+            class="view-all"
+        >
+            View All →
+        </a>
+
+    </div>
+
+
+    <div id="homeProducts"></div>
+
+</section>
+
+
+<!-- =====================================================
+     FEATURE BANNER
+===================================================== -->
+
+<section class="home-section">
+
+    <div class="feature-banner">
+
+        <div>
+
+            <small>
+                SHOPPING MADE SIMPLE
+            </small>
+
+            <h2>
+                Find it.<br>
+                Add it.<br>
+                Love it.
+            </h2>
+
+            <p>
+                Browse products, save your favourites,
+                add items to your cart and checkout
+                whenever you're ready.
+            </p>
+
+        </div>
+
+
+        <a
+            href="products.html"
+            class="feature-button"
+        >
+            START SHOPPING →
+        </a>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
+<footer class="home-footer">
+
+    <div class="footer-grid">
+
+        <div>
+
+            <div class="footer-brand">
+                JantarMantarKart
+            </div>
+
+            <p>
+                Your modern destination for everyday
+                shopping. Simple, fast and designed
+                around you.
+            </p>
+
+        </div>
+
+
+        <div>
+
+            <h4>
+                SHOP
+            </h4>
+
+            <a href="products.html">
+                Products
+            </a>
+
+            <a href="wishlist.html">
+                Wishlist
             </a>
 
             <a href="cart.html">
                 Cart
             </a>
 
+        </div>
+
+
+        <div>
+
+            <h4>
+                ORDERS
+            </h4>
+
+            <a href="track-order.html">
+                Track Order
+            </a>
+
+            <a href="signin.html">
+                Login
+            </a>
+
             <a href="contact.html">
                 Contact Us
+            </a>
+
+        </div>
+
+
+        <div>
+
+            <h4>
+                JANTARMANTARKART
+            </h4>
+
+            <a href="index.html">
+                Home
+            </a>
+
+            <a href="products.html">
+                Explore
+            </a>
+
+            <a href="contact.html">
+                Support
             </a>
 
         </div>
@@ -658,13 +1571,8 @@
 
     <div class="footer-bottom">
 
-        <span>
-            © 2026 JantarMantarKart
-        </span>
-
-        <span>
-            Built for better shopping.
-        </span>
+        © 2026 JantarMantarKart.
+        All rights reserved.
 
     </div>
 
@@ -672,88 +1580,1267 @@
 
 
 
-<!-- =========================================
-     AUTH
-========================================= -->
+<!-- =====================================================
+     AI ASSISTANT BUTTON
+===================================================== -->
 
-<script src="./auth.js"></script>
+<button
+    id="ai-launcher"
+    class="ai-launcher"
+    type="button"
+    aria-label="Open JantarMantarKart AI Assistant"
+>
+
+    <span class="ai-launcher-pulse"></span>
+
+    ✦
+
+</button>
 
 
 
-<!-- =========================================
-     COUNTERS
-========================================= -->
+<!-- =====================================================
+     AI ASSISTANT
+===================================================== -->
+
+<div
+    id="ai-chat"
+    class="ai-chat"
+    aria-hidden="true"
+>
+
+
+    <!-- AI HEADER -->
+
+    <div class="ai-header">
+
+        <div class="ai-header-left">
+
+            <div class="ai-avatar">
+                ✦
+            </div>
+
+            <div class="ai-header-text">
+
+                <strong>
+                    JMK Assistant
+                </strong>
+
+                <span class="ai-online">
+
+                    <i class="ai-online-dot"></i>
+
+                    Online • Shopping Assistant
+
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <button
+            id="ai-close"
+            class="ai-close"
+            type="button"
+            aria-label="Close AI Assistant"
+        >
+            ×
+        </button>
+
+    </div>
+
+
+
+    <!-- MESSAGES -->
+
+    <div
+        id="ai-messages"
+        class="ai-messages"
+    >
+
+        <div class="ai-message bot">
+
+            👋 Hi! I'm your
+            <strong>JMK Assistant</strong>.
+
+            <br><br>
+
+            I can help you find products,
+            understand your cart, track orders,
+            or answer questions about
+            JantarMantarKart.
+
+            <span class="ai-time">
+                Just now
+            </span>
+
+        </div>
+
+
+        <div
+            id="ai-typing"
+            class="ai-typing"
+        >
+
+            <span></span>
+            <span></span>
+            <span></span>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- QUICK QUESTIONS -->
+
+    <div class="ai-suggestions">
+
+        <button
+            class="ai-suggestion"
+            data-question="Show me products"
+        >
+            🛍️ Products
+        </button>
+
+        <button
+            class="ai-suggestion"
+            data-question="What's in my cart?"
+        >
+            🛒 My Cart
+        </button>
+
+        <button
+            class="ai-suggestion"
+            data-question="How can I track my order?"
+        >
+            📦 Track Order
+        </button>
+
+        <button
+            class="ai-suggestion"
+            data-question="How can I contact you?"
+        >
+            💬 Contact
+        </button>
+
+    </div>
+
+
+
+    <!-- INPUT -->
+
+    <div class="ai-input-area">
+
+        <input
+            id="ai-input"
+            class="ai-input"
+            type="text"
+            placeholder="Ask me anything..."
+            autocomplete="off"
+        >
+
+        <button
+            id="ai-send"
+            class="ai-send"
+            type="button"
+            aria-label="Send message"
+        >
+            ↑
+        </button>
+
+    </div>
+
+</div>
+
+
+
+<!-- =====================================================
+     JAVASCRIPT
+===================================================== -->
+
+<script src="auth.js"></script>
+
+<script src="cart.js"></script>
+
 
 <script>
 
-function updateHomeCounters() {
+    /* =====================================================
+       PRODUCT STORAGE
+    ===================================================== */
+
+    const HOME_PRODUCTS_KEY =
+        "jantarMantarKartProducts";
 
 
-    /* CART */
+    function getHomeProducts() {
 
-    const cart =
-        JSON.parse(
-            localStorage.getItem(
-                "jantarMantarKartCart"
-            )
-        ) || [];
+        try {
+
+            const products =
+                JSON.parse(
+                    localStorage.getItem(
+                        HOME_PRODUCTS_KEY
+                    )
+                );
+
+            return Array.isArray(products)
+                ? products
+                : [];
+
+        } catch (error) {
+
+            return [];
+
+        }
+
+    }
 
 
-    let cartTotal = 0;
+    /* =====================================================
+       ESCAPE HTML
+    ===================================================== */
+
+    function homeEscape(value) {
+
+        return String(value ?? "")
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+
+    }
 
 
-    cart.forEach(function(item) {
+    /* =====================================================
+       LOAD HOME PRODUCTS
+    ===================================================== */
 
-        cartTotal +=
-            Number(
-                item.quantity || 0
+    function renderHomeProducts(products) {
+
+        const container =
+            document.getElementById(
+                "homeProducts"
             );
 
-    });
+        if (!container) return;
 
 
-    const cartCount =
-        document.getElementById(
-            "cart-count"
+        if (!products.length) {
+
+            container.innerHTML = `
+
+                <div style="
+                    grid-column:1/-1;
+                    background:#fff;
+                    border:1px solid #e5e5e0;
+                    border-radius:15px;
+                    padding:40px;
+                    text-align:center;
+                ">
+
+                    <h3>
+                        No products available
+                    </h3>
+
+                    <p style="
+                        color:#888;
+                        font-size:11px;
+                    ">
+                        Visit the Products page
+                        to explore the store.
+                    </p>
+
+                </div>
+
+            `;
+
+            return;
+
+        }
+
+
+        container.innerHTML = "";
+
+
+        products
+            .slice(0, 8)
+            .forEach(product => {
+
+                const card =
+                    document.createElement("article");
+
+                card.className =
+                    "home-product";
+
+
+                const image =
+                    product.image ||
+                    "https://via.placeholder.com/500x400?text=Product";
+
+
+                card.innerHTML = `
+
+                    <div class="home-product-image">
+
+                        <img
+                            src="${homeEscape(image)}"
+                            alt="${homeEscape(product.name)}"
+                            onerror="
+                                this.src='https://via.placeholder.com/500x400?text=No+Image'
+                            "
+                        >
+
+                        <div class="product-tag">
+
+                            ${
+                                Number(product.stock || 0) > 0
+                                    ? "AVAILABLE"
+                                    : "SOLD OUT"
+                            }
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="home-product-info">
+
+                        <small>
+
+                            ${homeEscape(
+                                product.category ||
+                                "GENERAL"
+                            )}
+
+                        </small>
+
+                        <h3>
+
+                            ${homeEscape(
+                                product.name ||
+                                "Product"
+                            )}
+
+                        </h3>
+
+                        <p>
+
+                            ${homeEscape(
+                                product.description ||
+                                "Quality product from JantarMantarKart."
+                            )}
+
+                        </p>
+
+
+                        <div class="home-product-bottom">
+
+                            <div class="home-product-price">
+
+                                $${Number(
+                                    product.price || 0
+                                ).toFixed(2)}
+
+                            </div>
+
+
+                            <button
+                                type="button"
+                                class="home-product-button"
+                                onclick="addHomeProduct('${homeEscape(product.id)}')"
+
+                                ${
+                                    Number(product.stock || 0) <= 0
+                                        ? "disabled"
+                                        : ""
+                                }
+                            >
+
+                                ${
+                                    Number(product.stock || 0) > 0
+                                        ? "ADD TO CART"
+                                        : "SOLD OUT"
+                                }
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                `;
+
+
+                container.appendChild(card);
+
+            });
+
+    }
+
+
+    /* =====================================================
+       ADD HOME PRODUCT
+    ===================================================== */
+
+    function addHomeProduct(productId) {
+
+        const products =
+            getHomeProducts();
+
+
+        const product =
+            products.find(
+                item =>
+                    String(item.id) ===
+                    String(productId)
+            );
+
+
+        if (!product) {
+
+            alert("Product not found.");
+
+            return;
+
+        }
+
+
+        if (
+            Number(product.stock || 0) <= 0
+        ) {
+
+            alert(
+                "This product is currently out of stock."
+            );
+
+            return;
+
+        }
+
+
+        if (
+            typeof addToCart ===
+            "function"
+        ) {
+
+            addToCart(product);
+
+            return;
+
+        }
+
+
+        const cartKey =
+            "jantarMantarKartCart";
+
+
+        let cart = [];
+
+
+        try {
+
+            cart =
+                JSON.parse(
+                    localStorage.getItem(cartKey)
+                ) || [];
+
+        } catch (error) {
+
+            cart = [];
+
+        }
+
+
+        const existing =
+            cart.find(
+                item =>
+                    String(item.id) ===
+                    String(product.id)
+            );
+
+
+        if (existing) {
+
+            existing.quantity =
+                Number(existing.quantity || 1) + 1;
+
+        } else {
+
+            cart.push({
+
+                id: product.id,
+
+                name: product.name,
+
+                price:
+                    Number(product.price || 0),
+
+                image:
+                    product.image || "",
+
+                quantity: 1
+
+            });
+
+        }
+
+
+        localStorage.setItem(
+            cartKey,
+            JSON.stringify(cart)
         );
 
 
-    if (cartCount) {
+        if (
+            typeof updateCartCount ===
+            "function"
+        ) {
 
-        cartCount.textContent =
-            cartTotal;
+            updateCartCount();
+
+        }
+
+
+        alert(
+            product.name +
+            " added to cart ✓"
+        );
 
     }
 
 
 
-    /* WISHLIST */
+    /* =====================================================
+       AI ASSISTANT
+    ===================================================== */
 
-    const wishlist =
-        JSON.parse(
-            localStorage.getItem(
-                "jantarMantarKartWishlist"
-            )
-        ) || [];
-
-
-    const wishlistCount =
+    const aiLauncher =
         document.getElementById(
-            "wishlist-count"
+            "ai-launcher"
         );
 
 
-    if (wishlistCount) {
+    const aiChat =
+        document.getElementById(
+            "ai-chat"
+        );
 
-        wishlistCount.textContent =
-            wishlist.length;
+
+    const aiClose =
+        document.getElementById(
+            "ai-close"
+        );
+
+
+    const aiMessages =
+        document.getElementById(
+            "ai-messages"
+        );
+
+
+    const aiInput =
+        document.getElementById(
+            "ai-input"
+        );
+
+
+    const aiSend =
+        document.getElementById(
+            "ai-send"
+        );
+
+
+    const aiTyping =
+        document.getElementById(
+            "ai-typing"
+        );
+
+
+
+    /* =====================================================
+       OPEN AI
+    ===================================================== */
+
+    function openAIAssistant() {
+
+        aiChat.classList.add("open");
+
+        aiChat.setAttribute(
+            "aria-hidden",
+            "false"
+        );
+
+        setTimeout(function() {
+
+            aiInput.focus();
+
+        }, 200);
 
     }
 
-}
+
+    /* =====================================================
+       CLOSE AI
+    ===================================================== */
+
+    function closeAIAssistant() {
+
+        aiChat.classList.remove("open");
+
+        aiChat.setAttribute(
+            "aria-hidden",
+            "true"
+        );
+
+    }
 
 
-updateHomeCounters();
+    aiLauncher.addEventListener(
+        "click",
+        openAIAssistant
+    );
+
+
+    aiClose.addEventListener(
+        "click",
+        closeAIAssistant
+    );
+
+
+
+    /* =====================================================
+       ADD MESSAGE
+    ===================================================== */
+
+    function addAIMessage(
+        message,
+        type
+    ) {
+
+        const div =
+            document.createElement("div");
+
+
+        div.className =
+            "ai-message " + type;
+
+
+        div.innerHTML =
+            message;
+
+
+        aiMessages.insertBefore(
+            div,
+            aiTyping
+        );
+
+
+        aiMessages.scrollTop =
+            aiMessages.scrollHeight;
+
+    }
+
+
+
+    /* =====================================================
+       CART INFORMATION
+    ===================================================== */
+
+    function getAICart() {
+
+        try {
+
+            return JSON.parse(
+                localStorage.getItem(
+                    "jantarMantarKartCart"
+                )
+            ) || [];
+
+        } catch (error) {
+
+            return [];
+
+        }
+
+    }
+
+
+
+    /* =====================================================
+       AI RESPONSE ENGINE
+    ===================================================== */
+
+    function generateAIResponse(
+        question
+    ) {
+
+        const q =
+            question.toLowerCase().trim();
+
+
+        const products =
+            getHomeProducts();
+
+
+        const cart =
+            getAICart();
+
+
+        /* PRODUCTS */
+
+        if (
+            q.includes("product") ||
+            q.includes("shop") ||
+            q.includes("buy") ||
+            q.includes("available")
+        ) {
+
+            if (!products.length) {
+
+                return `
+                    I couldn't find any products
+                    in the current store.
+
+                    <br><br>
+
+                    Please visit the
+                    <a href="products.html"
+                       style="color:#111;font-weight:800;">
+                       Products page
+                    </a>.
+                `;
+
+            }
+
+
+            const available =
+                products
+                    .filter(
+                        p =>
+                            Number(
+                                p.stock || 0
+                            ) > 0
+                    )
+                    .slice(0, 4);
+
+
+            if (!available.length) {
+
+                return `
+                    Our products are currently
+                    out of stock.
+
+                    <br><br>
+
+                    Please check again later.
+                `;
+
+            }
+
+
+            let response =
+                "🛍️ Here are some products you can explore:<br><br>";
+
+
+            available.forEach(
+                function(product) {
+
+                    response += `
+                        <strong>
+                            ${homeEscape(
+                                product.name
+                            )}
+                        </strong>
+                        — $${Number(
+                            product.price || 0
+                        ).toFixed(2)}
+                        <br>
+                    `;
+
+                }
+            );
+
+
+            response += `
+                <br>
+                <a href="products.html"
+                   style="color:#111;font-weight:800;">
+                    View all products →
+                </a>
+            `;
+
+
+            return response;
+
+        }
+
+
+
+        /* CART */
+
+        if (
+            q.includes("cart") ||
+            q.includes("basket")
+        ) {
+
+            if (!cart.length) {
+
+                return `
+                    🛒 Your cart is currently empty.
+
+                    <br><br>
+
+                    Want to explore some products?
+
+                    <br><br>
+
+                    <a href="products.html"
+                       style="color:#111;font-weight:800;">
+                       Start Shopping →
+                    </a>
+                `;
+
+            }
+
+
+            let total = 0;
+
+            let count = 0;
+
+
+            cart.forEach(
+                function(item) {
+
+                    total +=
+                        Number(item.price) *
+                        Number(item.quantity);
+
+                    count +=
+                        Number(item.quantity);
+
+                }
+            );
+
+
+            return `
+                🛒 You currently have
+                <strong>${count}</strong>
+                item(s) in your cart.
+
+                <br><br>
+
+                Your cart subtotal is
+                <strong>
+                    $${total.toFixed(2)}
+                </strong>.
+
+                <br><br>
+
+                <a href="cart.html"
+                   style="color:#111;font-weight:800;">
+                    Open My Cart →
+                </a>
+            `;
+
+        }
+
+
+
+        /* TRACK ORDER */
+
+        if (
+            q.includes("track") ||
+            q.includes("order status") ||
+            q.includes("where is my order")
+        ) {
+
+            return `
+                📦 You can track your order
+                using our order tracking page.
+
+                <br><br>
+
+                <a href="track-order.html"
+                   style="color:#111;font-weight:800;">
+                    Track My Order →
+                </a>
+
+                <br><br>
+
+                You can also track an order
+                even when you're not logged in.
+            `;
+
+        }
+
+
+
+        /* CONTACT */
+
+        if (
+            q.includes("contact") ||
+            q.includes("support") ||
+            q.includes("help") ||
+            q.includes("customer")
+        ) {
+
+            return `
+                💬 Our customer support team
+                is ready to help.
+
+                <br><br>
+
+                <a href="contact.html"
+                   style="color:#111;font-weight:800;">
+                    Contact JantarMantarKart →
+                </a>
+            `;
+
+        }
+
+
+
+        /* LOGIN */
+
+        if (
+            q.includes("login") ||
+            q.includes("sign in") ||
+            q.includes("account")
+        ) {
+
+            return `
+                🔐 You can sign in to your
+                JantarMantarKart account here.
+
+                <br><br>
+
+                <a href="signin.html"
+                   style="color:#111;font-weight:800;">
+                    Sign In →
+                </a>
+            `;
+
+        }
+
+
+
+        /* WISHLIST */
+
+        if (
+            q.includes("wishlist") ||
+            q.includes("favourite") ||
+            q.includes("favorite")
+        ) {
+
+            return `
+                ♡ You can save products
+                to your wishlist and
+                come back to them later.
+
+                <br><br>
+
+                <a href="wishlist.html"
+                   style="color:#111;font-weight:800;">
+                    Open Wishlist →
+                </a>
+            `;
+
+        }
+
+
+
+        /* SHIPPING */
+
+        if (
+            q.includes("shipping") ||
+            q.includes("delivery")
+        ) {
+
+            return `
+                🚚 Shipping is calculated
+                automatically at checkout.
+
+                <br><br>
+
+                Orders above
+                <strong>$100</strong>
+                qualify for free shipping.
+            `;
+
+        }
+
+
+
+        /* PAYMENT */
+
+        if (
+            q.includes("payment") ||
+            q.includes("pay") ||
+            q.includes("upi") ||
+            q.includes("card") ||
+            q.includes("cash")
+        ) {
+
+            return `
+                💳 JantarMantarKart checkout
+                supports multiple payment options,
+                including Card, UPI and Cash on Delivery.
+
+                <br><br>
+
+                Choose your preferred method
+                during checkout.
+            `;
+
+        }
+
+
+
+        /* HELLO */
+
+        if (
+            q === "hi" ||
+            q === "hello" ||
+            q.includes("hey")
+        ) {
+
+            return `
+                👋 Hello!
+
+                <br><br>
+
+                I'm your JMK Assistant.
+
+                <br><br>
+
+                Ask me about products,
+                your cart, orders,
+                delivery, payments or support.
+            `;
+
+        }
+
+
+
+        /* THANK YOU */
+
+        if (
+            q.includes("thank")
+        ) {
+
+            return `
+                You're very welcome! ✦
+
+                <br><br>
+
+                I'm always here if you
+                need help shopping.
+            `;
+
+        }
+
+
+
+        /* DEFAULT */
+
+        return `
+            I'm your JantarMantarKart
+            shopping assistant. ✦
+
+            <br><br>
+
+            I can help you with:
+
+            <br><br>
+
+            🛍️ Products<br>
+            🛒 Cart<br>
+            📦 Order tracking<br>
+            🚚 Shipping<br>
+            💳 Payments<br>
+            💬 Customer support
+
+            <br><br>
+
+            Try asking:
+            <strong>
+                "What's in my cart?"
+            </strong>
+        `;
+
+    }
+
+
+
+    /* =====================================================
+       SEND MESSAGE
+    ===================================================== */
+
+    function sendAIMessage() {
+
+        const question =
+            aiInput.value.trim();
+
+
+        if (!question) {
+            return;
+        }
+
+
+        addAIMessage(
+            homeEscape(question),
+            "user"
+        );
+
+
+        aiInput.value = "";
+
+
+        aiTyping.style.display =
+            "block";
+
+
+        aiMessages.scrollTop =
+            aiMessages.scrollHeight;
+
+
+        setTimeout(
+            function() {
+
+                aiTyping.style.display =
+                    "none";
+
+
+                const response =
+                    generateAIResponse(
+                        question
+                    );
+
+
+                addAIMessage(
+                    response,
+                    "bot"
+                );
+
+            },
+            550
+        );
+
+    }
+
+
+
+    /* =====================================================
+       SEND BUTTON
+    ===================================================== */
+
+    aiSend.addEventListener(
+        "click",
+        sendAIMessage
+    );
+
+
+    /* =====================================================
+       ENTER KEY
+    ===================================================== */
+
+    aiInput.addEventListener(
+        "keydown",
+        function(event) {
+
+            if (
+                event.key === "Enter"
+            ) {
+
+                event.preventDefault();
+
+                sendAIMessage();
+
+            }
+
+        }
+    );
+
+
+
+    /* =====================================================
+       QUICK QUESTIONS
+    ===================================================== */
+
+    document
+        .querySelectorAll(
+            ".ai-suggestion"
+        )
+        .forEach(
+            function(button) {
+
+                button.addEventListener(
+                    "click",
+                    function() {
+
+                        aiInput.value =
+                            this.dataset.question;
+
+                        sendAIMessage();
+
+                    }
+                );
+
+            }
+        );
+
+
+
+    /* =====================================================
+       ESC KEY CLOSE
+    ===================================================== */
+
+    document.addEventListener(
+        "keydown",
+        function(event) {
+
+            if (
+                event.key === "Escape"
+            ) {
+
+                closeAIAssistant();
+
+            }
+
+        }
+    );
+
+
+
+    /* =====================================================
+       PAGE LOAD
+    ===================================================== */
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        function() {
+
+            renderHomeProducts(
+                getHomeProducts()
+                    .slice(0, 8)
+            );
+
+
+            if (
+                typeof updateCartCount ===
+                "function"
+            ) {
+
+                updateCartCount();
+
+            }
+
+        }
+    );
 
 </script>
 

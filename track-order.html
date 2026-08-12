@@ -1,0 +1,1273 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Track Order | JantarMantarKart
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+    <style>
+
+        body {
+            margin: 0;
+            background: #f7f7f4;
+            color: #111;
+            font-family: Arial, sans-serif;
+        }
+
+
+        /* ===============================
+           TRACK PAGE
+        =============================== */
+
+        .track-page {
+            width: 92%;
+            max-width: 900px;
+            margin: 55px auto 80px;
+        }
+
+
+        .track-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+
+        .track-header small {
+            color: #888;
+            letter-spacing: 3px;
+            font-size: 10px;
+            font-weight: 800;
+        }
+
+
+        .track-header h1 {
+            margin: 12px 0;
+            font-size: 42px;
+        }
+
+
+        .track-header p {
+            color: #888;
+            font-size: 12px;
+        }
+
+
+        /* ===============================
+           SEARCH BOX
+        =============================== */
+
+        .track-box {
+            background: #fff;
+            border: 1px solid #e3e3df;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 10px 35px rgba(0,0,0,.05);
+        }
+
+
+        .track-box h2 {
+            margin: 0 0 18px;
+            font-size: 18px;
+        }
+
+
+        .field {
+            margin-bottom: 15px;
+        }
+
+
+        .field label {
+            display: block;
+            margin-bottom: 7px;
+            font-size: 10px;
+            font-weight: 800;
+        }
+
+
+        .field input {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 13px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            outline: none;
+            font-size: 12px;
+        }
+
+
+        .field input:focus {
+            border-color: #111;
+        }
+
+
+        .track-button {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            background: #111;
+            color: #fff;
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: 800;
+        }
+
+
+        .track-button:hover {
+            opacity: .85;
+        }
+
+
+        .track-error {
+            display: none;
+            margin-top: 15px;
+            padding: 12px;
+            background: #fff0f0;
+            color: #c00;
+            border-radius: 8px;
+            font-size: 11px;
+        }
+
+
+        /* ===============================
+           ORDER RESULT
+        =============================== */
+
+        #orderResult {
+            margin-top: 25px;
+        }
+
+
+        .order-card {
+            background: #fff;
+            border: 1px solid #e3e3df;
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+
+        .order-top {
+            padding: 20px;
+            background: #111;
+            color: #fff;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+
+        .order-top h2 {
+            margin: 0 0 5px;
+            font-size: 16px;
+        }
+
+
+        .order-top p {
+            margin: 0;
+            color: #999;
+            font-size: 10px;
+        }
+
+
+        .status-badge {
+            padding: 8px 12px;
+            border-radius: 20px;
+            background: #fff;
+            color: #111;
+            font-size: 9px;
+            font-weight: 800;
+        }
+
+
+        /* ===============================
+           ORDER DETAILS
+        =============================== */
+
+        .order-details {
+            padding: 20px;
+        }
+
+
+        .details-grid {
+            display: grid;
+            grid-template-columns:
+                repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+
+
+        .detail-box {
+            padding: 14px;
+            background: #f7f7f4;
+            border-radius: 10px;
+        }
+
+
+        .detail-box small {
+            display: block;
+            color: #888;
+            font-size: 9px;
+            margin-bottom: 5px;
+        }
+
+
+        .detail-box strong {
+            font-size: 12px;
+        }
+
+
+        /* ===============================
+           PRODUCTS
+        =============================== */
+
+        .ordered-products-title {
+            margin: 0 0 12px;
+            font-size: 15px;
+        }
+
+
+        .ordered-product {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+
+            padding: 12px 0;
+
+            border-bottom: 1px solid #eee;
+        }
+
+
+        .ordered-product:last-child {
+            border-bottom: none;
+        }
+
+
+        .ordered-product img {
+            width: 65px;
+            height: 65px;
+            object-fit: cover;
+            border-radius: 9px;
+            background: #eee;
+            flex-shrink: 0;
+        }
+
+
+        .ordered-product-info {
+            flex: 1;
+        }
+
+
+        .ordered-product-info h3 {
+            margin: 0 0 5px;
+            font-size: 12px;
+        }
+
+
+        .ordered-product-info p {
+            margin: 0;
+            color: #888;
+            font-size: 10px;
+        }
+
+
+        .ordered-product-total {
+            font-size: 11px;
+            font-weight: 800;
+            white-space: nowrap;
+        }
+
+
+        /* ===============================
+           TRACKING TIMELINE
+        =============================== */
+
+        .tracking-section {
+            margin-top: 25px;
+        }
+
+
+        .tracking-section h2 {
+            font-size: 15px;
+            margin-bottom: 20px;
+        }
+
+
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+        }
+
+
+        .timeline::before {
+            content: "";
+            position: absolute;
+            left: 8px;
+            top: 8px;
+            bottom: 8px;
+            width: 2px;
+            background: #ddd;
+        }
+
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 22px;
+        }
+
+
+        .timeline-item:last-child {
+            margin-bottom: 0;
+        }
+
+
+        .timeline-dot {
+            position: absolute;
+            left: -28px;
+            top: 2px;
+
+            width: 14px;
+            height: 14px;
+
+            border-radius: 50%;
+            background: #ddd;
+
+            border: 3px solid #fff;
+            box-shadow: 0 0 0 1px #ddd;
+        }
+
+
+        .timeline-item.completed
+        .timeline-dot {
+            background: #111;
+            box-shadow:
+                0 0 0 1px #111;
+        }
+
+
+        .timeline-item h3 {
+            margin: 0 0 4px;
+            font-size: 12px;
+        }
+
+
+        .timeline-item p {
+            margin: 0;
+            color: #888;
+            font-size: 10px;
+        }
+
+
+        /* ===============================
+           BOTTOM
+        =============================== */
+
+        .track-bottom {
+            text-align: center;
+            margin-top: 25px;
+        }
+
+
+        .back-button {
+            display: inline-block;
+            padding: 12px 18px;
+            border-radius: 8px;
+            background: #111;
+            color: #fff;
+            text-decoration: none;
+            font-size: 10px;
+            font-weight: 800;
+        }
+
+
+        /* ===============================
+           MOBILE
+        =============================== */
+
+        @media (max-width: 650px) {
+
+            .track-header h1 {
+                font-size: 30px;
+            }
+
+            .details-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .order-top {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     NAVIGATION
+===================================================== -->
+
+<header class="site-header">
+
+    <nav class="navbar">
+
+        <a
+            href="index.html"
+            class="brand"
+        >
+
+            <span class="brand-main">
+                Jantar
+            </span>
+
+            <span class="brand-accent">
+                Mantar
+            </span>
+
+            <span class="brand-main">
+                Kart
+            </span>
+
+        </a>
+
+
+        <div class="nav-links">
+
+            <a href="index.html">
+                Home
+            </a>
+
+            <a href="products.html">
+                Products
+            </a>
+
+            <a href="wishlist.html">
+                Wishlist
+            </a>
+
+            <a href="cart.html">
+                Cart
+            </a>
+
+            <!-- ALWAYS AVAILABLE -->
+
+            <a
+                href="track-order.html"
+                class="active"
+            >
+                📦 Track Order
+            </a>
+
+            <a href="contact.html">
+                Contact Us
+            </a>
+
+            <a href="signin.html">
+                Login
+            </a>
+
+        </div>
+
+    </nav>
+
+</header>
+
+
+<!-- =====================================================
+     TRACK PAGE
+===================================================== -->
+
+<main class="track-page">
+
+
+    <section class="track-header">
+
+        <small>
+            JANTARMANTARKART
+        </small>
+
+        <h1>
+            Track Your Order
+        </h1>
+
+        <p>
+            You can track your order without logging in.
+        </p>
+
+    </section>
+
+
+    <!-- =================================================
+         SEARCH FORM
+    ================================================= -->
+
+    <section class="track-box">
+
+        <h2>
+            Find Your Order
+        </h2>
+
+
+        <div class="field">
+
+            <label>
+                ORDER ID
+            </label>
+
+            <input
+                type="text"
+                id="orderId"
+                placeholder="Example: ORD-123456"
+            >
+
+        </div>
+
+
+        <div class="field">
+
+            <label>
+                EMAIL ADDRESS
+            </label>
+
+            <input
+                type="email"
+                id="orderEmail"
+                placeholder="Enter the email used during checkout"
+            >
+
+        </div>
+
+
+        <button
+            type="button"
+            class="track-button"
+            onclick="trackOrder()"
+        >
+            🔍 Track My Order
+        </button>
+
+
+        <div
+            id="trackError"
+            class="track-error"
+        ></div>
+
+    </section>
+
+
+    <!-- =================================================
+         RESULT
+    ================================================= -->
+
+    <div id="orderResult"></div>
+
+
+    <div class="track-bottom">
+
+        <a
+            href="products.html"
+            class="back-button"
+        >
+            Continue Shopping
+        </a>
+
+    </div>
+
+
+</main>
+
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
+<footer
+    style="
+        background:#111;
+        color:#fff;
+        text-align:center;
+        padding:35px 20px;
+    "
+>
+
+    <h3>
+        JantarMantarKart
+    </h3>
+
+    <p
+        style="
+            color:#777;
+            font-size:10px;
+        "
+    >
+        Your modern destination for everyday shopping.
+    </p>
+
+    <p
+        style="
+            color:#666;
+            font-size:9px;
+        "
+    >
+        © 2026 JantarMantarKart. All rights reserved.
+    </p>
+
+</footer>
+
+
+<!-- =====================================================
+     JAVASCRIPT
+===================================================== -->
+
+<script>
+
+    const ORDERS_KEY =
+        "jantarMantarKartOrders";
+
+
+    /* ==========================================
+       GET ORDERS
+    ========================================== */
+
+    function getOrders() {
+
+        try {
+
+            const orders =
+                JSON.parse(
+                    localStorage.getItem(
+                        ORDERS_KEY
+                    )
+                );
+
+            return Array.isArray(orders)
+                ? orders
+                : [];
+
+        } catch (error) {
+
+            return [];
+
+        }
+
+    }
+
+
+    /* ==========================================
+       ESCAPE HTML
+    ========================================== */
+
+    function escapeHTML(value) {
+
+        return String(value ?? "")
+            .replace(
+                /&/g,
+                "&amp;"
+            )
+            .replace(
+                /</g,
+                "&lt;"
+            )
+            .replace(
+                />/g,
+                "&gt;"
+            )
+            .replace(
+                /"/g,
+                "&quot;"
+            )
+            .replace(
+                /'/g,
+                "&#039;"
+            );
+
+    }
+
+
+    /* ==========================================
+       TRACK ORDER
+    ========================================== */
+
+    function trackOrder() {
+
+        const orderId =
+            document
+                .getElementById("orderId")
+                .value
+                .trim();
+
+        const email =
+            document
+                .getElementById("orderEmail")
+                .value
+                .trim()
+                .toLowerCase();
+
+
+        const error =
+            document.getElementById(
+                "trackError"
+            );
+
+        const result =
+            document.getElementById(
+                "orderResult"
+            );
+
+
+        error.style.display = "none";
+        result.innerHTML = "";
+
+
+        if (!orderId || !email) {
+
+            showTrackError(
+                "Please enter both your Order ID and email address."
+            );
+
+            return;
+
+        }
+
+
+        const orders =
+            getOrders();
+
+
+        const order =
+            orders.find(item => {
+
+                const savedId =
+                    String(
+                        item.id ??
+                        item.orderId ??
+                        ""
+                    )
+                    .trim()
+                    .toLowerCase();
+
+                const savedEmail =
+                    String(
+                        item.customerEmail ??
+                        item.email ??
+                        item.customer?.email ??
+                        ""
+                    )
+                    .trim()
+                    .toLowerCase();
+
+
+                return (
+                    savedId ===
+                    orderId.toLowerCase()
+                    &&
+                    savedEmail ===
+                    email
+                );
+
+            });
+
+
+        if (!order) {
+
+            showTrackError(
+                "Order not found. Please check your Order ID and email address."
+            );
+
+            return;
+
+        }
+
+
+        displayOrder(order);
+
+    }
+
+
+    /* ==========================================
+       ERROR
+    ========================================== */
+
+    function showTrackError(message) {
+
+        const error =
+            document.getElementById(
+                "trackError"
+            );
+
+        error.textContent =
+            message;
+
+        error.style.display =
+            "block";
+
+    }
+
+
+    /* ==========================================
+       DISPLAY ORDER
+    ========================================== */
+
+    function displayOrder(order) {
+
+        const result =
+            document.getElementById(
+                "orderResult"
+            );
+
+
+        const status =
+            order.status ||
+            order.trackingStatus ||
+            "Processing";
+
+
+        const total =
+            Number(
+                order.total ??
+                order.amount ??
+                0
+            );
+
+
+        const date =
+            order.date ||
+            order.createdAt ||
+            order.orderDate ||
+            "N/A";
+
+
+        const customer =
+            order.customerName ||
+            order.customer?.name ||
+            order.userName ||
+            order.user?.name ||
+            "Customer";
+
+
+        const items =
+            Array.isArray(order.items)
+                ? order.items
+                : [];
+
+
+        result.innerHTML = `
+
+            <div class="order-card">
+
+
+                <!-- ORDER HEADER -->
+
+                <div class="order-top">
+
+                    <div>
+
+                        <h2>
+                            Order ${
+                                escapeHTML(
+                                    order.id ||
+                                    order.orderId ||
+                                    ""
+                                )
+                            }
+                        </h2>
+
+                        <p>
+                            ${escapeHTML(
+                                String(date)
+                            )}
+                        </p>
+
+                    </div>
+
+
+                    <span
+                        class="status-badge"
+                    >
+                        ${escapeHTML(status)}
+                    </span>
+
+                </div>
+
+
+                <!-- ORDER DETAILS -->
+
+                <div class="order-details">
+
+
+                    <div class="details-grid">
+
+                        <div class="detail-box">
+
+                            <small>
+                                CUSTOMER
+                            </small>
+
+                            <strong>
+                                ${escapeHTML(customer)}
+                            </strong>
+
+                        </div>
+
+
+                        <div class="detail-box">
+
+                            <small>
+                                ITEMS
+                            </small>
+
+                            <strong>
+                                ${
+                                    items.length > 0
+                                    ? items.reduce(
+                                        (
+                                            total,
+                                            item
+                                        ) =>
+                                            total +
+                                            Number(
+                                                item.quantity ||
+                                                1
+                                            ),
+                                        0
+                                    )
+                                    : (
+                                        order.itemCount ||
+                                        0
+                                    )
+                                }
+                            </strong>
+
+                        </div>
+
+
+                        <div class="detail-box">
+
+                            <small>
+                                TOTAL
+                            </small>
+
+                            <strong>
+                                $${total.toFixed(2)}
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- PRODUCTS -->
+
+                    <h2 class="ordered-products-title">
+                        Ordered Products
+                    </h2>
+
+
+                    <div>
+
+                        ${
+                            renderOrderProducts(
+                                items
+                            )
+                        }
+
+                    </div>
+
+
+                    <!-- TRACKING -->
+
+                    <div class="tracking-section">
+
+                        <h2>
+                            Order Tracking
+                        </h2>
+
+
+                        ${renderTimeline(order)}
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+        `;
+
+    }
+
+
+    /* ==========================================
+       ORDER PRODUCTS
+    ========================================== */
+
+    function renderOrderProducts(items) {
+
+        if (!items.length) {
+
+            return `
+
+                <div
+                    style="
+                        padding:20px;
+                        background:#f7f7f4;
+                        border-radius:10px;
+                        color:#888;
+                        font-size:11px;
+                    "
+                >
+                    Product details are not available
+                    for this order.
+                </div>
+
+            `;
+
+        }
+
+
+        return items.map(item => {
+
+            const quantity =
+                Number(
+                    item.quantity || 1
+                );
+
+
+            const price =
+                Number(
+                    item.price || 0
+                );
+
+
+            const total =
+                quantity * price;
+
+
+            const image =
+                item.image ||
+                "https://via.placeholder.com/100x100?text=Product";
+
+
+            return `
+
+                <div class="ordered-product">
+
+                    <img
+                        src="${escapeHTML(image)}"
+                        alt="${escapeHTML(
+                            item.name ||
+                            "Product"
+                        )}"
+                        onerror="
+                            this.src='https://via.placeholder.com/100x100?text=No+Image'
+                        "
+                    >
+
+
+                    <div
+                        class="ordered-product-info"
+                    >
+
+                        <h3>
+                            ${escapeHTML(
+                                item.name ||
+                                "Product"
+                            )}
+                        </h3>
+
+                        <p>
+                            Qty:
+                            ${quantity}
+                            ×
+                            $${price.toFixed(2)}
+                        </p>
+
+                    </div>
+
+
+                    <div
+                        class="ordered-product-total"
+                    >
+                        $${total.toFixed(2)}
+                    </div>
+
+                </div>
+
+            `;
+
+        }).join("");
+
+    }
+
+
+    /* ==========================================
+       TIMELINE
+    ========================================== */
+
+    function renderTimeline(order) {
+
+        const tracking =
+            order.tracking || {};
+
+
+        const steps = [
+
+            {
+                key: "processing",
+                label: "Order Processing"
+            },
+
+            {
+                key: "shipped",
+                label: "Shipped"
+            },
+
+            {
+                key: "outForDelivery",
+                label: "Out for Delivery"
+            },
+
+            {
+                key: "delivered",
+                label: "Delivered"
+            }
+
+        ];
+
+
+        return `
+
+            <div class="timeline">
+
+                ${
+                    steps.map(step => {
+
+                        const data =
+                            tracking[
+                                step.key
+                            ] || {};
+
+
+                        const completed =
+                            data.completed === true;
+
+
+                        const date =
+                            data.date ||
+                            (
+                                completed
+                                ? "Completed"
+                                : "Waiting"
+                            );
+
+
+                        return `
+
+                            <div
+                                class="
+                                    timeline-item
+                                    ${
+                                        completed
+                                        ? "completed"
+                                        : ""
+                                    }
+                                "
+                            >
+
+                                <span
+                                    class="timeline-dot"
+                                ></span>
+
+
+                                <h3>
+                                    ${step.label}
+                                </h3>
+
+
+                                <p>
+                                    ${
+                                        escapeHTML(
+                                            String(date)
+                                        )
+                                    }
+                                </p>
+
+                            </div>
+
+                        `;
+
+                    }).join("")
+                }
+
+            </div>
+
+        `;
+
+    }
+
+
+    /* ==========================================
+       ENTER KEY
+    ========================================== */
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        function() {
+
+            const inputs =
+                document.querySelectorAll(
+                    "#orderId, #orderEmail"
+                );
+
+
+            inputs.forEach(input => {
+
+                input.addEventListener(
+                    "keydown",
+                    function(event) {
+
+                        if (
+                            event.key ===
+                            "Enter"
+                        ) {
+
+                            trackOrder();
+
+                        }
+
+                    }
+                );
+
+            });
+
+        }
+    );
+
+</script>
+
+
+</body>
+</html>
